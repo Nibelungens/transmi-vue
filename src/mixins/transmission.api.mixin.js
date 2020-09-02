@@ -24,7 +24,6 @@ const TransmissionApiMixin = {
     startTorrents(torrent) {
       return this.requestSimple(TORRENT_START, torrent);
     },
-
     stopTorrents(torrent) {
       return this.requestSimple(TORRENT_STOP, torrent);
     },
