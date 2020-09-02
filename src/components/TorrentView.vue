@@ -1,5 +1,5 @@
 <template>
-  <div class="pl-3 pr-3 pb-1 pt-1 torrent-row" @contextmenu.prevent="$refs.menu.open" v-bind:class="{ 'm-selected': isSelected }" v-on:click="select">
+  <div class="pl-3 pr-3 pb-1 pt-1 torrent-row" @contextmenu.prevent="$refs.menu.open" v-bind:class="{ 'm-selected': isSelected }" v-on:click="select" v-on:dblclick="details">
     <div class="title-row">{{ torrent.name }}</div>
     <div class="peers-row">Downloading from {{ torrent.peersGettingFromUs }} of {{ torrent.peersConnected }} peer - <b-icon-arrow-down/> {{ torrent.rateDownload | formatByte(2) }}/s <b-icon-arrow-up/> {{ torrent.rateUpload | formatByte(2) }}/s</div>
     <div class="bar-row">
@@ -35,9 +35,10 @@
 
 <script>
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import VueContext from 'vue-context';
-import bus from "@/config/event.bus";
 import TorrentUtilsMixin from "@/mixins/torrent.utils.mixin";
+import VueContext from 'vue-context';
+import 'vue-context/dist/css/vue-context.css';
+import bus from "@/config/event.bus";
 
 export default {
   name: 'TorrentView',
@@ -86,6 +87,9 @@ export default {
     select() {
       this.selected = !this.selected;
       this.$emit('selected', this.selected, this.torrent);
+    },
+    details() {
+      this.$emit('double-click', this.selected, this.torrent);
     },
     getStatus() {
       return this.meta(this.torrent);
