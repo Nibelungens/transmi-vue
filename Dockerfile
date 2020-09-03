@@ -1,7 +1,7 @@
 # étape de build
-FROM node:lts-alpine as build-stage
+FROM node:erbium-alpine as build-stage
 
-RUN npm install --loglevel=error @vue/cli
+RUN npm install --loglevel=error @vue/cli@^4.5.0
 WORKDIR /transmission-vue
 COPY ./package*.json ./
 RUN npm install --loglevel=error
@@ -9,7 +9,7 @@ ADD src ./src
 RUN npm run build
 
 # étape de production
-FROM nginx:stable-alpine as production-stage
+FROM nginx:1.19.2-alpine as production-stage
 
 ENV URL_TRANSMISION http://localhost:9000
 
