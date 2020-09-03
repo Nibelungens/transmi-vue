@@ -16,7 +16,7 @@ afterEach(() => {
     wrapper.destroy();
 });
 
-describe('Test TorrentUtils', () => {
+describe('torrent.utils.mixin.js', () => {
     it ('getStatusState', () => {
         const result = wrapper.vm.getStatusState;
 
