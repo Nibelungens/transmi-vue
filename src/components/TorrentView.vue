@@ -156,4 +156,7 @@ export default {
   color: gray;
   cursor: default;
 }
+.torrent-row {
+  user-select: none;
+}
 </style>
