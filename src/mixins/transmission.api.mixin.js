@@ -18,6 +18,12 @@ const ARGUMENTS_TORRENT_ALL = {
     "status",
     "eta" ]
 };
+const ARGUMENTS_TORRENT_INFO = {
+  "fields":[
+    "id",
+    "name",
+    "hashString"],
+  "ids":[0]};
 
 const TransmissionApiMixin = {
   methods: {
@@ -40,6 +46,11 @@ const TransmissionApiMixin = {
       }
 
       return this.request(method, {"ids": ids});
+    },
+    getInfoTorrent(torrent) {
+      const args = ARGUMENTS_TORRENT_INFO;
+      args.ids = [torrent.id];
+      return this.request(TORRENT_GET, args);
     },
     request(method, args) {
       return axios.post('/api',
