@@ -1,13 +1,13 @@
 <template>
   <div class="pl-3 pr-3 pb-1 pt-1 torrent-row" @contextmenu.prevent="$refs.menu.open" v-bind:class="{ 'm-selected': isSelected }" v-on:click="select" v-on:dblclick="details">
     <div class="title-row">{{ torrent.name }}</div>
-    <div class="peers-row">Downloading from {{ torrent.peersGettingFromUs }} of {{ torrent.peersConnected }} peer - <b-icon-arrow-down/> {{ torrent.rateDownload | formatByte(2) }}/s <b-icon-arrow-up/> {{ torrent.rateUpload | formatByte(2) }}/s</div>
+    <div class="peers-row">Downloading from {{ torrent.peersGettingFromUs }} of {{ torrent.peersConnected }} peer - <b-icon-arrow-down/> {{ torrent.rateDownload | formatSize }}/s <b-icon-arrow-up/> {{ torrent.rateUpload | formatSize }}/s</div>
     <div class="bar-row">
       <b-progress :max="1" :value="torrent.percentDone" :animated="getStatus().animated" :variant="getStatus().bar" class="w-100"/>
       <b-icon-play-fill v-on:click="stop()" v-bind:hidden="!isPlay" class="ml-2 mr-1"></b-icon-play-fill>
       <b-icon-pause-fill v-on:click="start()" v-bind:hidden="!isPause" class="ml-2 mr-1"></b-icon-pause-fill>
     </div >
-    <div class="dl-row">{{ torrent.totalSize | formatByte(2) }} of {{ torrent.sizeWhenDone | formatByte(2) }} ({{ torrent.percentDone | formatPercent(2) }}) - {{ torrent.eta | formatRemaining }}</div>
+    <div class="dl-row">{{ torrent.totalSize | formatSize }} of {{ torrent.sizeWhenDone | formatSize }} ({{ torrent.percentDone | formatPercent }}) - {{ torrent | formatRemaining }}</div>
 
     <vue-context ref="menu">
       <li class="m-row" v-on:click="stop()" v-bind:class="{ 'm-disabled': !isPlay }">Pause</li>
@@ -62,7 +62,12 @@ export default {
       rateDownload: Number,
       rateUpload: Number,
       status: Number,
-      eta: String
+      eta: String,
+      metadataPercentComplete: Number,
+      leftUntilDone: Number,
+      uploadedEver: String,
+      uploadRatio: Number,
+      seedRatioLimit: Number
     }
   },
   data: function() {

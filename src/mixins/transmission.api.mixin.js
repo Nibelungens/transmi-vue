@@ -16,6 +16,11 @@ const ARGUMENTS_TORRENT_ALL = {
     "rateDownload",
     "rateUpload" ,
     "status",
+    "metadataPercentComplete",
+    "leftUntilDone",
+    "uploadedEver",
+    "uploadRatio",
+    "seedRatioLimit",
     "eta" ]
 };
 const ARGUMENTS_TORRENT_INFO = {

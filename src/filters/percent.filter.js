@@ -1,9 +1,10 @@
-const filter = function (value, decimals = 2) {
-    if (value === 0) {
-        return '0%';
+const filter = function (value) {
+    if (value < 10.0) {
+        return value.toFixed(2);
+    } else if (value < 100.0) {
+        return value.toFixed(1);
     } else {
-        let satr = value * 100;
-        return +parseFloat(satr.toString()).toFixed(decimals) + '%';
+        return value.toFixed(0);
     }
 }
 

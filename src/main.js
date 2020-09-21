@@ -3,8 +3,8 @@ import App from './App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import store from './store/index.store'
 import remainingFilter from './filters/remaining.filter'
-import precentFilter from './filters/percent.filter.js'
-import byteFilter from './filters/byte.filter.js'
+import sizeFilter from './filters/size.filter.js'
+import percentFilter from './filters/percent.filter'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptor from "@/config/http.interceptor";
@@ -13,8 +13,8 @@ Vue.config.productionTip = false
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
-Vue.filter('formatByte', byteFilter);
-Vue.filter('formatPercent', precentFilter);
+Vue.filter('formatSize', sizeFilter);
+Vue.filter('formatPercent', percentFilter);
 Vue.filter('formatRemaining', remainingFilter);
 
 new Vue({

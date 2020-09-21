@@ -1,20 +1,51 @@
-const SECOND_IN_MINUTES = 60
-const MINUTES_IN_HOUR = 60
-const HOUR_IN_DAY = 24
+import timeInterval from './timeInterval.filter.js'
+import Status from '../constantes/status.const'
+import percentFilter from './percent.filter.js'
+import ratioFilter from './ratio.filter.js'
+import sizeFilter from './size.filter.js'
 
-const filter = function (value) {
-    if (value < 0) return 'remaining time unknown';
-    if (value === 0) return 'finish';
+const filter = function (torrent) {
+    if (torrent.metadataPercentComplete < 1) {
+        let MetaDataStatus = 'retrieving';
+        if (torrent.status === Status.STATUS_STOPPED) {
+            MetaDataStatus = 'needs';
+        }
+        const percent = 100 * torrent.metadataPercentComplete;
+        return ['Magnetized transfer - ' + MetaDataStatus + ' metadata (', percentFilter(percent), '%)',].join('');
+    }
 
-    const minutes = Math.floor(value / SECOND_IN_MINUTES);
-    const hours   = Math.floor(value / (SECOND_IN_MINUTES*MINUTES_IN_HOUR));
-    const days   = Math.floor(value / (SECOND_IN_MINUTES*MINUTES_IN_HOUR*HOUR_IN_DAY));
+    let c;
+    const sizeWhenDone = torrent.sizeWhenDone;
+    const totalSize = torrent.totalSize;
+    const is_done = torrent.leftUntilDone < 1 || torrent.status === Status.STATUS_SEED;
 
-    if (days !== 0 && days !== -1) return days + ' days and ' + (hours - (HOUR_IN_DAY*days)) + ' hours remaining';
-    if (hours !== 0 && hours !== -1) return hours + ' hours and ' + (minutes - (MINUTES_IN_HOUR*hours)) + ' minutes remaining';
-    if (minutes !== 0 && minutes !== -1) return minutes + ' minutes and ' + (value - (SECOND_IN_MINUTES*minutes)) + ' seconds remaining';
+    if (is_done) {
+        if (totalSize === sizeWhenDone) {
+            // seed: '698.05 MiB'
+            c = [sizeFilter(totalSize)];
+        } else {
+            // partial seed: '127.21 MiB of 698.05 MiB (18.2%)'
+            c = [sizeFilter(sizeWhenDone), ' of ', sizeFilter(torrent.totalSize), ' (', percentFilter(100 * torrent.percentDone), '%)',];
+        }
+        // append UL stats: ', uploaded 8.59 GiB (Ratio: 12.3)'
+        c.push(', uploaded ', sizeFilter(torrent.uploadedEver), ' (Ratio ', ratioFilter(torrent.uploadRatio), ')');
+    } else {
+        // not done yet
+        c = [sizeFilter(sizeWhenDone - torrent.leftUntilDone), ' of ', sizeFilter(sizeWhenDone), ' (', percentFilter(100 * torrent.percentDone), '%)',];
+    }
 
-    return value + ' seconds remaining';
+    // maybe append eta
+    if (torrent.status !== 0 && (!is_done || torrent.seedRatioLimit > 0)) {
+        c.push(' - ');
+        const eta = torrent.eta;
+        if (eta < 0 || eta >= 999 * 60 * 60 /* arbitrary */) {
+            c.push('remaining time unknown');
+        } else {
+            c.push(timeInterval(torrent.eta), ' remaining');
+        }
+    }
+
+    return c.join('');
 }
 
 export default filter;
