@@ -4,14 +4,14 @@ import percentFilter from './percent.filter.js'
 import ratioFilter from './ratio.filter.js'
 import sizeFilter from './size.filter.js'
 
-const filter = function (torrent) {
+const filter = function (torrent, i18n) {
     if (torrent.metadataPercentComplete < 1) {
-        let MetaDataStatus = 'retrieving';
+        let MetaDataStatus = i18n.t('message.filter.remaining.retrieving');
         if (torrent.status === Status.STATUS_STOPPED) {
-            MetaDataStatus = 'needs';
+            MetaDataStatus = i18n.t('message.filter.remaining.needs');
         }
         const percent = 100 * torrent.metadataPercentComplete;
-        return ['Magnetized transfer - ' + MetaDataStatus + ' metadata (', percentFilter(percent), '%)',].join('');
+        return [i18n.t('message.filter.remaining.magnetized', [MetaDataStatus, percentFilter(percent)])].join('');
     }
 
     let c;
@@ -25,13 +25,13 @@ const filter = function (torrent) {
             c = [sizeFilter(totalSize)];
         } else {
             // partial seed: '127.21 MiB of 698.05 MiB (18.2%)'
-            c = [sizeFilter(sizeWhenDone), ' of ', sizeFilter(torrent.totalSize), ' (', percentFilter(100 * torrent.percentDone), '%)',];
+            c = [i18n.t('message.filter.remaining.of', [sizeFilter(sizeWhenDone), sizeFilter(torrent.totalSize), percentFilter(100 * torrent.percentDone)])];
         }
         // append UL stats: ', uploaded 8.59 GiB (Ratio: 12.3)'
-        c.push(', uploaded ', sizeFilter(torrent.uploadedEver), ' (Ratio ', ratioFilter(torrent.uploadRatio), ')');
+        c.push(i18n.t('message.filter.remaining.upload', [sizeFilter(torrent.uploadedEver), ratioFilter(torrent.uploadRatio)]));
     } else {
         // not done yet
-        c = [sizeFilter(sizeWhenDone - torrent.leftUntilDone), ' of ', sizeFilter(sizeWhenDone), ' (', percentFilter(100 * torrent.percentDone), '%)',];
+        c = [i18n.t('message.filter.remaining.of', [sizeFilter(sizeWhenDone - torrent.leftUntilDone), sizeFilter(sizeWhenDone), percentFilter(100 * torrent.percentDone)])];
     }
 
     // maybe append eta
@@ -39,9 +39,10 @@ const filter = function (torrent) {
         c.push(' - ');
         const eta = torrent.eta;
         if (eta < 0 || eta >= 999 * 60 * 60 /* arbitrary */) {
-            c.push('remaining time unknown');
+            // c.push('remaining time unknown');
+            c.push(i18n.t('message.filter.remaining.timeUnknown'));
         } else {
-            c.push(timeInterval(torrent.eta), ' remaining');
+            c.push(timeInterval(torrent.eta), i18n.t('message.filter.remaining.remaining'));
         }
     }
 

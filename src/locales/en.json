@@ -1,0 +1,70 @@
+{
+  "message": {
+    "header": {
+      "open": "Open Torrent",
+      "remove": "Remove Selected Torrent",
+      "start": "Start Selected Torrents",
+      "stop": "Stop Selected Torrents",
+      "startAll": "Start All Torrents",
+      "stopAll": "Stop All Torrents"
+    },
+    "footer": {
+      "setting": "Setting Menu",
+      "prefs": "Edit Preference...",
+      "limits": "Click to Enable Temporary Speed Limits",
+      "compact": "Compact View"
+    },
+    "torrent": {
+      "downloading": "Downloading from {0} of {1} peer - ",
+      "of": "of",
+      "contextMenu": {
+        "pause": "Pause",
+        "resume": "Resume",
+        "resumeNow": "Resume Now",
+        "moveTop": "Move to Top",
+        "moveUp": "Move Up",
+        "moveDown": "Move Down",
+        "moveBottom": "Move to Bottom",
+        "remove": "Remove From List",
+        "trash": "Trash Data and Remove From List",
+        "verify": "Verify Local Data",
+        "location": "Set Location...",
+        "rename": "Rename...",
+        "selectAll": "Select All",
+        "deselectAll": "Deselect All"
+      }
+    },
+    "details": {
+      "info": {
+        "activity": "Activity",
+        "have": "Have",
+        "avaibility": "Avaibility",
+        "upload": "Upload",
+        "downloaded": "Downloaded",
+        "state": "State",
+        "running": "Running Time",
+        "remaining": "Remaining Time",
+        "last": "Last Activity",
+        "error": "Error",
+        "details": "Details",
+        "size": "Size",
+        "location": "Location",
+        "hash": "Hash",
+        "privacy": "Privacy",
+        "origin": "Origin",
+        "comment": "Comment"
+      }
+    },
+    "filter": {
+      "remaining": {
+        "timeUnknown": "remaining time unknown",
+        "retrieving": "retrieving",
+        "needs": "needs",
+        "magnetized": "Magnetized transfer - {0} metadata ({1}%)",
+        "of": "{0} of {1} ({2}%)",
+        "upload": ", uploaded {0} (Ratio {1})",
+        "remaining": " remaining"
+      }
+    }
+  }
+}

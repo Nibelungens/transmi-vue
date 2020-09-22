@@ -3,22 +3,23 @@
     <b-navbar type="dark" variant="dark">
       <b-button-toolbar>
         <b-button-group size="sm" class="mr-1" >
-          <b-button title="Open Torrent" variant="outline-light" disabled>
+          <b-button :title="$t('message.header.open')" variant="outline-light" disabled>
+
             <b-icon icon="file-earmark-arrow-up-fill"></b-icon>
           </b-button>
-          <b-button title="Remove Selected Torrent" variant="outline-light" disabled>
+          <b-button :title="$t('message.header.remove')" variant="outline-light" disabled>
             <b-icon icon="slash-circle"></b-icon>
           </b-button>
-          <b-button v-bind:disabled="!asSelected" v-on:click="startSelected()" title="Start Selected Torrents" variant="outline-light">
+          <b-button v-bind:disabled="!asSelected" v-on:click="startSelected()" :title="$t('message.header.start')"  variant="outline-light">
             <b-icon icon="arrow-clockwise" ></b-icon>
           </b-button>
-          <b-button v-bind:disabled="!asSelected" v-on:click="stopSelected()" title="Stop Selected Torrents" variant="outline-light">
+          <b-button v-bind:disabled="!asSelected" v-on:click="stopSelected()" :title="$t('message.header.stop')"  variant="outline-light">
             <b-icon icon="pause-fill"></b-icon>
           </b-button>
-          <b-button v-on:click="startAll()" title="Start All Torrents" variant="outline-light">
+          <b-button v-on:click="startAll()" :title="$t('message.header.startAll')"  variant="outline-light">
             <b-icon icon="arrow-clockwise"></b-icon>
           </b-button>
-          <b-button v-on:click="stopAll()" title="Stop All Torrents" variant="outline-light">
+          <b-button v-on:click="stopAll()" :title="$t('message.header.stopAll')"  variant="outline-light">
             <b-icon icon="pause-fill"></b-icon>
           </b-button>
         </b-button-group>

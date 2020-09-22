@@ -1,33 +1,33 @@
 <template>
   <div class="pl-3 pr-3 pb-1 pt-1 torrent-row" @contextmenu.prevent="$refs.menu.open" v-bind:class="{ 'm-selected': isSelected }" v-on:click="select" v-on:dblclick="details">
     <div class="title-row">{{ torrent.name }}</div>
-    <div class="peers-row">Downloading from {{ torrent.peersGettingFromUs }} of {{ torrent.peersConnected }} peer - <b-icon-arrow-down/> {{ torrent.rateDownload | formatSize }}/s <b-icon-arrow-up/> {{ torrent.rateUpload | formatSize }}/s</div>
+    <div class="peers-row">{{ $t('message.torrent.downloading', [torrent.peersGettingFromUs, torrent.peersConnected]) }} <b-icon-arrow-down/> {{ torrent.rateDownload | formatSize }}/s <b-icon-arrow-up/> {{ torrent.rateUpload | formatSize }}/s</div>
     <div class="bar-row">
       <b-progress :max="1" :value="torrent.percentDone" :animated="getStatus().animated" :variant="getStatus().bar" class="w-100"/>
       <b-icon-play-fill v-on:click="stop()" v-bind:hidden="!isPlay" class="ml-2 mr-1"></b-icon-play-fill>
       <b-icon-pause-fill v-on:click="start()" v-bind:hidden="!isPause" class="ml-2 mr-1"></b-icon-pause-fill>
     </div >
-    <div class="dl-row">{{ torrent.totalSize | formatSize }} of {{ torrent.sizeWhenDone | formatSize }} ({{ torrent.percentDone | formatPercent }}) - {{ torrent | formatRemaining }}</div>
+    <div class="dl-row">{{ torrent | formatRemaining($i18n) }}</div>
 
     <vue-context ref="menu">
-      <li class="m-row" v-on:click="stop()" v-bind:class="{ 'm-disabled': !isPlay }">Pause</li>
-      <li class="m-row" v-on:click="start()" v-bind:class="{ 'm-disabled': !isPause }">Resume</li>
-      <li class="m-row m-disabled">Resume Now</li>
+      <li class="m-row" v-on:click="stop()" v-bind:class="{ 'm-disabled': !isPlay }">{{ $t('message.torrent.contextMenu.pause') }}</li>
+      <li class="m-row" v-on:click="start()" v-bind:class="{ 'm-disabled': !isPause }">{{ $t('message.torrent.contextMenu.resume') }}</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.resumeNow') }}</li>
       <li class="m-divider"></li>
-      <li class="m-row m-disabled">Move to Top</li>
-      <li class="m-row m-disabled">Move Up</li>
-      <li class="m-row m-disabled">Move Down</li>
-      <li class="m-row m-disabled">Move to Bottom</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.moveTop') }}</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.moveUp') }}</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.moveDown') }}</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.moveBottom') }}</li>
       <li class="m-divider"></li>
-      <li class="m-row m-disabled">Remove From List</li>
-      <li class="m-row m-disabled">Trash Data and Remove From List</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.remove') }}</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.trash') }}</li>
       <li class="m-divider"></li>
-      <li class="m-row m-disabled">Verify Local Data</li>
-      <li class="m-row m-disabled">Set Location...</li>
-      <li class="m-row m-disabled">Rename...</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.verify') }}</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.location') }}</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.rename') }}</li>
       <li class="m-divider"></li>
-      <li class="m-row m-disabled">Select All</li>
-      <li class="m-row m-disabled">Deselect All</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.selectAll') }}</li>
+      <li class="m-row m-disabled">{{ $t('message.torrent.contextMenu.deselectAll') }}</li>
     </vue-context>
 
   </div>

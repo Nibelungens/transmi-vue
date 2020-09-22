@@ -6,73 +6,73 @@
     <div v-if="details != null">
       <span class="info-title">{{ details.name }}</span>
 
-      <span class="info-subtitle">Activity</span>
+      <span class="info-subtitle">{{ $t('message.details.info.activity') }}</span>
 
       <div class="info-row">
-        <span class="info-row-start">Have:</span>
+        <span class="info-row-start">{{ $t('message.details.info.have') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Avaibility:</span>
+        <span class="info-row-start">{{ $t('message.details.info.avaibility') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Upload:</span>
+        <span class="info-row-start">{{ $t('message.details.info.upload') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Downloaded:</span>
+        <span class="info-row-start">{{ $t('message.details.info.downloaded') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">State:</span>
+        <span class="info-row-start">{{ $t('message.details.info.state') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Running Time:</span>
+        <span class="info-row-start">{{ $t('message.details.info.running') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Remaining Time:</span>
+        <span class="info-row-start">{{ $t('message.details.info.remaining') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Last Activity:</span>
+        <span class="info-row-start">{{ $t('message.details.info.last') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Error:</span>
+        <span class="info-row-start">{{ $t('message.details.info.error') }}:</span>
         <span class="info-row-end">none</span>
       </div>
 
-      <span class="info-subtitle">Details</span>
+      <span class="info-subtitle">{{ $t('message.details.info.details') }}</span>
 
       <div class="info-row">
-        <span class="info-row-start">Size:</span>
+        <span class="info-row-start">{{ $t('message.details.info.size') }}:</span>
+        <span class="info-row-end">none</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row-start">{{ $t('message.details.info.location') }}:</span>
+        <span class="info-row-end">none</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row-start">{{ $t('message.details.info.hash') }}:</span>
         <span class="info-row-end">{{ details.hashString }}</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Location:</span>
+        <span class="info-row-start">{{ $t('message.details.info.privacy') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Hash:</span>
+        <span class="info-row-start">{{ $t('message.details.info.origin') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Privacy:</span>
+        <span class="info-row-start">{{ $t('message.details.info.error') }}Error:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">Origin:</span>
-        <span class="info-row-end">none</span>
-      </div>
-      <div class="info-row">
-        <span class="info-row-start">Error:</span>
-        <span class="info-row-end">none</span>
-      </div>
-      <div class="info-row">
-        <span class="info-row-start">Comment:</span>
+        <span class="info-row-start">{{ $t('message.details.info.comment') }}Comment:</span>
         <span class="info-row-end">none</span>
       </div>
     </div>

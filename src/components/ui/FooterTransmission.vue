@@ -3,16 +3,16 @@
     <b-navbar type="dark" variant="dark">
       <b-button-toolbar>
         <b-button-group size="sm" class="mr-1" >
-          <b-button title="Setting Menu" variant="outline-light" disabled>
+          <b-button :title="$t('message.footer.setting')" variant="outline-light" disabled>
             <b-icon icon="gear-fill"></b-icon>
           </b-button>
-          <b-button title="Edit Preference..." variant="outline-light" disabled>
+          <b-button :title="$t('message.footer.prefs')" variant="outline-light" disabled>
             <b-icon icon="tools"></b-icon>
           </b-button>
-          <b-button title="Click to Enable Temporary Speed Limits" variant="outline-light" disabled>
+          <b-button :title="$t('message.footer.limits')" variant="outline-light" disabled>
             <b-icon icon="graph-down" ></b-icon>
           </b-button>
-          <b-button title="Compact View" variant="outline-light" disabled>
+          <b-button :title="$t('message.footer.compact')" variant="outline-light" disabled>
             <b-icon icon="arrows-collapse"></b-icon>
           </b-button>
         </b-button-group>

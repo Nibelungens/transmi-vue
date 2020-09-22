@@ -8,6 +8,7 @@ import percentFilter from './filters/percent.filter'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptor from "@/config/http.interceptor";
+import i18n from './i18n'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);
@@ -20,6 +21,7 @@ Vue.filter('formatRemaining', remainingFilter);
 new Vue({
     store: store,
     render: h => h(App),
+    i18n,
     beforeCreate() {
         interceptor.init(store);
     }
