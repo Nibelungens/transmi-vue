@@ -10,7 +10,7 @@
 
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.have') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details | formatHave($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.avaibility') }}:</span>
@@ -92,6 +92,11 @@ export default {
     torrent: {
       id: String,
       name: String,
+      hashString: String,
+      sizeWhenDone: Number,
+      leftUntilDone: Number,
+      haveUnchecked: Number,
+      haveValid: Number
     }
   },
   data: function() {

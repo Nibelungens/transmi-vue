@@ -64,6 +64,11 @@
         "of": "{0} of {1} ({2}%)",
         "upload": ", uploaded {0} (Ratio {1})",
         "remaining": " remaining"
+      },
+      "have": {
+        "one": "{0} (100%)",
+        "two": "{0} of {1} ({2}%)",
+        "three": "{0} of {1} ({2}%), {3} Unverified"
       }
     }
   }

@@ -27,7 +27,11 @@ const ARGUMENTS_TORRENT_INFO = {
   "fields":[
     "id",
     "name",
-    "hashString"],
+    "hashString",
+    "sizeWhenDone",
+    "leftUntilDone",
+    "haveUnchecked",
+    "haveValid"],
   "ids":[0]};
 
 const TransmissionApiMixin = {

@@ -5,6 +5,7 @@ import store from './store/index.store'
 import remainingFilter from './filters/remaining.filter'
 import sizeFilter from './filters/size.filter.js'
 import percentFilter from './filters/percent.filter'
+import haveFilter from './filters/have.filter'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptor from "@/config/http.interceptor";
@@ -17,6 +18,7 @@ Vue.use(IconsPlugin);
 Vue.filter('formatSize', sizeFilter);
 Vue.filter('formatPercent', percentFilter);
 Vue.filter('formatRemaining', remainingFilter);
+Vue.filter('formatHave', haveFilter);
 
 new Vue({
     store: store,
