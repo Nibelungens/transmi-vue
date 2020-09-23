@@ -9,12 +9,12 @@
       </b-tab>
       <b-tab id="peers">
         <template v-slot:title>
-          <b-icon icon="person-fill"></b-icon>
+          <b-icon icon="people-fill"></b-icon>
         </template>
       </b-tab>
       <b-tab id="trackers">
         <template v-slot:title>
-          <b-icon icon="wifi"></b-icon>
+          <b-icon icon="globe"></b-icon>
         </template>
       </b-tab>
       <b-tab id="file">
