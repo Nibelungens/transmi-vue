@@ -26,7 +26,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.state') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details | formatStatus($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.running') }}:</span>
@@ -100,7 +100,9 @@ export default {
       desiredAvailable: Number,
       downloadedEver: Number,
       uploadedEver: Number,
-      corruptEver: Number
+      corruptEver: Number,
+      isFinished: Boolean,
+      status: Number
     }
   },
   data: function() {

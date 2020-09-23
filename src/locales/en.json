@@ -76,6 +76,22 @@
       },
       "download": {
         "corrupt": "{0} ({1} corrupt)"
+      },
+      "status": {
+        "complete": "Seeding complete",
+        "paused": "Paused",
+        "queuedVerification": "Queued for verification",
+        "verifying": "Verifying local data",
+        "queuedDownload": "Queued for download",
+        "downloading": "Downloading",
+        "queuedSeeding": "Queued for seeding",
+        "seeding": "Seeding",
+        "unknown": "Unknown",
+        "error": "Error"
+      },
+      "state": {
+        "finished": "Finished",
+        "paused": "Paused"
       }
     }
   }

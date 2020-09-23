@@ -35,7 +35,9 @@ const ARGUMENTS_TORRENT_INFO = {
     "desiredAvailable",
     "downloadedEver",
     "uploadedEver",
-    "corruptEver"],
+    "corruptEver",
+    "isFinished",
+    "status"],
   "ids":[0]};
 
 const TransmissionApiMixin = {
