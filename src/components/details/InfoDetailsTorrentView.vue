@@ -26,7 +26,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.state') }}:</span>
-        <span class="info-row-end">{{ details | formatStatus($i18n) }}</span>
+        <span class="info-row-end">{{ details | formatState($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.running') }}:</span>
