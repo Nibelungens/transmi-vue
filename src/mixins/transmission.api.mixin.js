@@ -32,7 +32,9 @@ const ARGUMENTS_TORRENT_INFO = {
     "leftUntilDone",
     "haveUnchecked",
     "haveValid",
-    "desiredAvailable"],
+    "desiredAvailable",
+    "downloadedEver",
+    "uploadedEver"],
   "ids":[0]};
 
 const TransmissionApiMixin = {

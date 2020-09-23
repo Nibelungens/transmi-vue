@@ -18,7 +18,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.upload') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details | formatUpload($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.downloaded') }}:</span>
@@ -97,7 +97,9 @@ export default {
       leftUntilDone: Number,
       haveUnchecked: Number,
       haveValid: Number,
-      desiredAvailable: Number
+      desiredAvailable: Number,
+      downloadedEver: Number,
+      uploadedEver: Number
     }
   },
   data: function() {
