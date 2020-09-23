@@ -53,7 +53,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.location') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details.downloadDir }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.hash') }}:</span>
@@ -109,7 +109,8 @@ export default {
       errorString: String,
       pieceCount: Number,
       pieceSize: Number,
-      totalSize: Number
+      totalSize: Number,
+      downloadDir: String
     }
   },
   data: function() {

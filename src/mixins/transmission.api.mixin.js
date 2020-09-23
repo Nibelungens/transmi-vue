@@ -44,7 +44,8 @@ const ARGUMENTS_TORRENT_INFO = {
     "errorString",
     "pieceSize",
     "pieceCount",
-    "totalSize"],
+    "totalSize",
+    "downloadDir"],
   "ids":[0]};
 
 const TransmissionApiMixin = {
