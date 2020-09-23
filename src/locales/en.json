@@ -73,6 +73,9 @@
       },
       "upload": {
         "ratio": "{0} (Ratio: {1})"
+      },
+      "download": {
+        "corrupt": "{0} ({1} corrupt)"
       }
     }
   }

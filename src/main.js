@@ -8,6 +8,7 @@ import percentFilter from './filters/percent.filter'
 import haveFilter from './filters/have.filter'
 import availabilityFilter from './filters/availability.filter'
 import uploadFilter from './filters/uploaded.filter'
+import downloadFilter from './filters/downloaded.filter'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptor from "@/config/http.interceptor";
@@ -23,6 +24,7 @@ Vue.filter('formatRemaining', remainingFilter);
 Vue.filter('formatHave', haveFilter);
 Vue.filter('formatAvailability', availabilityFilter);
 Vue.filter('formatUpload', uploadFilter);
+Vue.filter('formatDownload', downloadFilter);
 
 new Vue({
     store: store,

@@ -22,7 +22,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.downloaded') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details | formatDownload($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.state') }}:</span>
@@ -99,7 +99,8 @@ export default {
       haveValid: Number,
       desiredAvailable: Number,
       downloadedEver: Number,
-      uploadedEver: Number
+      uploadedEver: Number,
+      corruptEver: Number
     }
   },
   data: function() {
