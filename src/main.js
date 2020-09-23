@@ -14,6 +14,7 @@ import statusFilter from './filters/status.filter'
 import runningTimeFilter from './filters/runningtime.filter'
 import timeintervalFilter from './filters/timeInterval.filter'
 import remainingTimeFilter from './filters/remainingtime.filter'
+import lastActivityFilter from './filters/lastactivity.filter'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptor from "@/config/http.interceptor";
@@ -34,7 +35,8 @@ Vue.filter('formatState', stateFilter);
 Vue.filter('formatStatus', statusFilter);
 Vue.filter('formatRunningTime', runningTimeFilter);
 Vue.filter('formatTimeInterval', timeintervalFilter);
-Vue.filter('formatremainingTime', remainingTimeFilter);
+Vue.filter('formatRemainingTime', remainingTimeFilter);
+Vue.filter('formatLastActivity', lastActivityFilter);
 
 new Vue({
     store: store,

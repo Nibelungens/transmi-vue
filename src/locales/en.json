@@ -98,6 +98,10 @@
       },
       "remainingTime": {
         "unknown": "Unknown"
+      },
+      "lastactivity": {
+        "active": "Active now",
+        "ago": "{0} ago"
       }
     }
   }

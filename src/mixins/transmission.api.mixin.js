@@ -39,7 +39,8 @@ const ARGUMENTS_TORRENT_INFO = {
     "isFinished",
     "status",
     "startDate",
-    "eta"],
+    "eta",
+    "activityDate"],
   "ids":[0]};
 
 const TransmissionApiMixin = {
