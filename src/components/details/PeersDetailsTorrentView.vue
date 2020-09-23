@@ -4,12 +4,12 @@
       <thead>
         <tr>
           <th scope="col" class="fix-cad"></th>
-          <th scope="col">Up</th>
-          <th scope="col">Down</th>
-          <th scope="col">%</th>
-          <th scope="col">Status</th>
-          <th scope="col">Adress</th>
-          <th scope="col">Client</th>
+          <th scope="col">{{ $t('message.peers.up')}}</th>
+          <th scope="col">{{ $t('message.peers.down')}}</th>
+          <th scope="col">{{ $t('message.peers.percent')}}</th>
+          <th scope="col">{{ $t('message.peers.status')}}</th>
+          <th scope="col">{{ $t('message.peers.address')}}</th>
+          <th scope="col">{{ $t('message.peers.client')}}</th>
         </tr>
       </thead>
       <tbody>

@@ -57,6 +57,14 @@
         "publicTracker": "Public torrent"
       }
     },
+    "peers": {
+      "up": "Up",
+      "down": "Down",
+      "percent": "%",
+      "status": "Status",
+      "address": "Address",
+      "client": "Client"
+    },
     "filter": {
       "none": "-",
       "remaining": {
