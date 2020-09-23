@@ -1,3 +1,5 @@
+import common from '../utils/common.utils'
+
 const size_K = 1000;
 const size_B_str = 'B';
 const size_K_str = 'kB';
@@ -28,8 +30,8 @@ const filter = function (bytes) {
     }
 
     return convertedSize <= 9.995
-        ? [convertedSize.toFixed(2), unit].join(' ')
-        : [convertedSize.toFixed(1), unit].join(' ');
+        ? [common.toTruncFixed(convertedSize, 2), unit].join(' ')
+        : [common.toTruncFixed(convertedSize, 1), unit].join(' ');
 }
 
 export default filter;
