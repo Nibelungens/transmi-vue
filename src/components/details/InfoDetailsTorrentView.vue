@@ -30,7 +30,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.running') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details | formatRunningTime($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.remaining') }}:</span>
@@ -102,7 +102,8 @@ export default {
       uploadedEver: Number,
       corruptEver: Number,
       isFinished: Boolean,
-      status: Number
+      status: Number,
+      startDate: Number
     }
   },
   data: function() {

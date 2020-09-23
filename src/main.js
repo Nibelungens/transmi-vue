@@ -11,6 +11,7 @@ import uploadFilter from './filters/uploaded.filter'
 import downloadFilter from './filters/downloaded.filter'
 import stateFilter from './filters/state.filter'
 import statusFilter from './filters/status.filter'
+import runningTimeFilter from './filters/runningtime.filter'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptor from "@/config/http.interceptor";
@@ -29,6 +30,7 @@ Vue.filter('formatUpload', uploadFilter);
 Vue.filter('formatDownload', downloadFilter);
 Vue.filter('formatState', stateFilter);
 Vue.filter('formatStatus', statusFilter);
+Vue.filter('formatRunningTime', runningTimeFilter);
 
 new Vue({
     store: store,
