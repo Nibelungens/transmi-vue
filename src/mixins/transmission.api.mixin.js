@@ -46,7 +46,9 @@ const ARGUMENTS_TORRENT_INFO = {
     "pieceCount",
     "totalSize",
     "downloadDir",
-    "isPrivate"],
+    "isPrivate",
+    "creator",
+    "dateCreated"],
   "ids":[0]};
 
 const TransmissionApiMixin = {

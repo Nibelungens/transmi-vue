@@ -16,7 +16,8 @@ import timeintervalFilter from './filters/timeInterval.filter'
 import remainingTimeFilter from './filters/remainingtime.filter'
 import lastActivityFilter from './filters/lastactivity.filter'
 import memFilter from './filters/mem.filter'
-import sizedetails from './filters/sizedetails.filter'
+import sizedetailsFilter from './filters/sizedetails.filter'
+import creatorFilter from './filters/creator.filter'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptor from "@/config/http.interceptor";
@@ -40,7 +41,8 @@ Vue.filter('formatTimeInterval', timeintervalFilter);
 Vue.filter('formatRemainingTime', remainingTimeFilter);
 Vue.filter('formatLastActivity', lastActivityFilter);
 Vue.filter('formatMem', memFilter);
-Vue.filter('formatSizeDetails', sizedetails);
+Vue.filter('formatSizeDetails', sizedetailsFilter);
+Vue.filter('formatCreator', creatorFilter);
 
 new Vue({
     store: store,

@@ -65,7 +65,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.origin') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details | formatCreator($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.error') }}:</span>
@@ -111,7 +111,9 @@ export default {
       pieceSize: Number,
       totalSize: Number,
       downloadDir: String,
-      isPrivate: Boolean
+      isPrivate: Boolean,
+      creator: String,
+      dateCreated: Number
     }
   },
   data: function() {

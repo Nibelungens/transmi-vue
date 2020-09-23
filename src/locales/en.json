@@ -108,6 +108,12 @@
       "sizeDetails": {
         "piecesMiss": "{0} ({1} pieces @ {2})",
         "pieces": "{0} ({1} pieces)'"
+      },
+      "creator": {
+        "unknown": "Unknown",
+        "createdBy": "Created by {0}",
+        "createdOn": "Created on {0}",
+        "createdByOn": "Created by {0} on {1}"
       }
     }
   }
