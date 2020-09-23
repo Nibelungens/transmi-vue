@@ -58,7 +58,7 @@
       }
     },
     "filter": {
-      "none": "none",
+      "none": "-",
       "remaining": {
         "timeUnknown": "remaining time unknown",
         "retrieving": "retrieving",

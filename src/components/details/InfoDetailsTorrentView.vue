@@ -4,7 +4,7 @@
       <b-spinner type="grow" label="Loading..."></b-spinner>
     </div>
     <div v-if="details != null">
-      <span class="info-title">{{ details.name }}</span>
+      <div class="d-inline-block text-truncate info-title">{{ details.name }}</div>
 
       <span class="info-subtitle">{{ $t('message.details.info.activity') }}</span>
 
@@ -143,7 +143,8 @@ export default {
 .info-title {
   font-size: larger;
   font-weight: bold;
-  display: flex;
+  max-width: 520px;
+  margin-left: 10px;
 }
 
 .info-subtitle {
@@ -163,6 +164,11 @@ export default {
 
 .info-row-start{
   width: 150px;
+}
+
+.info-row-end{
+  width: 350px;
+  font-style: oblique;
 }
 
 .info-spin{
