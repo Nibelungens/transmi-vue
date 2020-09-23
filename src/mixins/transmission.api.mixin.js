@@ -31,7 +31,8 @@ const ARGUMENTS_TORRENT_INFO = {
     "sizeWhenDone",
     "leftUntilDone",
     "haveUnchecked",
-    "haveValid"],
+    "haveValid",
+    "desiredAvailable"],
   "ids":[0]};
 
 const TransmissionApiMixin = {

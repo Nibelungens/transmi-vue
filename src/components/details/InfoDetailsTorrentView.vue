@@ -14,7 +14,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.avaibility') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details | formatAvailability($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.upload') }}:</span>
@@ -68,11 +68,11 @@
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">{{ $t('message.details.info.error') }}Error:</span>
+        <span class="info-row-start">{{ $t('message.details.info.error') }}:</span>
         <span class="info-row-end">none</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">{{ $t('message.details.info.comment') }}Comment:</span>
+        <span class="info-row-start">{{ $t('message.details.info.comment') }}:</span>
         <span class="info-row-end">none</span>
       </div>
     </div>
@@ -96,7 +96,8 @@ export default {
       sizeWhenDone: Number,
       leftUntilDone: Number,
       haveUnchecked: Number,
-      haveValid: Number
+      haveValid: Number,
+      desiredAvailable: Number
     }
   },
   data: function() {

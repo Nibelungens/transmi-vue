@@ -6,6 +6,7 @@ import remainingFilter from './filters/remaining.filter'
 import sizeFilter from './filters/size.filter.js'
 import percentFilter from './filters/percent.filter'
 import haveFilter from './filters/have.filter'
+import availabilityFilter from './filters/availability.filter'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptor from "@/config/http.interceptor";
@@ -19,6 +20,7 @@ Vue.filter('formatSize', sizeFilter);
 Vue.filter('formatPercent', percentFilter);
 Vue.filter('formatRemaining', remainingFilter);
 Vue.filter('formatHave', haveFilter);
+Vue.filter('formatAvailability', availabilityFilter);
 
 new Vue({
     store: store,
