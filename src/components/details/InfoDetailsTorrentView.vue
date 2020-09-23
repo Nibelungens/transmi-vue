@@ -61,7 +61,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.privacy') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details.isPrivate ? $t('message.details.info.privateTracker'): $t('message.details.info.publicTracker') }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.origin') }}:</span>
@@ -110,7 +110,8 @@ export default {
       pieceCount: Number,
       pieceSize: Number,
       totalSize: Number,
-      downloadDir: String
+      downloadDir: String,
+      isPrivate: Boolean
     }
   },
   data: function() {

@@ -52,7 +52,9 @@
         "hash": "Hash",
         "privacy": "Privacy",
         "origin": "Origin",
-        "comment": "Comment"
+        "comment": "Comment",
+        "privateTracker": "Private to this tracker -- DHT and PEX disabled",
+        "publicTracker": "Public torrent"
       }
     },
     "filter": {
