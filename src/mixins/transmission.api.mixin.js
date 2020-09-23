@@ -80,12 +80,20 @@ const TransmissionApiMixin = {
     },
     getInfoTorrent(torrent) {
       const args = ARGUMENTS_TORRENT_INFO;
-      args.ids = [torrent.id];
+
+      if (torrent != null && torrent.id != null) {
+        args.ids = [torrent.id];
+      }
+
       return this.request(TORRENT_GET, args);
     },
     getPeersTorrent(torrent) {
       const args = ARGUMENTS_TORRENT_PEERS;
-      args.ids = [torrent.id];
+
+      if (torrent != null && torrent.id != null) {
+        args.ids = [torrent.id];
+      }
+
       return this.request(TORRENT_GET, args);
     },
     request(method, args) {
