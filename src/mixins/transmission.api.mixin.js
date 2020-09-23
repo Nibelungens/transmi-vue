@@ -38,7 +38,8 @@ const ARGUMENTS_TORRENT_INFO = {
     "corruptEver",
     "isFinished",
     "status",
-    "startDate"],
+    "startDate",
+    "eta"],
   "ids":[0]};
 
 const TransmissionApiMixin = {

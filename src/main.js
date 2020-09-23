@@ -12,6 +12,8 @@ import downloadFilter from './filters/downloaded.filter'
 import stateFilter from './filters/state.filter'
 import statusFilter from './filters/status.filter'
 import runningTimeFilter from './filters/runningtime.filter'
+import timeintervalFilter from './filters/timeInterval.filter'
+import remainingTimeFilter from './filters/remainingtime.filter'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptor from "@/config/http.interceptor";
@@ -31,6 +33,8 @@ Vue.filter('formatDownload', downloadFilter);
 Vue.filter('formatState', stateFilter);
 Vue.filter('formatStatus', statusFilter);
 Vue.filter('formatRunningTime', runningTimeFilter);
+Vue.filter('formatTimeInterval', timeintervalFilter);
+Vue.filter('formatremainingTime', remainingTimeFilter);
 
 new Vue({
     store: store,

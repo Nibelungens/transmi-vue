@@ -34,7 +34,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.remaining') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details | formatremainingTime($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.last') }}:</span>
@@ -103,7 +103,8 @@ export default {
       corruptEver: Number,
       isFinished: Boolean,
       status: Number,
-      startDate: Number
+      startDate: Number,
+      eta: Number
     }
   },
   data: function() {
