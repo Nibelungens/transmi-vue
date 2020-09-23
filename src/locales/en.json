@@ -102,6 +102,10 @@
       "lastactivity": {
         "active": "Active now",
         "ago": "{0} ago"
+      },
+      "sizeDetails": {
+        "piecesMiss": "{0} ({1} pieces @ {2})",
+        "pieces": "{0} ({1} pieces)'"
       }
     }
   }

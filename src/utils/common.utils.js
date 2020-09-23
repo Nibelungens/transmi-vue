@@ -11,6 +11,11 @@ const common = class CommonUtils {
 
         return result;
     }
+
+    static toTruncFixed(number, place) {
+        const ret = Math.floor(number * Math.pow(10, place)) / Math.pow(10, place);
+        return ret.toFixed(place);
+    }
 }
 
 export default common;

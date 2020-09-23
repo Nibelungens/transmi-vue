@@ -49,7 +49,7 @@
 
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.size') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ details | formatSizeDetails($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.location') }}:</span>
@@ -106,7 +106,10 @@ export default {
       startDate: Number,
       eta: Number,
       activityDate: Number,
-      errorString: String
+      errorString: String,
+      pieceCount: Number,
+      pieceSize: Number,
+      totalSize: Number
     }
   },
   data: function() {

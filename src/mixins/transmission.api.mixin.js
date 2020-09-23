@@ -41,7 +41,10 @@ const ARGUMENTS_TORRENT_INFO = {
     "startDate",
     "eta",
     "activityDate",
-    "errorString"],
+    "errorString",
+    "pieceSize",
+    "pieceCount",
+    "totalSize"],
   "ids":[0]};
 
 const TransmissionApiMixin = {
