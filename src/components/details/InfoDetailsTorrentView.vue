@@ -68,12 +68,8 @@
         <span class="info-row-end">{{ details | formatCreator($i18n) }}</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">{{ $t('message.details.info.error') }}:</span>
-        <span class="info-row-end">none</span>
-      </div>
-      <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.comment') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ (details.comment !== "") ? details.comment: $t('message.filter.none')}}</span>
       </div>
     </div>
   </div>
@@ -113,7 +109,8 @@ export default {
       downloadDir: String,
       isPrivate: Boolean,
       creator: String,
-      dateCreated: Number
+      dateCreated: Number,
+      comment: Number
     }
   },
   data: function() {

@@ -48,7 +48,8 @@ const ARGUMENTS_TORRENT_INFO = {
     "downloadDir",
     "isPrivate",
     "creator",
-    "dateCreated"],
+    "dateCreated",
+    "comment"],
   "ids":[0]};
 
 const TransmissionApiMixin = {
