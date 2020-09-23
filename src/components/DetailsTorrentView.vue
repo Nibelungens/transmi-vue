@@ -11,6 +11,7 @@
         <template v-slot:title>
           <b-icon icon="people-fill"></b-icon>
         </template>
+        <peers-details-torrent-view v-bind:torrent="torrent" v-bind:refresh="showPanel"></peers-details-torrent-view>
       </b-tab>
       <b-tab id="trackers">
         <template v-slot:title>
@@ -29,10 +30,12 @@
 <script>
 
 import InfoDetailsTorrentView from "./details/InfoDetailsTorrentView";
+import PeersDetailsTorrentView from "@/components/details/PeersDetailsTorrentView";
 export default {
   name: "DetailsTorrentView",
-  components: {InfoDetailsTorrentView},
+  components: {PeersDetailsTorrentView, InfoDetailsTorrentView},
   props: {
+    showPanel: Boolean,
     torrent: {
       id: String,
       name: String,

@@ -4,7 +4,7 @@
       <torrent-view v-bind:torrent="torrent" v-on:selected="addSelection" v-on:double-click="showPanel(torrent)"></torrent-view>
     </div>
     <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" v-on:hidden="closePanel" >
-      <details-torrent-view v-bind:torrent="torrentPanelShow"></details-torrent-view>
+      <details-torrent-view v-bind:torrent="torrentPanelShow" v-bind:showPanel="isPanelShow"></details-torrent-view>
     </b-sidebar>
   </div>
 </template>

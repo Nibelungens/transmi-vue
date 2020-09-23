@@ -85,6 +85,7 @@ export default {
     TransmissionApiMixin
   ],
   props: {
+    show: Boolean,
     torrent: {
       id: String,
       name: String,

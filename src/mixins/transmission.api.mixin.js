@@ -52,6 +52,10 @@ const ARGUMENTS_TORRENT_INFO = {
     "comment"],
   "ids":[0]};
 
+const ARGUMENTS_TORRENT_PEERS = {
+  "fields":["peers"],
+  "ids":[0]};
+
 const TransmissionApiMixin = {
   methods: {
     startTorrents(torrent) {
@@ -76,6 +80,11 @@ const TransmissionApiMixin = {
     },
     getInfoTorrent(torrent) {
       const args = ARGUMENTS_TORRENT_INFO;
+      args.ids = [torrent.id];
+      return this.request(TORRENT_GET, args);
+    },
+    getPeersTorrent(torrent) {
+      const args = ARGUMENTS_TORRENT_PEERS;
       args.ids = [torrent.id];
       return this.request(TORRENT_GET, args);
     },
