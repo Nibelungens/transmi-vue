@@ -40,7 +40,8 @@ const ARGUMENTS_TORRENT_INFO = {
     "status",
     "startDate",
     "eta",
-    "activityDate"],
+    "activityDate",
+    "errorString"],
   "ids":[0]};
 
 const TransmissionApiMixin = {

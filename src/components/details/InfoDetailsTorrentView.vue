@@ -42,7 +42,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.error') }}:</span>
-        <span class="info-row-end">none</span>
+        <span class="info-row-end">{{ (details.errorString !== "") ? details.errorString : $t('message.filter.none') }}</span>
       </div>
 
       <span class="info-subtitle">{{ $t('message.details.info.details') }}</span>
@@ -105,7 +105,8 @@ export default {
       status: Number,
       startDate: Number,
       eta: Number,
-      activityDate: Number
+      activityDate: Number,
+      errorString: String
     }
   },
   data: function() {
