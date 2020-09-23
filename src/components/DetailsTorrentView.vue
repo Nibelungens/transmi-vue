@@ -42,5 +42,9 @@ export default {
 </script>
 
 <style scoped>
-
+div >>> .nav-link {
+  color: lightslategrey;
+  display: block;
+  padding: 0.5rem 1rem;
+}
 </style>
