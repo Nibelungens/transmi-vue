@@ -1,17 +1,17 @@
 <template>
   <div class="px-3 py-2">
-    <b-tabs content-class="mt-3" fill>
+    <b-tabs v-model="tabIndex" content-class="mt-3" fill>
       <b-tab id="info" active>
         <template v-slot:title>
           <b-icon icon="info-circle-fill"></b-icon>
         </template>
-        <info-details-torrent-view v-bind:showPanel="showPanel"></info-details-torrent-view>
+        <info-details-torrent-view v-bind:showPanel="showPanel && (tabIndex === 0)"></info-details-torrent-view>
       </b-tab>
       <b-tab id="peers">
         <template v-slot:title>
           <b-icon icon="people-fill"></b-icon>
         </template>
-       <peers-details-torrent-view v-bind:showPanel="showPanel"></peers-details-torrent-view>
+       <peers-details-torrent-view v-bind:showPanel="showPanel && (tabIndex === 1)"></peers-details-torrent-view>
       </b-tab>
       <b-tab id="trackers">
         <template v-slot:title>
@@ -36,6 +36,11 @@ export default {
   components: {
     PeersDetailsTorrentView,
     InfoDetailsTorrentView
+  },
+  data() {
+    return {
+      tabIndex: 0
+    }
   },
   props: {
     showPanel: Boolean,
