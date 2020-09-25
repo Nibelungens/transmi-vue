@@ -81,11 +81,13 @@ import keyStore from "@/constantes/key.store.const";
 import events from "@/constantes/key.event.const"
 import bus from "@/config/event.bus";
 import {mapGetters} from "vuex";
+import IntervalMixin from "@/mixins/interval.mixin";
 
 export default {
   name: "InfoDetailsTorrentView",
   mixins: [
-    TransmissionApiMixin
+    TransmissionApiMixin,
+    IntervalMixin
   ],
   computed: {
     ...mapGetters({
