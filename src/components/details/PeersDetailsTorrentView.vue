@@ -29,53 +29,58 @@
 </template>
 
 <script>
-import bus from "@/config/event.bus";
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
+import keyStore from "@/constantes/key.store.const"
+import events from "@/constantes/key.event.const"
+import bus from "@/config/event.bus";
+import {mapGetters} from "vuex";
 
 export default {
   name: "PeersDetailsTorrentView",
   mixins: [
     TransmissionApiMixin
   ],
+  computed: {
+    ...mapGetters({
+      selectedTorrent: keyStore.GET_SELECTED_TORRENT
+    })
+  },
   props: {
-    refresh: Boolean,
-    torrent: {
-      id: String
-    }
+    showPanel: Boolean,
+    peers: [
+      {
+        flagStr: String,
+        address: String,
+        progress: Number,
+        clientName: String,
+        isEncrypted: Boolean
+      }
+    ]
   },
   mounted() {
+    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refreshPeers)
+
     window.setInterval(() => {
-      if(this.refresh) {
+      if(this.showPanel) {
         this.refreshPeers();
       }
-    }, 1000)
-  },
-  watch: {
-    torrent: function () {
-      this.peers = null;
-      this.refreshPeers();
-    }
-  },
-  data: function() {
-    return {
-      peers: this.peers
-    };
+    }, 10000)
   },
   methods: {
     refreshPeers() {
-      this.getPeersTorrent(this.torrent)
+      this.getPeersTorrent(this.selectedTorrent)
           .then(this.detailSuccess)
           .catch(this.error);
     },
     detailSuccess(response) {
-      if (response != null) {
+      if (response != null && response.data !== null) {
         this.peers = response.data.arguments.torrents[0].peers;
       }
     },
     error(error) {
-      bus.$emit('notification-fail', error);
+      bus.$emit(events.NOTIFICATION_FAIL, error);
     }
-}
+  }
 }
 </script>
 

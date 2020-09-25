@@ -36,8 +36,9 @@
 <script>
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import TorrentUtilsMixin from "@/mixins/torrent.utils.mixin";
-import VueContext from 'vue-context';
+import events from "@/constantes/key.event.const"
 import 'vue-context/dist/css/vue-context.css';
+import VueContext from 'vue-context';
 import bus from "@/config/event.bus";
 
 export default {
@@ -91,10 +92,10 @@ export default {
   methods: {
     select() {
       this.selected = !this.selected;
-      this.$emit('selected', this.selected, this.torrent);
+      this.$emit(events.SELECTED, this.selected, this.torrent);
     },
     details() {
-      this.$emit('double-click', this.selected, this.torrent);
+      this.$emit(events.DOUBLE_CLICK, this.selected, this.torrent);
     },
     getStatus() {
       return this.meta(this.torrent);
@@ -110,19 +111,18 @@ export default {
           .catch(this.error);
     },
     success(response) {
-      bus.$emit('notification-success', response.data.result);
-      bus.$emit('action');
+      bus.$emit(events.NOTIFICATION_SUCCESS, response.data.result);
+      bus.$emit(events.ACTION);
     },
     error(error) {
-      bus.$emit('notification-fail', error);
+      bus.$emit(events.NOTIFICATION_FAIL, error);
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.m-selected {
+div >>> .m-selected {
   background-color: lightgrey;
 }
 .title-row {

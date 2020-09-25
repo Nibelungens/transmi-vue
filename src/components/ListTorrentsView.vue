@@ -4,7 +4,7 @@
       <torrent-view v-bind:torrent="torrent" v-on:selected="addSelection" v-on:double-click="showPanel(torrent)"></torrent-view>
     </div>
     <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" v-on:hidden="closePanel" >
-      <details-torrent-view v-bind:torrent="torrentPanelShow" v-bind:showPanel="isPanelShow"></details-torrent-view>
+      <details-torrent-view v-bind:showPanel="isPanelShow"></details-torrent-view>
     </b-sidebar>
   </div>
 </template>
@@ -12,7 +12,9 @@
 <script>
 import TorrentView from "@/components/TorrentView";
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import DetailsTorrentView from "./DetailsTorrentView";
+import DetailsTorrentView from "@/components/DetailsTorrentView";
+import keyStore from "@/constantes/key.store.const";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'ListTorrentsView',
@@ -23,6 +25,11 @@ export default {
   mixins: [
     TransmissionApiMixin
   ],
+  computed: {
+  ...mapGetters({
+      selectedTorrent: keyStore.GET_SELECTED_TORRENT
+    })
+  },
   data: function() {
     return {
       isPanelShow: false,
@@ -38,20 +45,19 @@ export default {
   },
   methods: {
     closePanel() {
-      this.torrentPanelShow = null;
       this.isPanelShow = false;
     },
     showPanel(torrent) {
-      if (this.torrentPanelShow === null || this.torrentPanelShow === torrent.id) {
+      if (this.selectedTorrent === null || this.selectedTorrent.id === torrent.id) {
         this.isPanelShow = !this.isPanelShow;
       }
-      this.isPanelShow ? this.torrentPanelShow = torrent : this.torrentPanelShow = null;
+      this.isPanelShow ? this.$store.commit(keyStore.SELECT, torrent) : this.$store.commit(keyStore.UNSELECT);
     },
     addSelection(selected, torrent) {
       if (selected) {
-        this.$store.commit('Torrents/ADD_SELECTED', torrent);
+        this.$store.commit(keyStore.ADD_SELECTED, torrent);
       } else {
-        this.$store.commit('Torrents/REMOVE_SELECTED', torrent);
+        this.$store.commit(keyStore.REMOVE_SELECTED, torrent);
       }
     }
   }

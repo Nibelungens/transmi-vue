@@ -1,140 +1,146 @@
 <template>
   <div>
-    <div v-if="details == null" class="info-spin">
+    <div v-if="infos == null" class="info-spin">
       <b-spinner type="grow" label="Loading..."></b-spinner>
     </div>
-    <div v-if="details != null">
-      <div class="d-inline-block text-truncate info-title">{{ details.name }}</div>
+    <div v-if="infos != null">
+      <div class="d-inline-block text-truncate info-title">{{ infos.name }}</div>
 
       <span class="info-subtitle">{{ $t('message.details.info.activity') }}</span>
 
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.have') }}:</span>
-        <span class="info-row-end">{{ details | formatHave($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatHave($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.avaibility') }}:</span>
-        <span class="info-row-end">{{ details | formatAvailability($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatAvailability($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.upload') }}:</span>
-        <span class="info-row-end">{{ details | formatUpload($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatUpload($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.downloaded') }}:</span>
-        <span class="info-row-end">{{ details | formatDownload($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatDownload($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.state') }}:</span>
-        <span class="info-row-end">{{ details | formatState($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatState($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.running') }}:</span>
-        <span class="info-row-end">{{ details | formatRunningTime($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatRunningTime($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.remaining') }}:</span>
-        <span class="info-row-end">{{ details | formatRemainingTime($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatRemainingTime($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.last') }}:</span>
-        <span class="info-row-end">{{ details | formatLastActivity($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatLastActivity($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.error') }}:</span>
-        <span class="info-row-end">{{ (details.errorString !== "") ? details.errorString : $t('message.filter.none') }}</span>
+        <span class="info-row-end">{{ (infos.errorString !== "") ? infos.errorString : $t('message.filter.none') }}</span>
       </div>
 
       <span class="info-subtitle">{{ $t('message.details.info.details') }}</span>
 
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.size') }}:</span>
-        <span class="info-row-end">{{ details | formatSizeDetails($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatSizeDetails($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.location') }}:</span>
-        <span class="info-row-end">{{ details.downloadDir }}</span>
+        <span class="info-row-end">{{ infos.downloadDir }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.hash') }}:</span>
-        <span class="info-row-end">{{ details.hashString }}</span>
+        <span class="info-row-end">{{ infos.hashString }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.privacy') }}:</span>
-        <span class="info-row-end">{{ details.isPrivate ? $t('message.details.info.privateTracker'): $t('message.details.info.publicTracker') }}</span>
+        <span class="info-row-end">{{ infos.isPrivate ? $t('message.details.info.privateTracker'): $t('message.details.info.publicTracker') }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.origin') }}:</span>
-        <span class="info-row-end">{{ details | formatCreator($i18n) }}</span>
+        <span class="info-row-end">{{ infos | formatCreator($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.comment') }}:</span>
-        <span class="info-row-end">{{ (details.comment !== "") ? details.comment: $t('message.filter.none')}}</span>
+        <span class="info-row-end">{{ (infos.comment !== "") ? infos.comment: $t('message.filter.none')}}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import TransmissionApiMixin from "../../mixins/transmission.api.mixin";
+import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
+import keyStore from "@/constantes/key.store.const";
+import events from "@/constantes/key.event.const"
 import bus from "@/config/event.bus";
+import {mapGetters} from "vuex";
 
 export default {
   name: "InfoDetailsTorrentView",
   mixins: [
     TransmissionApiMixin
   ],
+  computed: {
+    ...mapGetters({
+      selectedTorrent: keyStore.GET_SELECTED_TORRENT
+    })
+  },
   props: {
-    show: Boolean,
-    torrent: {
+    showPanel: Boolean,
+    infos: {
       id: String,
-      name: String,
-      hashString: String,
-      sizeWhenDone: Number,
-      leftUntilDone: Number,
-      haveUnchecked: Number,
-      haveValid: Number,
-      desiredAvailable: Number,
-      downloadedEver: Number,
-      uploadedEver: Number,
-      corruptEver: Number,
-      isFinished: Boolean,
-      status: Number,
-      startDate: Number,
       eta: Number,
-      activityDate: Number,
-      errorString: String,
-      pieceCount: Number,
+      name: String,
+      status: Number,
+      creator: String,
+      comment: Number,
+      startDate: Number,
+      haveValid: Number,
       pieceSize: Number,
       totalSize: Number,
-      downloadDir: String,
+      hashString: String,
+      pieceCount: Number,
       isPrivate: Boolean,
-      creator: String,
+      downloadDir: String,
       dateCreated: Number,
-      comment: Number
+      corruptEver: Number,
+      isFinished: Boolean,
+      errorString: String,
+      activityDate: Number,
+      sizeWhenDone: Number,
+      uploadedEver: Number,
+      leftUntilDone: Number,
+      haveUnchecked: Number,
+      downloadedEver: Number,
+      desiredAvailable: Number
     }
   },
-  data: function() {
-    return {
-      details: this.details
-    };
-  },
-  watch: {
-    torrent: function () {
-      this.details = null;
-      this.getInfoTorrent(this.torrent)
-          .then(this.detailSuccess)
-          .catch(this.error);
-    }
+  mounted() {
+    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refresh)
   },
   methods: {
+    refresh() {
+      if (this.showPanel) {
+        this.infos = null;
+        this.getInfoTorrent(this.selectedTorrent)
+            .then(this.detailSuccess)
+            .catch(this.error);
+      }
+    },
     detailSuccess(response) {
-      if (response != null) {
-        this.details = response.data.arguments.torrents[0];
+      if (response !== null && response.data !== null) {
+        this.infos = response.data.arguments.torrents[0];
       }
     },
     error(error) {
-      bus.$emit('notification-fail', error);
+      bus.$emit(events.NOTIFICATION_FAIL, error);
     }
   }
 }

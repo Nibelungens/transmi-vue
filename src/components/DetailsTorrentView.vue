@@ -5,13 +5,13 @@
         <template v-slot:title>
           <b-icon icon="info-circle-fill"></b-icon>
         </template>
-        <info-details-torrent-view v-bind:torrent="torrent"></info-details-torrent-view>
+        <info-details-torrent-view v-bind:showPanel="showPanel"></info-details-torrent-view>
       </b-tab>
       <b-tab id="peers">
         <template v-slot:title>
           <b-icon icon="people-fill"></b-icon>
         </template>
-        <peers-details-torrent-view v-bind:torrent="torrent" v-bind:refresh="showPanel"></peers-details-torrent-view>
+       <peers-details-torrent-view v-bind:refresh="showPanel"></peers-details-torrent-view>
       </b-tab>
       <b-tab id="trackers">
         <template v-slot:title>
@@ -28,12 +28,15 @@
 </template>
 
 <script>
-
-import InfoDetailsTorrentView from "./details/InfoDetailsTorrentView";
+import InfoDetailsTorrentView from "@/components/details/InfoDetailsTorrentView";
 import PeersDetailsTorrentView from "@/components/details/PeersDetailsTorrentView";
+
 export default {
   name: "DetailsTorrentView",
-  components: {PeersDetailsTorrentView, InfoDetailsTorrentView},
+  components: {
+    PeersDetailsTorrentView,
+    InfoDetailsTorrentView
+  },
   props: {
     showPanel: Boolean,
     torrent: {

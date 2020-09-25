@@ -9,12 +9,14 @@
 </template>
 
 <script>
-import ListTorrentsView from './components/ListTorrentsView.vue';
+import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import HeaderTransmission from "@/components/ui/HeaderTransmission";
 import FooterTransmission from "@/components/ui/FooterTransmission";
+import ListTorrentsView from '@/components/ListTorrentsView';
+import NotificationMixin from "@/mixins/notification.mixin";
+import keyStore from "@/constantes/key.store.const";
+import events from "@/constantes/key.event.const"
 import bus from "@/config/event.bus";
-import NotificationMixin from "@/mixins/notification.mixin"
-import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import {mapGetters} from "vuex";
 
 export default {
@@ -29,12 +31,12 @@ export default {
     ListTorrentsView
   },
   computed: {
-    ...mapGetters({torrents: 'Torrents/getTorrents'})
+    ...mapGetters({torrents: keyStore.GET_TORRENT})
   },
   methods: {
     refresh() {
       this.getTorrents()
-          .then(response => this.$store.commit('Torrents/SET_LIST_TORRENT', response.data.arguments.torrents));
+          .then(response => this.$store.commit(keyStore.SET_LIST_TORRENT, response.data.arguments.torrents));
     }
   },
   mounted () {
@@ -44,9 +46,9 @@ export default {
     }, 1000)
   },
   created() {
-    bus.$on('notification-success', (msg) => {this.notificationSuccess(msg)});
-    bus.$on('notification-fail', (msg) => {this.notificationFail(msg)});
-    bus.$on('action', this.refresh);
+    bus.$on(events.NOTIFICATION_SUCCESS, (msg) => {this.notificationSuccess(msg)});
+    bus.$on(events.NOTIFICATION_FAIL, (msg) => {this.notificationFail(msg)});
+    bus.$on(events.ACTION, this.refresh);
   }
 }
 </script>
