@@ -4,7 +4,6 @@
       <b-button-toolbar>
         <b-button-group size="sm" class="mr-1" >
           <b-button :title="$t('message.header.open')" variant="outline-light" disabled>
-
             <b-icon icon="file-earmark-arrow-up-fill"></b-icon>
           </b-button>
           <b-button :title="$t('message.header.remove')" variant="outline-light" disabled>
@@ -30,6 +29,8 @@
 
 <script>
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
+import keyStore from "@/constantes/key.store.const";
+import events from "@/constantes/key.event.const";
 import bus from "@/config/event.bus";
 import {mapGetters} from "vuex";
 
@@ -38,8 +39,8 @@ export default {
   mixins: [TransmissionApiMixin],
   computed: {
     ...mapGetters({
-      allTorrent: 'Torrents/getTorrents',
-      selectedTorrent: 'Torrents/getSelectedTorrent'
+      allTorrent: keyStore.GET_TORRENT,
+      selectedTorrent: keyStore.GET_SELECTED_TORRENTS
     }),
     asSelected() {
       return this.selectedTorrent !== undefined &&
@@ -69,11 +70,11 @@ export default {
           .catch(this.fail);
     },
     success(response) {
-      bus.$emit('notification-success', response.data.result);
-      bus.$emit('action');
+      bus.$emit(events.NOTIFICATION_SUCCESS, response.data.result);
+      bus.$emit(events.ACTION);
     },
     fail(error) {
-      bus.$emit('notification-fail', error);
+      bus.$emit(events.NOTIFICATION_FAIL, error);
     }
   }
 }
