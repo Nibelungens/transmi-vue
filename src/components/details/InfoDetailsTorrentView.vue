@@ -108,10 +108,11 @@ export default {
   methods: {
     refresh() {
       if (this.showPanel) {
-        this.infos = null;
         this.getInfoTorrent(this.selectedTorrent)
             .then(this.detailSuccess)
             .catch(this.error);
+      } else {
+        this.infos = null;
       }
     },
     detailSuccess(response) {

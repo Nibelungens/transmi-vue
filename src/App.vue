@@ -41,9 +41,14 @@ export default {
     this.refresh();
   },
   created() {
-    bus.$on(events.NOTIFICATION_SUCCESS, (msg) => {this.notificationSuccess(msg)});
-    bus.$on(events.NOTIFICATION_FAIL, (msg) => {this.notificationFail(msg)});
+    bus.$on(events.NOTIFICATION_SUCCESS, this.notificationSuccess);
+    bus.$on(events.NOTIFICATION_FAIL, this.notificationFail);
     bus.$on(events.ACTION, this.refresh);
+  },
+  beforeDestroy() {
+    bus.$off(events.NOTIFICATION_SUCCESS);
+    bus.$off(events.NOTIFICATION_FAIL);
+    bus.$off(events.ACTION);
   },
   methods: {
     refresh() {

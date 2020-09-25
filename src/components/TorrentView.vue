@@ -122,7 +122,7 @@ export default {
 </script>
 
 <style scoped>
-div >>> .m-selected {
+.m-selected {
   background-color: lightgrey;
 }
 .title-row {
