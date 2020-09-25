@@ -1,7 +1,14 @@
 <template>
   <div class="overflow-auto font">
-    <table class="table table-striped table-sm border" v-if="peers != null && peers.length > 0">
-      <thead>
+    <div v-if="peers === null" class="info-spin">
+      <b-spinner type="grow" label="Loading..."></b-spinner>
+    </div>
+    <div v-else-if="peers !== null && peers.length === 0" class="info-spin">
+      {{ $t('message.filter.none') }}
+    </div>
+    <div v-else>
+      <table class="table table-striped table-sm border" v-if="peers != null && peers.length > 0">
+        <thead>
         <tr>
           <th scope="col" class="fix-cad"></th>
           <th scope="col">{{ $t('message.peers.up')}}</th>
@@ -11,8 +18,8 @@
           <th scope="col">{{ $t('message.peers.address')}}</th>
           <th scope="col">{{ $t('message.peers.client')}}</th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <tr v-for="peer in peers" :key="peer.address">
           <td><b-icon v-if="peer.isEncrypted" icon="lock-fill"></b-icon></td>
           <td >{{ returnSize(peer.rateToPeer) }}</td>
@@ -22,8 +29,9 @@
           <td>{{ peer.address }}</td>
           <td>{{ peer.clientName }}</td>
         </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -49,7 +57,7 @@ export default {
   },
   data: function() {
     return {
-        peers: []
+        peers: null
       };
   },
   props: {
@@ -68,10 +76,13 @@ export default {
     },
     refresh() {
       if (this.showPanel) {
-        this.refreshPeers();
+        this.getPeersTorrent(this.selectedTorrent)
+            .then(this.detailSuccess)
+            .catch(this.error)
       }
     },
     refreshPeers() {
+      this.peers = null;
       this.getPeersTorrent(this.selectedTorrent)
           .then(this.detailSuccess)
           .catch(this.error);
@@ -99,5 +110,10 @@ export default {
 }
 .fix-cad {
   width: 15px;
+}
+
+.info-spin{
+  margin-left: 48%;
+  margin-top: 30%;
 }
 </style>

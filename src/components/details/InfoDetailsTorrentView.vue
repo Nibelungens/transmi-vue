@@ -4,8 +4,6 @@
       <b-spinner type="grow" label="Loading..."></b-spinner>
     </div>
     <div v-if="infos != null">
-      <div class="d-inline-block text-truncate info-title">{{ infos.name }}</div>
-
       <span class="info-subtitle">{{ $t('message.details.info.activity') }}</span>
 
       <div class="info-row">
@@ -98,14 +96,24 @@ export default {
     return {
         infos: null
       };
-},
+  },
   props: {
     showPanel: Boolean
   },
   mounted() {
-    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refresh)
+    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refreshMan)
   },
   methods: {
+    refreshMan() {
+      if (this.showPanel) {
+        this.infos = null;
+        this.getInfoTorrent(this.selectedTorrent)
+            .then(this.detailSuccess)
+            .catch(this.error);
+      } else {
+        this.infos = null;
+      }
+    },
     refresh() {
       if (this.showPanel) {
         this.getInfoTorrent(this.selectedTorrent)
@@ -128,13 +136,6 @@ export default {
 </script>
 
 <style scoped>
-.info-title {
-  font-size: larger;
-  font-weight: bold;
-  max-width: 520px;
-  margin-left: 10px;
-}
-
 .info-subtitle {
   font-weight: bold;
   font-size: medium;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="torrent in torrents" v-bind:key="torrent.id">
-      <torrent-view v-bind:torrent="torrent" v-on:selected="addSelection" v-on:double_click="showPanel(torrent)"></torrent-view>
+      <torrent-view v-bind:torrent="torrent" v-on:selected="addSelection" v-on:double_click="showPanel(torrent)" v-on:close_panel="closePanel()"></torrent-view>
     </div>
     <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" v-on:hidden="closePanel" >
       <details-torrent-view v-bind:showPanel="isPanelShow"></details-torrent-view>
@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import TorrentView from "@/components/TorrentView";
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import DetailsTorrentView from "@/components/DetailsTorrentView";
 import keyStore from "@/constantes/key.store.const";
+import TorrentView from "@/components/TorrentView";
 import {mapGetters} from "vuex";
 
 export default {
@@ -48,10 +48,8 @@ export default {
       this.isPanelShow = false;
     },
     showPanel(torrent) {
-      if (this.selectedTorrent === null || this.selectedTorrent.id === torrent.id) {
-        this.isPanelShow = !this.isPanelShow;
-      }
-      this.isPanelShow ? this.$store.commit(keyStore.SELECT, torrent) : this.$store.commit(keyStore.UNSELECT);
+      this.isPanelShow = true;
+      this.$store.commit(keyStore.SELECT, torrent);
     },
     addSelection(selected, torrent) {
       if (selected) {

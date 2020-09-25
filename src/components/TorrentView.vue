@@ -1,6 +1,10 @@
 <template>
-  <div class="pl-3 pr-3 pb-1 pt-1 torrent-row" @contextmenu.prevent="$refs.menu.open" v-bind:class="{ 'm-selected': isSelected }" v-on:click="select" v-on:dblclick="details">
-    <div class="title-row">{{ torrent.name }}</div>
+  <div class="pl-3 pr-3 pb-1 pt-1 torrent-row" @contextmenu.prevent="$refs.menu.open" v-bind:class="{ 'm-selected': selected, 'm-panelShow': isPanelShow() }" v-on:click="select" v-on:dblclick="details">
+    <div class="title-row">
+      {{ torrent.name }}
+      <b-icon v-if="!isPanelShow()" class="ml-2 ico" v-on:click="details" icon="arrow-bar-left"></b-icon>
+      <b-icon v-if="isPanelShow()" class="ml-2 ico" v-on:click="details" icon="arrow-bar-right"></b-icon>
+    </div>
     <div class="peers-row">{{ $t('message.torrent.downloading', [torrent.peersGettingFromUs, torrent.peersConnected]) }} <b-icon-arrow-down/> {{ torrent.rateDownload | formatSize }}/s <b-icon-arrow-up/> {{ torrent.rateUpload | formatSize }}/s</div>
     <div class="bar-row">
       <b-progress :max="1" :value="torrent.percentDone" :animated="getStatus().animated" :variant="getStatus().bar" class="w-100"/>
@@ -40,6 +44,8 @@ import events from "@/constantes/key.event.const"
 import 'vue-context/dist/css/vue-context.css';
 import VueContext from 'vue-context';
 import bus from "@/config/event.bus";
+import {mapGetters} from "vuex";
+import keyStore from "@/constantes/key.store.const";
 
 export default {
   name: 'TorrentView',
@@ -77,6 +83,9 @@ export default {
       };
   },
   computed: {
+    ...mapGetters({
+      selectedTorrent: keyStore.GET_SELECTED_TORRENT
+    }),
     isPlay() {
       return this.getStatus().order === 1 ||
           this.getStatus().order === 2 ||
@@ -84,18 +93,31 @@ export default {
     },
     isPause() {
       return this.getStatus().order === 4;
-    },
-    isSelected() {
-      return this.selected;
     }
   },
   methods: {
+    isPanelShow() {
+      if (this.selectedTorrent !== null && this.torrent !== null) {
+        return this.selectedTorrent.id === this.torrent.id;
+      } else {
+        return false;
+      }
+    },
     select() {
       this.selected = !this.selected;
       this.$emit(events.SELECTED, this.selected, this.torrent);
     },
     details() {
-      this.$emit(events.DOUBLE_CLICK, this.selected, this.torrent);
+
+      if(this.selectedTorrent !== null && this.selectedTorrent.id === this.torrent.id) {
+        this.selected = false;
+        this.$store.commit(keyStore.UNSELECT);
+        this.$emit('close_panel');
+      } else {
+        this.selected = true;
+        this.$store.commit(keyStore.UNSELECT);
+        this.$emit(events.DOUBLE_CLICK, this.selected, this.torrent);
+      }
     },
     getStatus() {
       return this.meta(this.torrent);
@@ -122,7 +144,16 @@ export default {
 </script>
 
 <style scoped>
+.ico {
+  cursor: pointer;
+}
 .m-selected {
+  border-left-color: cornflowerblue;
+  border-left-width: 5px;
+  border-left-style: solid;
+  padding-left: 11px !important;
+}
+.m-panelShow {
   background-color: lightgrey;
 }
 .title-row {
