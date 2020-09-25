@@ -42,7 +42,8 @@ export default {
   ],
   computed: {
     ...mapGetters({
-      selectedTorrent: keyStore.GET_SELECTED_TORRENT
+      selectedTorrent: keyStore.GET_SELECTED_TORRENT,
+      timeRefresh: keyStore.GET_TIME_REFRESH
     })
   },
   data: function() {
@@ -60,7 +61,7 @@ export default {
       if(this.showPanel) {
         this.refreshPeers();
       }
-    }, 10000)
+    }, this.timeRefresh)
   },
   methods: {
     refreshPeers() {

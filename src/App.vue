@@ -31,7 +31,10 @@ export default {
     ListTorrentsView
   },
   computed: {
-    ...mapGetters({torrents: keyStore.GET_TORRENT})
+    ...mapGetters({
+      torrents: keyStore.GET_TORRENT,
+      timeRefresh: keyStore.GET_TIME_REFRESH
+    })
   },
   methods: {
     refresh() {
@@ -43,7 +46,7 @@ export default {
     this.refresh();
     window.setInterval(() => {
       this.refresh();
-    }, 1000)
+    }, this.timeRefresh)
   },
   created() {
     bus.$on(events.NOTIFICATION_SUCCESS, (msg) => {this.notificationSuccess(msg)});
