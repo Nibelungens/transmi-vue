@@ -12,7 +12,7 @@ const actions = {
 
 const mutations = {
     SET_TIME_REFRESH(state, payload) {
-        state.timeRefresh.push(payload);
+        state.timeRefresh = payload;
     }
 }
 

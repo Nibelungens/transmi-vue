@@ -11,7 +11,7 @@
         <template v-slot:title>
           <b-icon icon="people-fill"></b-icon>
         </template>
-       <peers-details-torrent-view v-bind:refresh="showPanel"></peers-details-torrent-view>
+       <peers-details-torrent-view v-bind:showPanel="showPanel"></peers-details-torrent-view>
       </b-tab>
       <b-tab id="trackers">
         <template v-slot:title>

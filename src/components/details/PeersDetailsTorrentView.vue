@@ -34,16 +34,17 @@ import keyStore from "@/constantes/key.store.const"
 import events from "@/constantes/key.event.const"
 import bus from "@/config/event.bus";
 import {mapGetters} from "vuex";
+import IntervalMixin from "@/mixins/interval.mixin";
 
 export default {
   name: "PeersDetailsTorrentView",
   mixins: [
-    TransmissionApiMixin
+    TransmissionApiMixin,
+    IntervalMixin
   ],
   computed: {
     ...mapGetters({
-      selectedTorrent: keyStore.GET_SELECTED_TORRENT,
-      timeRefresh: keyStore.GET_TIME_REFRESH
+      selectedTorrent: keyStore.GET_SELECTED_TORRENT
     })
   },
   data: function() {
@@ -54,16 +55,15 @@ export default {
   props: {
     showPanel: Boolean
   },
-  mounted() {
-    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refreshPeers)
-
-    window.setInterval(() => {
-      if(this.showPanel) {
-        this.refreshPeers();
-      }
-    }, this.timeRefresh)
+  created() {
+    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refreshPeers);
   },
   methods: {
+    refresh() {
+      if (this.showPanel) {
+        this.refreshPeers();
+      }
+    },
     refreshPeers() {
       this.getPeersTorrent(this.selectedTorrent)
           .then(this.detailSuccess)

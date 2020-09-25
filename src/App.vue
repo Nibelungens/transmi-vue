@@ -18,12 +18,14 @@ import keyStore from "@/constantes/key.store.const";
 import events from "@/constantes/key.event.const"
 import bus from "@/config/event.bus";
 import {mapGetters} from "vuex";
+import IntervalMixin from "@/mixins/interval.mixin"
 
 export default {
   name: 'App',
   mixins: [
     NotificationMixin,
-    TransmissionApiMixin
+    TransmissionApiMixin,
+    IntervalMixin
   ],
   components: {
     FooterTransmission,
@@ -32,9 +34,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      torrents: keyStore.GET_TORRENT,
-      timeRefresh: keyStore.GET_TIME_REFRESH
+      torrents: keyStore.GET_TORRENT
     })
+  },
+  mounted () {
+    this.refresh();
+  },
+  created() {
+    bus.$on(events.NOTIFICATION_SUCCESS, (msg) => {this.notificationSuccess(msg)});
+    bus.$on(events.NOTIFICATION_FAIL, (msg) => {this.notificationFail(msg)});
+    bus.$on(events.ACTION, this.refresh);
   },
   methods: {
     refresh() {
@@ -42,17 +51,6 @@ export default {
           .then(response => this.$store.commit(keyStore.SET_LIST_TORRENT, response.data.arguments.torrents));
     }
   },
-  mounted () {
-    this.refresh();
-    window.setInterval(() => {
-      this.refresh();
-    }, this.timeRefresh)
-  },
-  created() {
-    bus.$on(events.NOTIFICATION_SUCCESS, (msg) => {this.notificationSuccess(msg)});
-    bus.$on(events.NOTIFICATION_FAIL, (msg) => {this.notificationFail(msg)});
-    bus.$on(events.ACTION, this.refresh);
-  }
 }
 </script>
 
