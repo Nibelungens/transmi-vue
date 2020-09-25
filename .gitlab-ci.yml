@@ -20,10 +20,15 @@ Test:
   script:
     - npm install --progress=false
     - npm run test:unit
+  artifacts:
+    reports:
+      json: coverage/coverage-final.json
 
 Docker:
   stage: docker
   image: docker:18
+  dependencies:
+    - Build
   services:
     - docker:dind
   before_script:
