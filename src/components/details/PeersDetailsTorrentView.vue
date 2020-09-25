@@ -15,8 +15,8 @@
       <tbody>
         <tr v-for="peer in peers" :key="peer.address">
           <td><b-icon v-if="peer.isEncrypted" icon="lock-fill"></b-icon></td>
-          <td>-</td>
-          <td>-</td>
+          <td >{{ returnSize(peer.rateToPeer) }}</td>
+          <td >{{ returnSize(peer.rateToClient) }}</td>
           <td>{{ peer.progress * 100 | formatPercent }}%</td>
           <td>{{ peer.flagStr }}</td>
           <td>{{ peer.address }}</td>
@@ -24,17 +24,17 @@
         </tr>
       </tbody>
     </table>
-
   </div>
 </template>
 
 <script>
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
+import IntervalMixin from "@/mixins/interval.mixin";
 import keyStore from "@/constantes/key.store.const"
 import events from "@/constantes/key.event.const"
+import filterSize from '@/filters/size.filter'
 import bus from "@/config/event.bus";
 import {mapGetters} from "vuex";
-import IntervalMixin from "@/mixins/interval.mixin";
 
 export default {
   name: "PeersDetailsTorrentView",
@@ -59,6 +59,13 @@ export default {
     this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refreshPeers);
   },
   methods: {
+    returnSize(rate) {
+      if (rate === 0) {
+        return this.$t('message.filter.none');
+      } else {
+        return filterSize(rate)+'/s';
+      }
+    },
     refresh() {
       if (this.showPanel) {
         this.refreshPeers();
