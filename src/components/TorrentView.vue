@@ -6,6 +6,9 @@
       <b-icon v-if="isPanelShow()" class="ml-2 ico" v-on:click="details" icon="arrow-bar-right"></b-icon>
     </div>
     <div class="peers-row">{{ $t('message.torrent.downloading', [torrent.peersGettingFromUs, torrent.peersConnected]) }} <b-icon-arrow-down/> {{ torrent.rateDownload | formatSize }}/s <b-icon-arrow-up/> {{ torrent.rateUpload | formatSize }}/s</div>
+    <div class="bar-row-ratio">
+      <b-progress v-if="showRatio()" :max="1" :value="torrent.uploadRatio" variant="info" class="w-100"/>
+    </div >
     <div class="bar-row">
       <b-progress :max="1" :value="torrent.percentDone" :animated="getStatus().animated" :variant="getStatus().bar" class="w-100"/>
       <b-icon-play-fill v-on:click="stop()" v-bind:hidden="!isPlay" class="ml-2 mr-1"></b-icon-play-fill>
@@ -96,6 +99,9 @@ export default {
     }
   },
   methods: {
+    showRatio() {
+      return this.torrent.uploadRatio < this.torrent.seedRatioLimit && !this.torrent.isFinished
+    },
     isPanelShow() {
       if (this.selectedTorrent !== null && this.torrent !== null) {
         return this.selectedTorrent.id === this.torrent.id;
@@ -161,9 +167,19 @@ export default {
   font-size: small;
 }
 .bar-row {
+  display: flex;
+  margin-top: -26px;
+  width: 100%;
+  height: 23px;
+}
+.bar-row-ratio {
+  height: 16px;
+  margin-top: 8px;
   display: inline-flex;
+  padding-right: 28px;
   width: 100%;
 }
+
 .peers-row {
   font-size: xx-small;
   color: gray;
