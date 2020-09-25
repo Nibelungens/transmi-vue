@@ -17,13 +17,17 @@
           </b-button>
         </b-button-group>
       </b-button-toolbar>
+      <set-interval class="mr-1 ml-auto"></set-interval>
     </b-navbar>
   </footer>
 </template>
 
 <script>
+import SetInterval from "@/components/SetInterval";
+
 export default {
-  name: 'footer-transmission'
+  name: 'footer-transmission',
+  components: {SetInterval},
 }
 </script>
 
