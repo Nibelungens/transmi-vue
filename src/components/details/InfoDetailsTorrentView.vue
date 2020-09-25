@@ -92,35 +92,13 @@ export default {
       selectedTorrent: keyStore.GET_SELECTED_TORRENT
     })
   },
+  data: function() {
+    return {
+        infos: null
+      };
+},
   props: {
-    showPanel: Boolean,
-    infos: {
-      id: String,
-      eta: Number,
-      name: String,
-      status: Number,
-      creator: String,
-      comment: Number,
-      startDate: Number,
-      haveValid: Number,
-      pieceSize: Number,
-      totalSize: Number,
-      hashString: String,
-      pieceCount: Number,
-      isPrivate: Boolean,
-      downloadDir: String,
-      dateCreated: Number,
-      corruptEver: Number,
-      isFinished: Boolean,
-      errorString: String,
-      activityDate: Number,
-      sizeWhenDone: Number,
-      uploadedEver: Number,
-      leftUntilDone: Number,
-      haveUnchecked: Number,
-      downloadedEver: Number,
-      desiredAvailable: Number
-    }
+    showPanel: Boolean
   },
   mounted() {
     this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refresh)

@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="peer in peers" v-bind:key="peer.address">
+        <tr v-for="peer in peers" :key="peer.address">
           <td><b-icon v-if="peer.isEncrypted" icon="lock-fill"></b-icon></td>
           <td>-</td>
           <td>-</td>
@@ -45,17 +45,13 @@ export default {
       selectedTorrent: keyStore.GET_SELECTED_TORRENT
     })
   },
+  data: function() {
+    return {
+        peers: []
+      };
+  },
   props: {
-    showPanel: Boolean,
-    peers: [
-      {
-        flagStr: String,
-        address: String,
-        progress: Number,
-        clientName: String,
-        isEncrypted: Boolean
-      }
-    ]
+    showPanel: Boolean
   },
   mounted() {
     this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refreshPeers)
