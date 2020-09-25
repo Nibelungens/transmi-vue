@@ -22,7 +22,7 @@ Test:
     - npm run test:unit
   artifacts:
     reports:
-      json: coverage/coverage-final.json
+      cobertura: ./coverage/cobertura-coverage.xml
 
 Docker:
   stage: docker
