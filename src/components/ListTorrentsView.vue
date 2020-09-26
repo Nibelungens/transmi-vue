@@ -3,7 +3,7 @@
     <div v-for="torrent in getSortedTorrents()" v-bind:key="torrent.id">
       <torrent-view v-bind:torrent="torrent" v-on:selected="addSelection" v-on:double_click="showPanel(torrent)" v-on:close_panel="closePanel()"></torrent-view>
     </div>
-    <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" v-on:hidden="closePanel" >
+    <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" v-on:hidden="closePanel">
       <details-torrent-view v-bind:showPanel="isPanelShow"></details-torrent-view>
     </b-sidebar>
   </div>
@@ -49,6 +49,7 @@ export default {
     },
     closePanel() {
       this.isPanelShow = false;
+      this.$store.commit(keyStore.UNSELECT);
     },
     showPanel(torrent) {
       this.isPanelShow = true;
