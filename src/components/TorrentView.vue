@@ -5,12 +5,17 @@
       <b-icon v-if="!isPanelShow()" class="ml-2 ico" v-on:click="details" icon="arrow-bar-left"></b-icon>
       <b-icon v-if="isPanelShow()" class="ml-2 ico" v-on:click="details" icon="arrow-bar-right"></b-icon>
     </div>
-    <div class="peers-row">{{ $t('message.torrent.downloading', [torrent.peersGettingFromUs, torrent.peersConnected]) }} <b-icon-arrow-down/> {{ torrent.rateDownload | formatSize }}/s <b-icon-arrow-up/> {{ torrent.rateUpload | formatSize }}/s</div>
+    <div class="peers-row">
+      <div class="d-inline-flex text-danger" v-if="asError">{{ $t('message.torrent.error', [torrent.errorString]) }}</div>
+      <div class="d-inline-flex" v-else>{{ torrent | formatStatus($i18n) }}{{ getPost() }}</div>
+      <div class="d-inline-flex" v-if="showDown()"><b-icon-arrow-down/>{{ torrent.rateDownload | formatSize }}/s</div>
+      <div class="d-inline-flex" v-if="showUp()"><b-icon-arrow-up/>{{ torrent.rateUpload | formatSize }}/s</div>
+    </div>
     <div class="bar-row-ratio">
-      <b-progress v-if="showRatio()" :max="1" :value="torrent.uploadRatio" variant="info" class="w-100"/>
+      <b-progress v-if="showRatio()" :max="1" :value="torrent.uploadRatio" variant="primary" class="w-100"/>
     </div >
     <div class="bar-row">
-      <b-progress :max="1" :value="torrent.percentDone" :animated="getStatus().animated" :variant="getStatus().bar" class="w-100"/>
+      <b-progress :max="1" :value="torrent.percentDone" :variant="getColor()" class="w-100"/>
       <b-icon-play-fill v-on:click="stop()" v-bind:hidden="!isPlay" class="ml-2 mr-1"></b-icon-play-fill>
       <b-icon-pause-fill v-on:click="start()" v-bind:hidden="!isPause" class="ml-2 mr-1"></b-icon-pause-fill>
     </div >
@@ -42,13 +47,13 @@
 
 <script>
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import TorrentUtilsMixin from "@/mixins/torrent.utils.mixin";
+import keyStore from "@/constantes/key.store.const";
 import events from "@/constantes/key.event.const"
+import Status from "@/constantes/status.const";
 import 'vue-context/dist/css/vue-context.css';
 import VueContext from 'vue-context';
 import bus from "@/config/event.bus";
 import {mapGetters} from "vuex";
-import keyStore from "@/constantes/key.store.const";
 
 export default {
   name: 'TorrentView',
@@ -56,15 +61,14 @@ export default {
     VueContext
   },
   mixins: [
-    TransmissionApiMixin,
-    TorrentUtilsMixin
+    TransmissionApiMixin
   ],
   props: {
     torrent: {
       id: String,
       name: String,
       totalSize: Number,
-      peersGettingFromUs: Number,
+      peersSendingToUs: Number,
       isFinished: Boolean,
       peersConnected: Number,
       percentDone: String,
@@ -77,7 +81,9 @@ export default {
       leftUntilDone: Number,
       uploadedEver: String,
       uploadRatio: Number,
-      seedRatioLimit: Number
+      seedRatioLimit: Number,
+      errorString: String,
+      error: String
     }
   },
   data: function() {
@@ -90,20 +96,68 @@ export default {
       selectedTorrent: keyStore.GET_SELECTED_TORRENT
     }),
     isPlay() {
-      return this.getStatus().order === 1 ||
-          this.getStatus().order === 2 ||
-          this.getStatus().order === 3;
+      return this.torrent.status === Status.STATUS_DOWNLOAD ||
+          this.torrent.status === Status.STATUS_SEED;
     },
     isPause() {
-      return this.getStatus().order === 4;
+      return this.torrent.status === Status.STATUS_STOPPED;
+    },
+    asError() {
+      return this.torrent.error > 0
     }
   },
   methods: {
+    showUp() {
+      return this.torrent.status === Status.STATUS_SEED || this.torrent.status === Status.STATUS_DOWNLOAD
+    },
+    showDown() {
+      return this.torrent.status === Status.STATUS_DOWNLOAD && !this.asError;
+    },
+    getPost() {
+      let str;
+
+      switch (this.torrent.status){
+        case Status.STATUS_SEED:
+          str = this.$t('message.torrent.to', [this.torrent.peersSendingToUs, this.torrent.peersConnected]);
+          break;
+        case Status.STATUS_DOWNLOAD:
+          str = this.$t('message.torrent.from', [this.torrent.peersSendingToUs, this.torrent.peersConnected]);
+          break;
+        default:
+          str = '';
+      }
+
+      return (this.showDown() || this.showUp()) ? str + ' - ' : str;
+    },
+    getColor() {
+      const STYLE_SECONDARY = 'secondary';
+      const STYLE_SUCCESS = 'success';
+      const STYLE_PRIMARY = 'primary';
+
+      switch (this.torrent.status) {
+        case Status.STATUS_STOPPED:
+          return STYLE_SECONDARY;
+        case Status.STATUS_CHECK_WAIT:
+          return STYLE_SUCCESS;
+        case Status.STATUS_CHECK:
+          return STYLE_SUCCESS;
+        case Status.STATUS_DOWNLOAD_WAIT:
+          return STYLE_PRIMARY;
+        case Status.STATUS_DOWNLOAD:
+          return STYLE_PRIMARY;
+        case Status.STATUS_SEED_WAIT:
+          return STYLE_SUCCESS;
+        case Status.STATUS_SEED:
+          return STYLE_SUCCESS;
+        default:
+          return STYLE_SUCCESS;
+      }
+    },
     showRatio() {
-      return this.torrent.uploadRatio < this.torrent.seedRatioLimit && !this.torrent.isFinished
+      return this.torrent.uploadRatio < this.torrent.seedRatioLimit && this.torrent.percentDone >= 1
     },
     isPanelShow() {
-      if (this.selectedTorrent !== null && this.torrent !== null) {
+      if (this.selectedTorrent !== null && this.selectedTorrent !== undefined && this.torrent !== null) {
         return this.selectedTorrent.id === this.torrent.id;
       } else {
         return false;
@@ -114,19 +168,15 @@ export default {
       this.$emit(events.SELECTED, this.selected, this.torrent);
     },
     details() {
-
       if(this.selectedTorrent !== null && this.selectedTorrent.id === this.torrent.id) {
         this.selected = false;
         this.$store.commit(keyStore.UNSELECT);
-        this.$emit('close_panel');
+        this.$emit(events.CLOSE_PANEL);
       } else {
         this.selected = true;
         this.$store.commit(keyStore.UNSELECT);
         this.$emit(events.DOUBLE_CLICK, this.selected, this.torrent);
       }
-    },
-    getStatus() {
-      return this.meta(this.torrent);
     },
     start() {
       this.startTorrents(this.torrent)

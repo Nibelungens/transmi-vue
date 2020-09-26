@@ -3,7 +3,8 @@ const events = {
     NOTIFICATION_SUCCESS: 'notification_success',
     ACTION: 'action',
     SELECTED: 'selected',
-    DOUBLE_CLICK: 'double_click'
+    DOUBLE_CLICK: 'double_click',
+    CLOSE_PANEL: 'close_panel'
 }
 
 export default events;

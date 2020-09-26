@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="torrent in torrents" v-bind:key="torrent.id">
+    <div v-for="torrent in getSortedTorrents()" v-bind:key="torrent.id">
       <torrent-view v-bind:torrent="torrent" v-on:selected="addSelection" v-on:double_click="showPanel(torrent)" v-on:close_panel="closePanel()"></torrent-view>
     </div>
     <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" v-on:hidden="closePanel" >
@@ -27,7 +27,8 @@ export default {
   ],
   computed: {
   ...mapGetters({
-      selectedTorrent: keyStore.GET_SELECTED_TORRENT
+      selectedTorrent: keyStore.GET_SELECTED_TORRENT,
+      torrents: keyStore.GET_TORRENT
     })
   },
   data: function() {
@@ -36,14 +37,16 @@ export default {
       torrentPanelShow: null
     };
   },
-  props: {
-    torrents: {
-      type: Array,
-      required: true,
-      default: () => []
-    },
-  },
   methods: {
+    compareName(a, b) {
+      if (a.name > b.name) return 1;
+      if (b.name > a.name) return -1;
+
+      return 0;
+    },
+    getSortedTorrents() {
+      return [...this.torrents].sort(this.compareName);
+    },
     closePanel() {
       this.isPanelShow = false;
     },

@@ -2,7 +2,7 @@
   <div id="app">
     <header-transmission id="header"></header-transmission>
     <main id="content">
-      <list-torrents-view v-bind:torrents="torrents"/>
+      <list-torrents-view/>
     </main>
     <footer-transmission id="footer"></footer-transmission>
   </div>
@@ -17,7 +17,6 @@ import NotificationMixin from "@/mixins/notification.mixin";
 import keyStore from "@/constantes/key.store.const";
 import events from "@/constantes/key.event.const"
 import bus from "@/config/event.bus";
-import {mapGetters} from "vuex";
 import IntervalMixin from "@/mixins/interval.mixin"
 
 export default {
@@ -31,11 +30,6 @@ export default {
     FooterTransmission,
     HeaderTransmission,
     ListTorrentsView
-  },
-  computed: {
-    ...mapGetters({
-      torrents: keyStore.GET_TORRENT
-    })
   },
   mounted () {
     this.refresh();

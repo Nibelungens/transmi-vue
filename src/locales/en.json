@@ -15,7 +15,9 @@
       "compact": "Compact View"
     },
     "torrent": {
-      "downloading": "Downloading from {0} of {1} peer - ",
+      "error": "Tracker returned an error: {0}",
+      "to": " to {0} of {1} peer",
+      "from": " from {0} of {1} peer",
       "of": "of",
       "contextMenu": {
         "pause": "Pause",

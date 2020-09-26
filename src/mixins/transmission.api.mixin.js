@@ -8,7 +8,7 @@ const ARGUMENTS_TORRENT_ALL = {
     "id",
     "name",
     "totalSize",
-    "peersGettingFromUs",
+    "peersSendingToUs",
     "isFinished",
     "peersConnected",
     "percentDone",
@@ -21,7 +21,9 @@ const ARGUMENTS_TORRENT_ALL = {
     "uploadedEver",
     "uploadRatio",
     "seedRatioLimit",
-    "eta" ]
+    "eta" ,
+    "errorString",
+    "error"]
 };
 const ARGUMENTS_TORRENT_INFO = {
   "fields":[
