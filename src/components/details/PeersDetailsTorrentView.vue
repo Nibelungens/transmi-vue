@@ -1,13 +1,14 @@
 <template>
   <div class="overflow-auto font">
-    <div v-if="peers === null" class="info-spin">
+    <div v-if="torrents === null" class="info-spin">
       <b-spinner type="grow" label="Loading..."></b-spinner>
     </div>
-    <div v-else-if="peers !== null && peers.length === 0" class="info-spin">
+    <div v-else-if="torrents !== null && torrents.length === 0" class="info-spin">
       {{ $t('message.filter.none') }}
     </div>
-    <div v-else>
-      <table class="table table-striped table-sm border" v-if="peers != null && peers.length > 0">
+    <div v-else v-for="torrent in torrents" :key="torrent.id">
+      <div>{{torrent.name}}</div>
+      <table class="table table-striped table-sm border" v-if="torrent.peers != null && torrent.peers.length > 0">
         <thead>
         <tr>
           <th scope="col" class="fix-cad"></th>
@@ -20,10 +21,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="peer in peers" :key="peer.address">
+        <tr v-for="peer in torrent.peers" :key="peer.address">
           <td><b-icon v-if="peer.isEncrypted" icon="lock-fill"></b-icon></td>
-          <td >{{ returnSize(peer.rateToPeer) }}</td>
-          <td >{{ returnSize(peer.rateToClient) }}</td>
+          <td>{{ returnSize(peer.rateToPeer) }}</td>
+          <td>{{ returnSize(peer.rateToClient) }}</td>
           <td>{{ peer.progress * 100 | formatPercent }}%</td>
           <td>{{ peer.flagStr }}</td>
           <td>{{ peer.address }}</td>
@@ -52,19 +53,19 @@ export default {
   ],
   computed: {
     ...mapGetters({
-      selectedTorrent: keyStore.GET_SELECTED_TORRENT
+      selectedTorrent: keyStore.GET_SELECTED_TORRENTS
     })
   },
   data: function() {
     return {
-        peers: null
+        torrents: null
       };
   },
   props: {
     showPanel: Boolean
   },
   created() {
-    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refreshPeers);
+    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENTS], this.refreshPeers);
   },
   methods: {
     returnSize(rate) {
@@ -82,14 +83,14 @@ export default {
       }
     },
     refreshPeers() {
-      this.peers = null;
+      this.torrents = null;
       this.getPeersTorrent(this.selectedTorrent)
           .then(this.detailSuccess)
           .catch(this.error);
     },
     detailSuccess(response) {
       if (response != null && response.data !== null) {
-        this.peers = response.data.arguments.torrents[0].peers;
+        this.torrents = response.data.arguments.torrents;
       }
     },
     error(error) {

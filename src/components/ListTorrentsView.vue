@@ -1,9 +1,9 @@
 <template>
   <div>
     <div v-for="torrent in getSortedTorrents()" v-bind:key="torrent.id">
-      <torrent-view v-bind:torrent="torrent" v-on:selected="addSelection" v-on:double_click="showPanel(torrent)" v-on:close_panel="closePanel()"></torrent-view>
+      <torrent-view v-bind:torrent="torrent"></torrent-view>
     </div>
-    <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" v-on:hidden="closePanel">
+    <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel">
       <details-torrent-view v-bind:showPanel="isPanelShow"></details-torrent-view>
     </b-sidebar>
   </div>
@@ -15,6 +15,8 @@ import DetailsTorrentView from "@/components/DetailsTorrentView";
 import keyStore from "@/constantes/key.store.const";
 import TorrentView from "@/components/TorrentView";
 import {mapGetters} from "vuex";
+import events from "@/constantes/key.event.const";
+import bus from "@/config/event.bus";
 
 export default {
   name: 'ListTorrentsView',
@@ -26,18 +28,20 @@ export default {
     TransmissionApiMixin
   ],
   computed: {
-  ...mapGetters({
-      selectedTorrent: keyStore.GET_SELECTED_TORRENT,
-      torrents: keyStore.GET_TORRENT
-    })
+  ...mapGetters({torrents: keyStore.GET_TORRENT})
   },
   data: function() {
     return {
-      isPanelShow: false,
-      torrentPanelShow: null
+      isPanelShow: false
     };
   },
+  mounted() {
+    bus.$on(events.SWITCH_PANEL, this.switchPanel);
+  },
   methods: {
+    switchPanel() {
+      this.isPanelShow = !this.isPanelShow;
+    },
     compareName(a, b) {
       if (a.name > b.name) return 1;
       if (b.name > a.name) return -1;
@@ -46,21 +50,6 @@ export default {
     },
     getSortedTorrents() {
       return [...this.torrents].sort(this.compareName);
-    },
-    closePanel() {
-      this.isPanelShow = false;
-      this.$store.commit(keyStore.UNSELECT);
-    },
-    showPanel(torrent) {
-      this.isPanelShow = true;
-      this.$store.commit(keyStore.SELECT, torrent);
-    },
-    addSelection(selected, torrent) {
-      if (selected) {
-        this.$store.commit(keyStore.ADD_SELECTED, torrent);
-      } else {
-        this.$store.commit(keyStore.REMOVE_SELECTED, torrent);
-      }
     }
   }
 }

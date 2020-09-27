@@ -9,42 +9,49 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import memFilter from '@/filters/mem.filter'
-import haveFilter from '@/filters/have.filter'
-import stateFilter from '@/filters/state.filter'
+import haveFilter from '@/filters/infos/infos.have.filter'
+import stateFilter from '@/filters/infos/infos.state.filter'
 import sizeFilter from '@/filters/size.filter.js'
 import statusFilter from '@/filters/status.filter'
 import percentFilter from '@/filters/percent.filter'
-import uploadFilter from '@/filters/uploaded.filter'
-import creatorFilter from '@/filters/creator.filter'
+import uploadFilter from '@/filters/infos/infos.uploaded.filter'
+import creatorFilter from '@/filters/infos/infos.creator.filter'
 import remainingFilter from '@/filters/remaining.filter'
-import downloadFilter from '@/filters/downloaded.filter'
-import sizeDetailsFilter from '@/filters/sizedetails.filter'
-import runningTimeFilter from '@/filters/runningtime.filter'
-import availabilityFilter from '@/filters/availability.filter'
+import downloadFilter from '@/filters/infos/infos.downloaded.filter'
+import sizeDetailsFilter from '@/filters/infos/infos.size.details.filter'
+import runningTimeFilter from '@/filters/infos/infos.running.time.filter'
+import availabilityFilter from '@/filters/infos/infos.availability.filter'
 import timeIntervalFilter from '@/filters/timeInterval.filter'
-import lastActivityFilter from '@/filters/lastactivity.filter'
-import remainingTimeFilter from '@/filters/remainingtime.filter'
+import lastActivityFilter from '@/filters/infos/infos.last.activity.filter'
+import remainingTimeFilter from '@/filters/infos/infos.remaining.time.filter'
+import errorFilter from '@/filters/infos/infos.error.filter'
+import basicFilter from '@/filters/infos/infos.basic.filter'
+import privacyFilter from '@/filters/infos/infos.privacy.filter'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
-Vue.filter('formatRemainingTime', remainingTimeFilter);
-Vue.filter('formatLastActivity', lastActivityFilter);
-Vue.filter('formatAvailability', availabilityFilter);
 Vue.filter('formatTimeInterval', timeIntervalFilter);
-Vue.filter('formatRunningTime', runningTimeFilter);
-Vue.filter('formatSizeDetails', sizeDetailsFilter);
 Vue.filter('formatRemaining', remainingFilter);
-Vue.filter('formatDownload', downloadFilter);
 Vue.filter('formatPercent', percentFilter);
 Vue.filter('formatCreator', creatorFilter);
-Vue.filter('formatUpload', uploadFilter);
 Vue.filter('formatStatus', statusFilter);
-Vue.filter('formatState', stateFilter);
 Vue.filter('formatSize', sizeFilter);
-Vue.filter('formatHave', haveFilter);
 Vue.filter('formatMem', memFilter);
+
+Vue.filter('infosRemainingTime', remainingTimeFilter);
+Vue.filter('infosLastActivity', lastActivityFilter);
+Vue.filter('infosAvailability', availabilityFilter);
+Vue.filter('infosRunningTime', runningTimeFilter);
+Vue.filter('infosSizeDetails', sizeDetailsFilter);
+Vue.filter('infosDownload', downloadFilter);
+Vue.filter('infosPrivacy', privacyFilter);
+Vue.filter('infosUpload', uploadFilter);
+Vue.filter('infosState', stateFilter);
+Vue.filter('infosError', errorFilter);
+Vue.filter('infosBasic', basicFilter);
+Vue.filter('infosHave', haveFilter);
 
 new Vue({
     store: store,

@@ -3,6 +3,7 @@ import * as axios from "axios";
 const TORRENT_START = "torrent-start";
 const TORRENT_STOP = "torrent-stop";
 const TORRENT_GET = "torrent-get";
+const TORRENT_REMOVE = "torrent-remove";
 const ARGUMENTS_TORRENT_ALL = {
   "fields": [
     "id",
@@ -51,15 +52,32 @@ const ARGUMENTS_TORRENT_INFO = {
     "isPrivate",
     "creator",
     "dateCreated",
-    "comment"],
-  "ids":[0]};
+    "comment",
+    "metadataPercentComplete",
+    "failedEver"],
+  "ids":[]};
 
 const ARGUMENTS_TORRENT_PEERS = {
-  "fields":["peers"],
-  "ids":[0]};
+  "fields":["peers", "name"],
+  "ids":[]};
+
+const ARGUMENTS_TORRENT_REMOVE = {
+  "delete-local-data":false,
+  "ids":[0]
+}
 
 const TransmissionApiMixin = {
   methods: {
+    removeTorrent(torrent, trash) {
+      const args = ARGUMENTS_TORRENT_REMOVE;
+      args['delete-local-data'] = trash;
+
+      if (torrent != null && torrent.id != null) {
+        args.ids = [torrent.id];
+      }
+
+      return this.request(TORRENT_REMOVE, args);
+    },
     startTorrents(torrent) {
       return this.requestSimple(TORRENT_START, torrent);
     },
@@ -80,21 +98,15 @@ const TransmissionApiMixin = {
 
       return this.request(method, {"ids": ids});
     },
-    getInfoTorrent(torrent) {
+    getInfoTorrent(torrents) {
       const args = ARGUMENTS_TORRENT_INFO;
-
-      if (torrent != null && torrent.id != null) {
-        args.ids = [torrent.id];
-      }
+      args.ids = torrents.map(torrent =>torrent.id)
 
       return this.request(TORRENT_GET, args);
     },
-    getPeersTorrent(torrent) {
+    getPeersTorrent(torrents) {
       const args = ARGUMENTS_TORRENT_PEERS;
-
-      if (torrent != null && torrent.id != null) {
-        args.ids = [torrent.id];
-      }
+      args.ids = torrents.map(torrent =>torrent.id)
 
       return this.request(TORRENT_GET, args);
     },

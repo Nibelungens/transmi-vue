@@ -1,13 +1,11 @@
 const state = () => ({
     torrents: [],
-    selectedTorrents: [],
-    selectedTorrent: null
+    selectedTorrents: []
 })
 
 const getters = {
     getTorrents: state => state.torrents,
     getSelectedTorrents: state => state.selectedTorrents,
-    getSelectedTorrent: state => state.selectedTorrent
 }
 
 const actions = {
@@ -15,20 +13,23 @@ const actions = {
 }
 
 const mutations = {
+    SELECTED(state, payload) {
+        state.selectedTorrents = [payload];
+    },
+    UNSELECTED(state) {
+        state.selectedTorrents = [];
+    },
     ADD_SELECTED(state, payload) {
         state.selectedTorrents.push(payload);
     },
     REMOVE_SELECTED(state, payload) {
-        state.selectedTorrents.splice(state.selectedTorrents.indexOf(payload), 1);
+        const index = state.selectedTorrents.findIndex((torrent) => torrent.id === payload.id);
+        if (index !== -1) {
+            state.selectedTorrents.splice(index, 1);
+        }
     },
     SET_LIST_TORRENT(state, payload) {
         state.torrents = payload;
-    },
-    SELECT(state, payload) {
-        state.selectedTorrent = payload;
-    },
-    UNSELECT(state) {
-        state.selectedTorrent = null;
     }
 }
 

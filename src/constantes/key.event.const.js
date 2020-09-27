@@ -4,7 +4,9 @@ const events = {
     ACTION: 'action',
     SELECTED: 'selected',
     DOUBLE_CLICK: 'double_click',
-    CLOSE_PANEL: 'close_panel'
+    SWITCH_PANEL: 'switch_panel',
+    CLOSE_ALL_CONTEXT: 'close_all_context',
+    OPEN_CONTEXT: 'open_context'
 }
 
 export default events;

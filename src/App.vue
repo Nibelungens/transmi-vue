@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-on:click="click">
     <header-transmission id="header"></header-transmission>
     <main id="content">
       <list-torrents-view/>
@@ -48,6 +48,9 @@ export default {
     refresh() {
       this.getTorrents()
           .then(response => this.$store.commit(keyStore.SET_LIST_TORRENT, response.data.arguments.torrents));
+    },
+    click() {
+      bus.$emit(events.CLOSE_ALL_CONTEXT);
     }
   },
 }

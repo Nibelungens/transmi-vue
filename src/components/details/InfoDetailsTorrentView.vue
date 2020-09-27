@@ -8,58 +8,58 @@
 
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.have') }}:</span>
-        <span class="info-row-end">{{ infos | formatHave($i18n) }}</span>
+        <span class="info-row-end">{{ infos | infosHave($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.avaibility') }}:</span>
-        <span class="info-row-end">{{ infos | formatAvailability($i18n) }}</span>
+        <span class="info-row-end">{{ infos | infosAvailability($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.upload') }}:</span>
-        <span class="info-row-end">{{ infos | formatUpload($i18n) }}</span>
+        <span class="info-row-end">{{ infos | infosUpload($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.downloaded') }}:</span>
-        <span class="info-row-end">{{ infos | formatDownload($i18n) }}</span>
+        <span class="info-row-end">{{ infos | infosDownload($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.state') }}:</span>
-        <span class="info-row-end">{{ infos | formatState($i18n) }}</span>
+        <span class="info-row-end">{{ infos | infosState($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.running') }}:</span>
-        <span class="info-row-end">{{ infos | formatRunningTime($i18n) }}</span>
+        <span class="info-row-end">{{ infos | infosRunningTime($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.remaining') }}:</span>
-        <span class="info-row-end">{{ infos | formatRemainingTime($i18n) }}</span>
+        <span class="info-row-end">{{ infos | infosRemainingTime($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.last') }}:</span>
-        <span class="info-row-end">{{ infos | formatLastActivity($i18n) }}</span>
+        <span class="info-row-end">{{ infos | infosLastActivity($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.error') }}:</span>
-        <span class="info-row-end">{{ (infos.errorString !== "") ? infos.errorString : $t('message.filter.none') }}</span>
+        <span class="info-row-end">{{ infos | infosError($i18n) }}</span>
       </div>
 
       <span class="info-subtitle">{{ $t('message.details.info.details') }}</span>
 
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.size') }}:</span>
-        <span class="info-row-end">{{ infos | formatSizeDetails($i18n) }}</span>
+        <span class="info-row-end">{{ infos | infosSizeDetails($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.location') }}:</span>
-        <span class="info-row-end">{{ infos.downloadDir }}</span>
+        <span class="info-row-end">{{ infos | infosBasic('downloadDir', $i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.hash') }}:</span>
-        <span class="info-row-end">{{ infos.hashString }}</span>
+        <span class="info-row-end">{{ infos | infosBasic('hashString', $i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.privacy') }}:</span>
-        <span class="info-row-end">{{ infos.isPrivate ? $t('message.details.info.privateTracker'): $t('message.details.info.publicTracker') }}</span>
+        <span class="info-row-end">{{ infos | infosPrivacy($i18n) }}</span>
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.origin') }}:</span>
@@ -67,7 +67,7 @@
       </div>
       <div class="info-row">
         <span class="info-row-start">{{ $t('message.details.info.comment') }}:</span>
-        <span class="info-row-end">{{ (infos.comment !== "") ? infos.comment: $t('message.filter.none')}}</span>
+        <span class="info-row-end">{{ infos | infosBasic('comment', $i18n) }}</span>
       </div>
     </div>
   </div>
@@ -89,25 +89,25 @@ export default {
   ],
   computed: {
     ...mapGetters({
-      selectedTorrent: keyStore.GET_SELECTED_TORRENT
+      selectedTorrents: keyStore.GET_SELECTED_TORRENTS
     })
   },
   data: function() {
     return {
-        infos: null
+        infos: []
       };
   },
   props: {
     showPanel: Boolean
   },
   mounted() {
-    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENT], this.refreshMan)
+    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENTS], this.refreshMan)
   },
   methods: {
     refreshMan() {
       if (this.showPanel) {
         this.infos = null;
-        this.getInfoTorrent(this.selectedTorrent)
+        this.getInfoTorrent(this.selectedTorrents)
             .then(this.detailSuccess)
             .catch(this.error);
       } else {
@@ -116,7 +116,7 @@ export default {
     },
     refresh() {
       if (this.showPanel) {
-        this.getInfoTorrent(this.selectedTorrent)
+        this.getInfoTorrent(this.selectedTorrents)
             .then(this.detailSuccess)
             .catch(this.error);
       } else {
@@ -125,7 +125,7 @@ export default {
     },
     detailSuccess(response) {
       if (response !== null && response.data !== null) {
-        this.infos = response.data.arguments.torrents[0];
+        this.infos = response.data.arguments.torrents;
       }
     },
     error(error) {

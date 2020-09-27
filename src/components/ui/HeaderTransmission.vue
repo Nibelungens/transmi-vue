@@ -6,8 +6,8 @@
           <b-button :title="$t('message.header.open')" variant="outline-light" disabled>
             <b-icon icon="file-earmark-arrow-up-fill"></b-icon>
           </b-button>
-          <b-button :title="$t('message.header.remove')" variant="outline-light" disabled>
-            <b-icon icon="slash-circle"></b-icon>
+          <b-button v-bind:disabled="!asSelected" v-on:click="removeSelected()" :title="$t('message.header.remove')" variant="outline-light">
+            <b-icon icon="slash-circle" class="text-danger"></b-icon>
           </b-button>
           <b-button v-bind:disabled="!asSelected" v-on:click="startSelected()" :title="$t('message.header.start')"  variant="outline-light">
             <b-icon icon="arrow-clockwise" ></b-icon>
@@ -49,6 +49,11 @@ export default {
     },
   },
   methods: {
+    removeSelected() {
+      this.removeTorrent(this.selectedTorrent, false)
+          .then(this.success)
+          .catch(this.error);
+    },
     startSelected() {
       this.startTorrents(this.selectedTorrent)
           .then(this.success)

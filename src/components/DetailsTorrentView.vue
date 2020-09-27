@@ -1,6 +1,6 @@
 <template>
   <div class="px-3 py-2">
-    <div class="d-inline-block text-truncate info-title">{{ (selectedTorrent != null) ? selectedTorrent.name : $t('message.filter.none') }}</div>
+    <div class="d-inline-block text-truncate info-title" v-text="title()"/>
     <b-tabs v-model="tabIndex" content-class="mt-3" fill>
       <b-tab id="info" active>
         <template v-slot:title>
@@ -31,8 +31,8 @@
 <script>
 import InfoDetailsTorrentView from "@/components/details/InfoDetailsTorrentView";
 import PeersDetailsTorrentView from "@/components/details/PeersDetailsTorrentView";
-import {mapGetters} from "vuex";
 import keyStore from "@/constantes/key.store.const";
+import {mapGetters} from "vuex";
 
 export default {
   name: "DetailsTorrentView",
@@ -42,9 +42,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      selectedTorrent: keyStore.GET_SELECTED_TORRENT
+      selectedTorrents: keyStore.GET_SELECTED_TORRENTS
     }),
-
   },
   data() {
     return {
@@ -53,6 +52,17 @@ export default {
   },
   props: {
     showPanel: Boolean
+  },
+  methods: {
+    title() {
+      if (this.selectedTorrents.length === 1) {
+        return this.selectedTorrents[0].name;
+      } else if (this.selectedTorrents.length > 1) {
+        return this.$t('message.details.titleMany', [this.selectedTorrents.length])
+      } else {
+        return this.$t('message.filter.none')
+      }
+    }
   }
 }
 </script>

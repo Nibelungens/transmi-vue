@@ -37,7 +37,9 @@
       }
     },
     "details": {
+      "titleMany": "{0} Transferts Selected",
       "info": {
+        "mixed": "Mixed",
         "activity": "Activity",
         "have": "Have",
         "avaibility": "Avaibility",
