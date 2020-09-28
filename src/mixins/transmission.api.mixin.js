@@ -4,6 +4,17 @@ const TORRENT_START = "torrent-start";
 const TORRENT_STOP = "torrent-stop";
 const TORRENT_GET = "torrent-get";
 const TORRENT_REMOVE = "torrent-remove";
+const FREE_SPACE = "free-space";
+const SESSION_GET = "session-get";
+const TORRENT_ADD = "torrent-add";
+
+const ARGUMENTS_TORRENT_ADD = {
+  "download-dir": null,
+  // "metainfo": null,
+  // "filename": null,
+  "paused": null
+}
+
 const ARGUMENTS_TORRENT_ALL = {
   "fields": [
     "id",
@@ -63,11 +74,40 @@ const ARGUMENTS_TORRENT_PEERS = {
 
 const ARGUMENTS_TORRENT_REMOVE = {
   "delete-local-data":false,
-  "ids":[0]
+  "ids":[]
+}
+
+const ARGUMENT_FREE_SPACE = {
+  "path":null
 }
 
 const TransmissionApiMixin = {
   methods: {
+    addTorrent(downloadDir, metaInfo, url, start) {
+      const args = ARGUMENTS_TORRENT_ADD;
+      args['download-dir'] = downloadDir;
+
+      if (url != null) {
+        args['filename'] = url;
+      } else {
+        args['metainfo'] = metaInfo;
+      }
+      args['paused'] = !start;
+
+      return this.request(TORRENT_ADD, args);
+    },
+    getSession() {
+      return axios.post('/api',
+          {
+            "method": SESSION_GET
+          });
+    },
+    getFreeSpace(path) {
+      const args = ARGUMENT_FREE_SPACE;
+      args.path = path;
+
+      return this.request(FREE_SPACE, args);
+    },
     removeTorrent(torrent, trash) {
       const args = ARGUMENTS_TORRENT_REMOVE;
       args['delete-local-data'] = trash;

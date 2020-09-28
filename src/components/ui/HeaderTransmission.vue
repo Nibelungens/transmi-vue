@@ -3,7 +3,7 @@
     <b-navbar type="dark" variant="dark">
       <b-button-toolbar>
         <b-button-group size="sm" class="mr-1" >
-          <b-button :title="$t('message.header.open')" variant="outline-light" disabled>
+          <b-button :title="$t('message.header.open')" variant="outline-light" v-on:click="openModal">
             <b-icon icon="file-earmark-arrow-up-fill"></b-icon>
           </b-button>
           <b-button v-bind:disabled="!asSelected" v-on:click="removeSelected()" :title="$t('message.header.remove')" variant="outline-light">
@@ -30,6 +30,8 @@
 <script>
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import keyStore from "@/constantes/key.store.const";
+import events from "@/constantes/key.event.const";
+import bus from "@/config/event.bus";
 import {mapGetters} from "vuex";
 
 export default {
@@ -47,6 +49,9 @@ export default {
     },
   },
   methods: {
+    openModal() {
+      bus.$emit(events.OPEN_ADD_MODEL);
+    },
     removeSelected() {
       this.removeTorrent(this.selectedTorrent, false)
           .then(this.success)

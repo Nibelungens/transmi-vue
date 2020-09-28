@@ -1,5 +1,21 @@
 {
   "message": {
+    "addModal": {
+      "title": "Upload Torrent Files",
+      "select": "Please select a torrent file to upload:",
+      "noSelect": "No file chosen",
+      "url": "Or enter a URL:",
+      "destination": "Destination folder ({0} Free):",
+      "start":"Start when added",
+      "submit": "Upload",
+      "cancel": "Cancel",
+      "addOne": "Torrent '{0}' added",
+      "addOneNoParams": "Torrent added",
+      "addMany": "{0} Torrents added",
+      "selects": "{0} Torrents Selected",
+      "already": "Torrent '{0}' already added",
+      "alreadyNoParams": "Torrent already added"
+    },
     "header": {
       "open": "Open Torrent",
       "remove": "Remove Selected Torrent",

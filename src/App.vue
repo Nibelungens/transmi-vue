@@ -5,6 +5,7 @@
       <list-torrents-view/>
     </main>
     <footer-transmission id="footer" ref="footer"></footer-transmission>
+    <add-torrent-modal/>
   </div>
 </template>
 
@@ -17,9 +18,18 @@ import events from "@/constantes/key.event.const"
 import bus from "@/config/event.bus";
 import IntervalMixin from "@/mixins/interval.mixin"
 import ResultMixin from "@/mixins/result.mixin";
+import AddTorrentModal from "@/components/AddTorrentModal";
+import keyStore from "@/constantes/key.store.const";
 
 const s_success = {
   variant: 'success',
+  toaster: 'b-toaster-bottom-left',
+  solid: true,
+  noCloseButton: true
+};
+
+const s_warning = {
+  variant: 'warning',
   toaster: 'b-toaster-bottom-left',
   solid: true,
   noCloseButton: true
@@ -40,17 +50,21 @@ export default {
     ResultMixin
   ],
   components: {
+    AddTorrentModal,
     FooterTransmission,
     HeaderTransmission,
     ListTorrentsView
   },
   mounted () {
-    this.refresh();
-  },
-  created() {
     bus.$on(events.NOTIFICATION_SUCCESS, this.notificationSuccess);
+    bus.$on(events.NOTIFICATION_WARN, this.notificationWarn);
     bus.$on(events.NOTIFICATION_FAIL, this.notificationFail);
     bus.$on(events.ACTION, this.refresh);
+
+    this.refresh();
+    this.getSession()
+        .then((response) => this.$store.commit(keyStore.SET_CONFIG, response.data.arguments))
+        .catch(this.error)
   },
   beforeDestroy() {
     bus.$off(events.NOTIFICATION_SUCCESS);
@@ -60,6 +74,9 @@ export default {
   methods: {
     notificationSuccess(msg) {
       this.$bvToast.toast(msg, s_success);
+    },
+    notificationWarn(msg) {
+      this.$bvToast.toast(msg, s_warning);
     },
     notificationFail(msg) {
       this.$bvToast.toast(msg, s_failed);
