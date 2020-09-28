@@ -30,8 +30,6 @@
 <script>
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import keyStore from "@/constantes/key.store.const";
-import events from "@/constantes/key.event.const";
-import bus from "@/config/event.bus";
 import {mapGetters} from "vuex";
 
 export default {
@@ -73,13 +71,6 @@ export default {
       this.stopTorrents(this.allTorrent)
           .then(this.success)
           .catch(this.fail);
-    },
-    success(response) {
-      bus.$emit(events.NOTIFICATION_SUCCESS, response.data.result);
-      bus.$emit(events.ACTION);
-    },
-    fail(error) {
-      bus.$emit(events.NOTIFICATION_FAIL, error);
     }
   }
 }

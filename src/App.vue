@@ -13,18 +13,31 @@ import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import HeaderTransmission from "@/components/ui/HeaderTransmission";
 import FooterTransmission from "@/components/ui/FooterTransmission";
 import ListTorrentsView from '@/components/ListTorrentsView';
-import NotificationMixin from "@/mixins/notification.mixin";
-import keyStore from "@/constantes/key.store.const";
 import events from "@/constantes/key.event.const"
 import bus from "@/config/event.bus";
 import IntervalMixin from "@/mixins/interval.mixin"
+import ResultMixin from "@/mixins/result.mixin";
+
+const s_success = {
+  variant: 'success',
+  toaster: 'b-toaster-bottom-left',
+  solid: true,
+  noCloseButton: true
+};
+
+const s_failed = {
+  variant: 'error',
+  toaster: 'b-toaster-bottom-left',
+  solid: true,
+  noCloseButton: true
+};
 
 export default {
   name: 'App',
   mixins: [
-    NotificationMixin,
     TransmissionApiMixin,
-    IntervalMixin
+    IntervalMixin,
+    ResultMixin
   ],
   components: {
     FooterTransmission,
@@ -45,9 +58,16 @@ export default {
     bus.$off(events.ACTION);
   },
   methods: {
+    notificationSuccess(msg) {
+      this.$bvToast.toast(msg, s_success);
+    },
+    notificationFail(msg) {
+      this.$bvToast.toast(msg, s_failed);
+    },
     refresh() {
       this.getTorrents()
-          .then(response => this.$store.commit(keyStore.SET_LIST_TORRENT, response.data.arguments.torrents));
+          .then(this.successTorrent)
+          .catch(this.error);
     },
     click() {
       bus.$emit(events.CLOSE_ALL_CONTEXT);

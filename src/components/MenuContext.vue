@@ -32,11 +32,15 @@ import Status from "@/constantes/status.const";
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import {mapGetters} from "vuex";
 import keyStore from "@/constantes/key.store.const";
+import ResultMixin from "@/mixins/result.mixin";
+
+const PX = 'px';
 
 export default {
   name: "MenuContext",
   mixins: [
-    TransmissionApiMixin
+    TransmissionApiMixin,
+    ResultMixin,
   ],
   data() {
     return {
@@ -54,8 +58,7 @@ export default {
       selectedTorrents: keyStore.GET_SELECTED_TORRENTS
     }),
     isPlay() {
-      return this.torrent.status === Status.STATUS_DOWNLOAD ||
-          this.torrent.status === Status.STATUS_SEED;
+      return this.torrent.status === Status.STATUS_DOWNLOAD || this.torrent.status === Status.STATUS_SEED;
     },
     isPause() {
       return this.torrent.status === Status.STATUS_STOPPED;
@@ -72,13 +75,14 @@ export default {
       } else {
         this.showContext = false;
       }
-
     },
     openContextMenu(event, torrent) {
       if (torrent.id === this.torrent.id) {
         this.showContext = true;
-        this.$refs.contextMenu.style.left = event.clientX + 'px';
-        this.$refs.contextMenu.style.top = event.clientY + 'px';
+        this.$refs.contextMenu.style.left = event.clientX
+            .toString().concat(PX);
+        this.$refs.contextMenu.style.top = event.clientY
+            .toString().concat(PX);
         bus.$emit(events.CLOSE_ALL_CONTEXT, this.torrent);
       }
     },
@@ -96,14 +100,6 @@ export default {
       this.removeTorrent(this.torrent, trash)
           .then(this.success)
           .catch(this.error);
-    },
-    // REQUEST
-    success(response) {
-      bus.$emit(events.NOTIFICATION_SUCCESS, response.data.result);
-      bus.$emit(events.ACTION);
-    },
-    error(error) {
-      bus.$emit(events.NOTIFICATION_FAIL, error);
     }
   }
 }

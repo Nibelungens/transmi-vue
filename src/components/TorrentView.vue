@@ -30,12 +30,14 @@ import events from "@/constantes/key.event.const"
 import Status from "@/constantes/status.const";
 import bus from "@/config/event.bus";
 import MenuContext from '@/components/MenuContext'
+import ResultMixin from "@/mixins/result.mixin";
 
 export default {
   name: 'TorrentView',
   components: {MenuContext},
   mixins: [
-    TransmissionApiMixin
+    TransmissionApiMixin,
+    ResultMixin
   ],
   props: {
     torrent: {
@@ -164,14 +166,6 @@ export default {
       this.stopTorrents(this.torrent)
           .then(this.success)
           .catch(this.error);
-    },
-    // REQUEST
-    success(response) {
-      bus.$emit(events.NOTIFICATION_SUCCESS, response.data.result);
-      bus.$emit(events.ACTION);
-    },
-    error(error) {
-      bus.$emit(events.NOTIFICATION_FAIL, error);
     }
   }
 }
