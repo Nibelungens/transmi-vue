@@ -3,7 +3,7 @@
     <div v-for="torrent in getSortedTorrents()" v-bind:key="torrent.id">
       <torrent-view v-bind:torrent="torrent"></torrent-view>
     </div>
-    <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel">
+    <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" class="test">
       <details-torrent-view v-bind:showPanel="isPanelShow"></details-torrent-view>
     </b-sidebar>
   </div>
@@ -57,6 +57,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.test {
+  z-index: 1 !important;
+}
 div >>> .style-panel {
   width: 30%;
   bottom: 47px;

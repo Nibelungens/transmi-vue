@@ -1,7 +1,8 @@
 <template>
   <div class="pl-3 pr-3 pb-1 pt-1 torrent-row" v-bind:class="{ 'm-selected': selected }"
        v-on:contextmenu.prevent="openContextMenu"
-       v-on:click="selectTorrentRow"
+       v-on:click.exact="selectTorrentRow"
+       v-on:click.ctrl="selectTorrentRowCtrl"
        v-on:dblclick="openDetails">
     <div class="title-row">{{ (torrent != null)? torrent.name: '' }}</div>
     <div class="peers-row">
@@ -89,15 +90,14 @@ export default {
       bus.$emit(events.OPEN_CONTEXT, event, this.torrent);
     },
     // SELECT
-    selectTorrentRow(event) {
-      if (event.ctrlKey) {
-        this.selected = !this.selected;
-        this.selected
-            ?this.$store.commit(keyStore.ADD_SELECTED, this.torrent)
-            :this.$store.commit(keyStore.REMOVE_SELECTED, this.torrent);
-      } else {
-        bus.$emit(events.SELECTED, this.torrent);
-      }
+    selectTorrentRow() {
+      bus.$emit(events.SELECTED, this.torrent);
+    },
+    selectTorrentRowCtrl() {
+      this.selected = !this.selected;
+      this.selected
+          ?this.$store.commit(keyStore.ADD_SELECTED, this.torrent)
+          :this.$store.commit(keyStore.REMOVE_SELECTED, this.torrent);
     },
     onSelectTorrentRowCtrlNotPress(torrent) {
       this.selected = (this.torrent.id === torrent.id);

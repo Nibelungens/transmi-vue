@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div ref="contextMenu" v-show="showContext" class="context">
+    <div ref="contextMenu" v-show="showContext" class="context user-select-none">
       <b-list-group>
         <b-list-group-item href="#" class="m-row" v-on:click="stop()" v-bind:disabled="!isPlay">{{ $t('message.torrent.contextMenu.pause') }}</b-list-group-item>
         <b-list-group-item href="#" class="m-row" v-on:click="start()" v-bind:disabled="!isPause">{{ $t('message.torrent.contextMenu.resume') }}</b-list-group-item>
@@ -79,9 +79,19 @@ export default {
     openContextMenu(event, torrent) {
       if (torrent.id === this.torrent.id) {
         this.showContext = true;
-        this.$refs.contextMenu.style.left = event.clientX
+        let y = event.clientY;
+        let x = event.clientX;
+        const maxY = (this.$root.$children[0].$refs.content.clientHeight - 330);
+        const maxX = (this.$root.$children[0].$refs.content.clientWidth - 240);
+        y = (y >= maxY) ? maxY: y;
+        x = (x >= maxX) ? maxX: x;
+
+        console.log(y);
+        console.log(this.$root.$refs.content)
+
+        this.$refs.contextMenu.style.left = x
             .toString().concat(PX);
-        this.$refs.contextMenu.style.top = event.clientY
+        this.$refs.contextMenu.style.top = y
             .toString().concat(PX);
         bus.$emit(events.CLOSE_ALL_CONTEXT, this.torrent);
       }
@@ -132,6 +142,7 @@ export default {
 .context {
   position: fixed;
   overflow: hidden;
+  z-index: 2;
 }
 
 .fade-enter-active,

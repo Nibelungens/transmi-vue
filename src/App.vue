@@ -1,10 +1,10 @@
 <template>
-  <div id="app" v-on:click="click">
-    <header-transmission id="header"></header-transmission>
-    <main id="content">
+  <div id="app" ref="app" v-on:click="click">
+    <header-transmission id="header" ref="header"></header-transmission>
+    <main id="content" ref="content">
       <list-torrents-view/>
     </main>
-    <footer-transmission id="footer"></footer-transmission>
+    <footer-transmission id="footer" ref="footer"></footer-transmission>
   </div>
 </template>
 
@@ -77,12 +77,16 @@ export default {
 </script>
 
 <style>
+#content {
+  z-index: 2;
+}
 #header {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   text-align: center;
+  z-index: 1;
 }
 
 #content {
@@ -91,6 +95,7 @@ export default {
   bottom: 47px;
   width: 100%;
   overflow-y: auto;
+  z-index: 1;
 }
 
 #footer {
