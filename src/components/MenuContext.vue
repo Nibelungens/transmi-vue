@@ -81,7 +81,7 @@ export default {
         this.showContext = true;
         let y = event.clientY;
         let x = event.clientX;
-        const maxY = (this.$root.$children[0].$refs.content.clientHeight - 330);
+        const maxY = (this.$root.$children[0].$refs.content.clientHeight - 370);
         const maxX = (this.$root.$children[0].$refs.content.clientWidth - 240);
         y = (y >= maxY) ? maxY: y;
         x = (x >= maxX) ? maxX: x;

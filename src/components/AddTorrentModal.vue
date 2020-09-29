@@ -135,7 +135,7 @@ export default {
 </script>
 
 <style scoped>
-.model-add{
+div >>> .model-add {
   margin-top: 5%;
 }
 </style>

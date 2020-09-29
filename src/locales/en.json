@@ -22,7 +22,9 @@
       "start": "Start Selected Torrents",
       "stop": "Stop Selected Torrents",
       "startAll": "Start All Torrents",
-      "stopAll": "Stop All Torrents"
+      "stopAll": "Stop All Torrents",
+      "all": "All",
+      "selected": "Selected"
     },
     "footer": {
       "setting": "Setting Menu",

@@ -112,8 +112,10 @@ const TransmissionApiMixin = {
       const args = ARGUMENTS_TORRENT_REMOVE;
       args['delete-local-data'] = trash;
 
-      if (torrent != null && torrent.id != null) {
-        args.ids = [torrent.id];
+      if (Array.isArray(torrent)) {
+        args.ids = torrent.map(t => t.id)
+      } else if (torrent !== null && torrent.id !== null) {
+        args.ids = [torrent.id]
       }
 
       return this.request(TORRENT_REMOVE, args);

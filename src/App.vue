@@ -94,9 +94,11 @@ export default {
 </script>
 
 <style>
-#content {
-  z-index: 2;
+
+#footer {
+  z-index: 1;
 }
+
 #header {
   position: fixed;
   left: 0;
