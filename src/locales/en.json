@@ -30,7 +30,14 @@
       "setting": "Setting Menu",
       "prefs": "Edit Preference...",
       "limits": "Click to Enable Temporary Speed Limits",
-      "compact": "Compact View"
+      "compact": "Compact View",
+      "about": "About",
+      "homepage": "Transition Homepage",
+      "jar": "Transition Tip Jar",
+      "statistics": "Statistics",
+      "downloadRate": "Total Download Rate",
+      "uploadRate": "Total Upload Rate",
+      "sortTransferts": "Sort Transferts By"
     },
     "torrent": {
       "error": "Tracker returned an error: {0}",
