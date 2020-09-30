@@ -8,7 +8,6 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-import memFilter from '@/filters/mem.filter'
 import haveFilter from '@/filters/infos/infos.have.filter'
 import stateFilter from '@/filters/infos/infos.state.filter'
 import sizeFilter from '@/filters/size.filter.js'
@@ -38,7 +37,6 @@ Vue.filter('formatPercent', percentFilter);
 Vue.filter('formatCreator', creatorFilter);
 Vue.filter('formatStatus', statusFilter);
 Vue.filter('formatSize', sizeFilter);
-Vue.filter('formatMem', memFilter);
 
 Vue.filter('infosRemainingTime', remainingTimeFilter);
 Vue.filter('infosLastActivity', lastActivityFilter);

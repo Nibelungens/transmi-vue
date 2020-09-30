@@ -1,13 +1,22 @@
 import common from '../utils/common.utils'
 
-const size_K = 1000;
-const size_B_str = 'B';
-const size_K_str = 'kB';
-const size_M_str = 'MB';
-const size_G_str = 'GB';
-const size_T_str = 'TB';
+const size = function (bytes, mem) {
+    let size_K = 1000;
+    let size_B_str = 'B';
+    let size_K_str = 'kB';
+    let size_M_str = 'MB';
+    let size_G_str = 'GB';
+    let size_T_str = 'TB';
 
-const size = function (bytes) {
+    if (mem != null && mem === true) {
+        size_K = 1024;
+        size_B_str = 'B';
+        size_K_str = 'kiB';
+        size_M_str = 'MiB';
+        size_G_str = 'GiB';
+        size_T_str = 'TiB';
+    }
+
     if (bytes < size_K) {
         return [bytes, size_B_str].join(' ');
     }

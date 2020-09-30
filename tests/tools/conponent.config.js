@@ -13,7 +13,6 @@ localVue.filter('formatPercent', () => 'formatPercent' );
 localVue.filter('formatCreator', () => 'formatCreator' );
 localVue.filter('formatStatus', () => 'formatStatus' );
 localVue.filter('formatSize', () => 'formatSize' );
-localVue.filter('formatMem', () => 'formatMem' );
 
 localVue.filter('infosRemainingTime', () => 'infosRemainingTime');
 localVue.filter('infosLastActivity', () => 'infosLastActivity');

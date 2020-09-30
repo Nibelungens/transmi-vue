@@ -1,5 +1,4 @@
 import sizeFilter from '../size.filter.js'
-import memFilter from '../mem.filter'
 
 /**
  * @typedef  {Object} Torrent
@@ -27,7 +26,7 @@ const infos = function (torrents, i18n) {
         if (!size) {
             return i18n.t('message.filter.none');
         } else if (pieceSize > 0) {
-            return i18n.t('message.filter.sizeDetails.piecesMiss', [sizeFilter(size), pieces, memFilter(pieceSize)]);
+            return i18n.t('message.filter.sizeDetails.piecesMiss', [sizeFilter(size), pieces, sizeFilter(pieceSize, true)]);
         } else {
             return i18n.t('message.filter.sizeDetails.pieces', [sizeFilter(size), pieces]);
         }
