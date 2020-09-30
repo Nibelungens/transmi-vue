@@ -30,14 +30,32 @@
       "setting": "Setting Menu",
       "prefs": "Edit Preference...",
       "limits": "Click to Enable Temporary Speed Limits",
-      "compact": "Compact View",
+      "compact": "Compact View"
+    },
+    "menuSettings": {
       "about": "About",
       "homepage": "Transition Homepage",
       "jar": "Transition Tip Jar",
       "statistics": "Statistics",
       "downloadRate": "Total Download Rate",
       "uploadRate": "Total Upload Rate",
-      "sortTransferts": "Sort Transferts By"
+      "sortTransferts": "Sort Transferts By",
+      "transferts": {
+        "queue": "Queue Order",
+        "activity": "Activity",
+        "age": "Age",
+        "name": "Name",
+        "progress": "Progress",
+        "ratio": "Ratio",
+        "size": "Size",
+        "state": "State",
+        "reverse": "Reverse Sort Order"
+      },
+      "upload": {
+        "unlimited": "Unlimited",
+        "limit": "Limit ({0} kB/s)",
+        "rate": "{0} kB/s"
+      }
     },
     "torrent": {
       "error": "Tracker returned an error: {0}",
