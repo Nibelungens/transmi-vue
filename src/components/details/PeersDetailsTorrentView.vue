@@ -8,7 +8,7 @@
     </div>
     <div v-else v-for="torrent in torrents" :key="torrent.id">
       <div>{{torrent.name}}</div>
-      <table class="table table-striped table-sm border" v-if="torrent.peers != null && torrent.peers.length > 0" :aria-describedby="$t('message.peers.tableDescript')">
+      <table class="table table-striped table-sm border" v-if="torrent.peers != null && torrent.peers.length > 0" :aria-describedby="$t('message.peers.tableDescriptor')">
         <thead>
         <tr>
           <th scope="col" class="fix-cad"></th>
@@ -45,6 +45,16 @@ import filterSize from '@/filters/size.filter'
 import bus from "@/config/bus.event";
 import {mapGetters} from "vuex";
 
+/**
+ * @param {Object} torrents
+ * @param {Object} torrents.peers
+ * @param {Object} torrents.peer.rateToPeer
+ * @param {Object} torrents.peer.rateToClient
+ * @param {Object} torrents.peer.progress
+ * @param {Object} torrents.peer.flagStr
+ * @param {Object} torrents.peer.address
+ * @param {Object} torrents.peer.clientName
+ */
 export default {
   name: "PeersDetailsTorrentView",
   mixins: [

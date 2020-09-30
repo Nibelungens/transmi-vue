@@ -11,7 +11,7 @@
         <span class="info-row-end">{{ infos | infosHave($i18n) }}</span>
       </div>
       <div class="info-row">
-        <span class="info-row-start">{{ $t('message.details.info.avaibility') }}:</span>
+        <span class="info-row-start">{{ $t('message.details.info.availability') }}:</span>
         <span class="info-row-end">{{ infos | infosAvailability($i18n) }}</span>
       </div>
       <div class="info-row">

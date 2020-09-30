@@ -1,5 +1,15 @@
 import percentFilter from '../percent.filter.js'
 
+/**
+ * @typedef  {Object} Torrent
+ * @property {number} metadataPercentComplete
+ * @property {number} haveValid
+ * @property {number} haveUnchecked
+ * @property {number} desiredAvailable
+ *
+ * @param {Torrent[]} torrents
+ * @param {Object} i18n
+ */
 const infos = function (torrents, i18n) {
     let sizeWhenDone = 0;
     let available = 0;

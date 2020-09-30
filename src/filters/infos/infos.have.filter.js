@@ -1,6 +1,17 @@
 import sizeFilter from '../size.filter.js'
 import percentFilter from '../percent.filter'
 
+/**
+ * @typedef  {Object} Torrent
+ * @property {number} metadataPercentComplete
+ * @property {number} haveUnchecked
+ * @property {number} leftUntilDone
+ * @property {number} sizeWhenDone
+ * @property {number} haveValid
+ *
+ * @param {Torrent[]} torrents
+ * @param {Object} i18n
+ */
 const infos = function (torrents, i18n) {
     if (torrents.length < 1) {
         return i18n.t('message.filter.none');

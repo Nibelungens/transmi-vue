@@ -1,5 +1,12 @@
 import Status from '../constantes/status.const'
 
+/**
+ * @typedef  {Object} Torrent
+ * @property {string} status
+ *
+ * @param {Torrent} torrent
+ * @param {Object} i18n
+ */
 const status = function (torrent, i18n) {
     switch (torrent.status) {
         case Status.STATUS_STOPPED:

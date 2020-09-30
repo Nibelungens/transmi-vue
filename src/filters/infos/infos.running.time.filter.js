@@ -2,6 +2,14 @@ import Status from "@/constantes/status.const";
 import timeIntervalFilter from '../timeInterval.filter'
 import stateFilter from './infos.state.filter'
 
+/**
+ * @typedef  {Object} Torrent
+ * @property {string} status
+ * @property {number} startDate
+ *
+ * @param {Torrent[]} torrents
+ * @param {Object} i18n
+ */
 const infos = function (torrents, i18n) {
     if (torrents.length < 1) {
         return i18n.t('message.filter.none');

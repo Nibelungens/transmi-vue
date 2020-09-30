@@ -1,6 +1,14 @@
 import Status from '../../constantes/status.const'
 import statusFilter from '../status.filter'
 
+/**
+ * @typedef  {Object} Torrent
+ * @property {string} status
+ * @property {boolean} isFinished
+ *
+ * @param {Torrent[]} torrents
+ * @param {Object} i18n
+ */
 const infos = function (torrents, i18n) {
     if (torrents.length < 1) {
         return i18n.t('message.filter.none');

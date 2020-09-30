@@ -4,6 +4,23 @@ import percentFilter from './percent.filter.js'
 import ratioFilter from './ratio.filter.js'
 import sizeFilter from './size.filter.js'
 
+/**
+ * @typedef  {Object} Torrent
+ * @property {number} metadataPercentComplete
+ * @property {number} sizeWhenDone
+ * @property {number} totalSize
+ * @property {number} leftUntilDone
+ * @property {number} totalSize
+ * @property {number} percentDone
+ * @property {number} uploadedEver
+ * @property {number} uploadRatio
+ * @property {number} seedRatioLimit
+ * @property {string} status
+ * @property {number} eta
+ *
+ * @param {Torrent} torrent
+ * @param {Object} i18n
+ */
 const remaining = function (torrent, i18n) {
     if (torrent.metadataPercentComplete < 1) {
         let MetaDataStatus = i18n.t('message.filter.remaining.retrieving');

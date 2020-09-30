@@ -1,3 +1,10 @@
+/**
+ * @typedef  {Object} Torrent
+ * @property {string} errorString
+ *
+ * @param {Torrent[]} torrents
+ * @param {Object} i18n
+ */
 const infos = function (torrents, i18n) {
     if (torrents.length < 1) {
         return i18n.t('message.filter.none');

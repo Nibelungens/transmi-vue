@@ -85,7 +85,7 @@
         "mixed": "Mixed",
         "activity": "Activity",
         "have": "Have",
-        "avaibility": "Avaibility",
+        "availability": "Avaibility",
         "upload": "Upload",
         "downloaded": "Downloaded",
         "state": "State",
@@ -111,7 +111,7 @@
       "status": "Status",
       "address": "Address",
       "client": "Client",
-      "tableDescript": "Peers list"
+      "tableDescriptor": "Peers list"
     },
     "filter": {
       "none": "-",

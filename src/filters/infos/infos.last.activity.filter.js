@@ -1,5 +1,12 @@
 import timeInterval from '../timeInterval.filter'
 
+/**
+ * @typedef  {Object} Torrent
+ * @property {number} activityDate
+ *
+ * @param {Torrent[]} torrents
+ * @param {Object} i18n
+ */
 const infos = function (torrents, i18n) {
     let latest = -1;
 
