@@ -4,7 +4,7 @@ import percentFilter from './percent.filter.js'
 import ratioFilter from './ratio.filter.js'
 import sizeFilter from './size.filter.js'
 
-const filter = function (torrent, i18n) {
+const remaining = function (torrent, i18n) {
     if (torrent.metadataPercentComplete < 1) {
         let MetaDataStatus = i18n.t('message.filter.remaining.retrieving');
         if (torrent.status === Status.STATUS_STOPPED) {
@@ -49,4 +49,4 @@ const filter = function (torrent, i18n) {
     return c.join('');
 }
 
-export default filter;
+export default remaining;

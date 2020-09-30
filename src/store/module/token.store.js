@@ -4,8 +4,8 @@ const state = () => ({
 })
 
 const getters = {
-    getToken: state => state.token,
-    isAuth: state => state.auth
+    getToken: s => s.token,
+    isAuth: s => s.auth
 }
 
 const actions = {
@@ -13,13 +13,13 @@ const actions = {
 }
 
 const mutations = {
-    CONNECT(state, payload) {
-        state.auth = true;
-        state.token = payload;
+    CONNECT(s, payload) {
+        s.auth = true;
+        s.token = payload;
     },
-    DISCONNECT(state) {
-        state.auth = false;
-        state.token = '';
+    DISCONNECT(s) {
+        s.auth = false;
+        s.token = '';
     }
 }
 

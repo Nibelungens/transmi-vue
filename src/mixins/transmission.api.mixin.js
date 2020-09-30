@@ -81,7 +81,7 @@ const ARGUMENT_FREE_SPACE = {
   "path":null
 }
 
-const TransmissionApiMixin = {
+const Transmission = {
   methods: {
     addTorrent(downloadDir, metaInfo, url, start) {
       const args = ARGUMENTS_TORRENT_ADD;
@@ -162,4 +162,4 @@ const TransmissionApiMixin = {
   }
 }
 
-export default TransmissionApiMixin;
+export default Transmission;

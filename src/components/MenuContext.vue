@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import bus from "@/config/event.bus";
+import bus from "@/config/bus.event";
 import events from "@/constantes/key.event.const";
 import Status from "@/constantes/status.const";
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";

@@ -1,6 +1,6 @@
 import timeInterval from '../timeInterval.filter'
 
-const filter = function (torrents, i18n) {
+const infos = function (torrents, i18n) {
     let latest = -1;
 
     if (torrents.length < 1) {
@@ -26,4 +26,4 @@ const filter = function (torrents, i18n) {
     }
 }
 
-export default filter;
+export default infos;

@@ -1,4 +1,4 @@
-const filter = function (array, value, i18n) {
+const infos = function (array, value, i18n) {
     let val = '';
 
     if (array.length === 0) {
@@ -20,4 +20,4 @@ const filter = function (array, value, i18n) {
         :i18n.t('message.filter.none');
 }
 
-export default filter;
+export default infos;

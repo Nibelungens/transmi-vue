@@ -8,7 +8,7 @@
     </div>
     <div v-else v-for="torrent in torrents" :key="torrent.id">
       <div>{{torrent.name}}</div>
-      <table class="table table-striped table-sm border" v-if="torrent.peers != null && torrent.peers.length > 0">
+      <table class="table table-striped table-sm border" v-if="torrent.peers != null && torrent.peers.length > 0" :aria-describedby="$t('message.peers.tableDescript')">
         <thead>
         <tr>
           <th scope="col" class="fix-cad"></th>
@@ -42,7 +42,7 @@ import IntervalMixin from "@/mixins/interval.mixin";
 import keyStore from "@/constantes/key.store.const"
 import events from "@/constantes/key.event.const"
 import filterSize from '@/filters/size.filter'
-import bus from "@/config/event.bus";
+import bus from "@/config/bus.event";
 import {mapGetters} from "vuex";
 
 export default {

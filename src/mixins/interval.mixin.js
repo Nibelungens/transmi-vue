@@ -1,7 +1,7 @@
 import {mapGetters} from "vuex";
 import keyStore from "@/constantes/key.store.const";
 
-const IntervalMixin = {
+const Interval = {
     data() {
         return {
             interval: null
@@ -32,4 +32,4 @@ const IntervalMixin = {
     }
 }
 
-export default IntervalMixin;
+export default Interval;

@@ -1,6 +1,6 @@
 import percentFilter from '../percent.filter.js'
 
-const filter = function (torrents, i18n) {
+const infos = function (torrents, i18n) {
     let sizeWhenDone = 0;
     let available = 0;
 
@@ -13,11 +13,11 @@ const filter = function (torrents, i18n) {
 
     if (torrents.length < 1) {
         return i18n.t('message.filter.none');
-    } if (sizeWhenDone === 0) {
+    } else if (sizeWhenDone === 0) {
         return i18n.t('message.filter.none');
     } else {
         return percentFilter((100.0 * available) / sizeWhenDone) + '%';
     }
 }
 
-export default filter;
+export default infos;

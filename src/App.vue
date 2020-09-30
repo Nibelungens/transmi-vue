@@ -15,7 +15,7 @@ import HeaderTransmission from "@/components/ui/HeaderTransmission";
 import FooterTransmission from "@/components/ui/FooterTransmission";
 import ListTorrentsView from '@/components/ListTorrentsView';
 import events from "@/constantes/key.event.const"
-import bus from "@/config/event.bus";
+import bus from "@/config/bus.event";
 import IntervalMixin from "@/mixins/interval.mixin"
 import ResultMixin from "@/mixins/result.mixin";
 import AddTorrentModal from "@/components/AddTorrentModal";

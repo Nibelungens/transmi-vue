@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import bus from "@/config/event.bus";
+import bus from "@/config/bus.event";
 import events from "@/constantes/key.event.const";
 import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import ResultMixin from "@/mixins/result.mixin";
@@ -81,10 +81,10 @@ export default {
       this.$bvModal.show(ADD_TORRENT_MODAL);
     },
     toBase64(file){
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (reader) => this.add(this.toTransmission(reader), null, file.name);
-      reader.onerror = this.fail;
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = (reader) => this.add(this.toTransmission(reader), null, file.name);
+      fileReader.onerror = this.fail;
     },
     addSuccess(response, name) {
       this.reset();

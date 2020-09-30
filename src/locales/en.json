@@ -110,7 +110,8 @@
       "percent": "%",
       "status": "Status",
       "address": "Address",
-      "client": "Client"
+      "client": "Client",
+      "tableDescript": "Peers list"
     },
     "filter": {
       "none": "-",

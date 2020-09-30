@@ -1,6 +1,6 @@
 import Status from '../constantes/status.const'
 
-const filter = function (torrent, i18n) {
+const status = function (torrent, i18n) {
     switch (torrent.status) {
         case Status.STATUS_STOPPED:
             return torrent.isFinished ? i18n.t('message.filter.status.complete') : i18n.t('message.filter.status.paused');
@@ -24,4 +24,4 @@ const filter = function (torrent, i18n) {
     }
 }
 
-export default filter;
+export default status;

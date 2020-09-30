@@ -4,8 +4,8 @@ const state = () => ({
 })
 
 const getters = {
-    getTorrents: state => state.torrents,
-    getSelectedTorrents: state => state.selectedTorrents,
+    getTorrents: s => s.torrents,
+    getSelectedTorrents: s => s.selectedTorrents,
 }
 
 const actions = {
@@ -13,23 +13,23 @@ const actions = {
 }
 
 const mutations = {
-    SELECTED(state, payload) {
-        state.selectedTorrents = [payload];
+    SELECTED(s, payload) {
+        s.selectedTorrents = [payload];
     },
-    UNSELECTED(state) {
-        state.selectedTorrents = [];
+    UNSELECTED(s) {
+        s.selectedTorrents = [];
     },
-    ADD_SELECTED(state, payload) {
-        state.selectedTorrents.push(payload);
+    ADD_SELECTED(s, payload) {
+        s.selectedTorrents.push(payload);
     },
-    REMOVE_SELECTED(state, payload) {
-        const index = state.selectedTorrents.findIndex((torrent) => torrent.id === payload.id);
+    REMOVE_SELECTED(s, payload) {
+        const index = s.selectedTorrents.findIndex((torrent) => torrent.id === payload.id);
         if (index !== -1) {
-            state.selectedTorrents.splice(index, 1);
+            s.selectedTorrents.splice(index, 1);
         }
     },
-    SET_LIST_TORRENT(state, payload) {
-        state.torrents = payload;
+    SET_LIST_TORRENT(s, payload) {
+        s.torrents = payload;
     }
 }
 

@@ -29,7 +29,7 @@
 import MenuSettings from "@/components/MenuSettings";
 import SetInterval from "@/components/SetInterval";
 import events from "@/constantes/key.event.const";
-import bus from "@/config/event.bus";
+import bus from "@/config/bus.event";
 
 export default {
   name: 'footer-transmission',

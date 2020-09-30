@@ -1,4 +1,4 @@
-const store = {
+const key = {
     // GETTERS STORE TORRENT
     GET_SELECTED_TORRENTS: 'Torrents/getSelectedTorrents',
     GET_TORRENT: 'Torrents/getTorrents',
@@ -25,4 +25,4 @@ const store = {
     SET_SORT: 'Config/SET_SORT'
 }
 
-export default store;
+export default key;

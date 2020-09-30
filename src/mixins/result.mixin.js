@@ -1,8 +1,8 @@
 import events from "@/constantes/key.event.const";
-import bus from "@/config/event.bus";
+import bus from "@/config/bus.event";
 import keyStore from "@/constantes/key.store.const";
 
-const ResultMixin = {
+const result = {
     methods: {
         success(response) {
             bus.$emit(events.NOTIFICATION_SUCCESS, response.data.result);
@@ -17,4 +17,4 @@ const ResultMixin = {
     }
 }
 
-export default ResultMixin;
+export default result;

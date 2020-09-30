@@ -1,4 +1,4 @@
-const events = {
+const key = {
     NOTIFICATION_SUCCESS: 'notification_success',
     NOTIFICATION_FAIL: 'notification_fail',
     NOTIFICATION_WARN: 'notification_warn',
@@ -13,5 +13,5 @@ const events = {
     ACTION: 'action'
 }
 
-export default events;
+export default key;
 

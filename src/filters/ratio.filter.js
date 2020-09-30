@@ -1,6 +1,6 @@
 import percentFilter from './percent.filter'
 
-const filter = function (value) {
+const ratio = function (value) {
     if (value === -1) {
         return 'None';
     }
@@ -10,4 +10,4 @@ const filter = function (value) {
     return percentFilter(value);
 }
 
-export default filter;
+export default ratio;

@@ -29,7 +29,7 @@ import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import keyStore from "@/constantes/key.store.const";
 import events from "@/constantes/key.event.const"
 import Status from "@/constantes/status.const";
-import bus from "@/config/event.bus";
+import bus from "@/config/bus.event";
 import MenuContext from '@/components/MenuContext'
 import ResultMixin from "@/mixins/result.mixin";
 

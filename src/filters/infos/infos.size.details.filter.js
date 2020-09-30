@@ -1,7 +1,7 @@
 import sizeFilter from '../size.filter.js'
 import memFilter from '../mem.filter'
 
-const filter = function (torrents, i18n) {
+const infos = function (torrents, i18n) {
     if (torrents.length < 1) {
             return i18n.t('message.filter.none');
     } else {
@@ -25,4 +25,4 @@ const filter = function (torrents, i18n) {
     }
 }
 
-export default filter;
+export default infos;

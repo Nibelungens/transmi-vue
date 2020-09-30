@@ -2,7 +2,7 @@ import Vue from 'vue'
 import i18n from '@/i18n'
 import App from '@/App.vue'
 import store from '@/store/index.store'
-import interceptor from "@/config/http.interceptor";
+import interceptor from "@/config/interceptor.http";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 import 'bootstrap/dist/css/bootstrap.css'

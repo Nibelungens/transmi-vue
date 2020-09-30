@@ -7,7 +7,7 @@ const size_M_str = 'MB';
 const size_G_str = 'GB';
 const size_T_str = 'TB';
 
-const filter = function (bytes) {
+const size = function (bytes) {
     if (bytes < size_K) {
         return [bytes, size_B_str].join(' ');
     }
@@ -34,4 +34,4 @@ const filter = function (bytes) {
         : [common.toTruncFixed(convertedSize, 1), unit].join(' ');
 }
 
-export default filter;
+export default size;

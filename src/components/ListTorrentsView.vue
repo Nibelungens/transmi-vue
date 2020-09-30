@@ -16,7 +16,7 @@ import keyStore from "@/constantes/key.store.const";
 import TorrentView from "@/components/TorrentView";
 import {mapGetters} from "vuex";
 import events from "@/constantes/key.event.const";
-import bus from "@/config/event.bus";
+import bus from "@/config/bus.event";
 
 export default {
   name: 'ListTorrentsView',

@@ -7,7 +7,7 @@ const mem_M_str = 'MiB';
 const mem_G_str = 'GiB';
 const mem_T_str = 'TiB';
 
-const filter = function (bytes) {
+const mem = function (bytes) {
     if (bytes < mem_K) {
         return [bytes, mem_B_str].join(' ');
     }
@@ -35,4 +35,4 @@ const filter = function (bytes) {
         : [common.toTruncFixed(convertedSize, 1), unit].join(' ');
 }
 
-export default filter;
+export default mem;

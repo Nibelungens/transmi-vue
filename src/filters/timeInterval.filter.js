@@ -1,4 +1,4 @@
-const filter = function (value) {
+const timeInterval = function (value) {
     const days = Math.floor(value / 86400);
     const hours = Math.floor((value % 86400) / 3600);
     const minutes = Math.floor((value % 3600) / 60);
@@ -29,4 +29,4 @@ const filter = function (value) {
     return s;
 }
 
-export default filter;
+export default timeInterval;

@@ -11,13 +11,13 @@ const state = () => ({
 })
 
 const getters = {
-    getDownloadDirFreeSpace: state => state.downloadDirFreeSpace,
-    getSelectSortReverse: state => state.selectSort.reverse,
-    getSelectSortCol: state => state.selectSort.col,
-    getDownloadLimit: state => state.downloadLimit,
-    getTimeRefresh: state => state.timeRefresh,
-    getDownloadDir: state => state.downloadDir,
-    getUploadLimit: state => state.uploadLimit
+    getDownloadDirFreeSpace: s => s.downloadDirFreeSpace,
+    getSelectSortReverse: s => s.selectSort.reverse,
+    getSelectSortCol: s => s.selectSort.col,
+    getDownloadLimit: s => s.downloadLimit,
+    getTimeRefresh: s => s.timeRefresh,
+    getDownloadDir: s => s.downloadDir,
+    getUploadLimit: s => s.uploadLimit
 }
 
 const actions = {
@@ -25,25 +25,25 @@ const actions = {
 }
 
 const mutations = {
-    SET_TIME_REFRESH(state, payload) {
-        state.timeRefresh = payload;
+    SET_TIME_REFRESH(s, payload) {
+        s.timeRefresh = payload;
     },
-    SET_CONFIG(state, payload) {
-        state.downloadDir = payload['download-dir'];
-        state.downloadDirFreeSpace = payload['download-dir-free-space'];
+    SET_CONFIG(s, payload) {
+        s.downloadDir = payload['download-dir'];
+        s.downloadDirFreeSpace = payload['download-dir-free-space'];
     },
-    SET_DOWNLOAD_DIR_FREE_SPACE(state, payload) {
-        state.downloadDirFreeSpace = payload;
+    SET_DOWNLOAD_DIR_FREE_SPACE(s, payload) {
+        s.downloadDirFreeSpace = payload;
     },
-    SET_SORT(state, payload) {
-        state.selectSort.col = payload[0];
-        state.selectSort.reverse = payload[1];
+    SET_SORT(s, payload) {
+        s.selectSort.col = payload[0];
+        s.selectSort.reverse = payload[1];
     },
-    SET_UPLOAD(state, payload) {
-        state.uploadLimit = payload;
+    SET_UPLOAD(s, payload) {
+        s.uploadLimit = payload;
     },
-    SET_DOWNLOAD(state, payload) {
-        state.downloadLimit = payload;
+    SET_DOWNLOAD(s, payload) {
+        s.downloadLimit = payload;
     }
 }
 
