@@ -14,10 +14,10 @@
             {{$t('message.menuSettings.about')}}
           </li>
           <li class="list-group-item m-divider"/>
-          <li href="#" class="list-group-item m-row list-group-item-action">
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="openLink('https://transmissionbt.com/')">
             {{$t('message.menuSettings.homepage')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action">
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="openLink('https://transmissionbt.com/donate/')">
             {{$t('message.menuSettings.jar')}}
           </li>
           <li class="list-group-item m-divider"/>
@@ -143,6 +143,9 @@ export default {
     this.$root.$el.onclick = this.closeAll;
   },
   methods: {
+    openLink(link) {
+      window.open(link);
+    },
     getClientVersion() {
       return version;
     },
