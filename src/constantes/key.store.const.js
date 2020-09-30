@@ -10,6 +10,7 @@ const key = {
     GET_DOWNLOAD_DIR: 'Config/getDownloadDir',
     GET_TIME_REFRESH: 'Config/getTimeRefresh',
     GET_UPLOAD_LIMIT: 'Config/getUploadLimit',
+    GET_VERSION: 'Config/getVersion',
     // MUTATION STORE TORRENT
     SET_LIST_TORRENT: 'Torrents/SET_LIST_TORRENT',
     REMOVE_SELECTED: 'Torrents/REMOVE_SELECTED',

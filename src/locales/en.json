@@ -40,6 +40,13 @@
       "downloadRate": "Total Download Rate",
       "uploadRate": "Total Upload Rate",
       "sortTransferts": "Sort Transferts By",
+      "aboutModal": {
+        "title": "About",
+        "transmission": "Transmission: v{0}",
+        "transmissionVue": "Transmission Vue: v{0}",
+        "description": "A fast and easy BitTorrent client",
+        "copyright": "Copyright (c) The Transmission Project"
+      },
       "transferts": {
         "queue": "Queue Order",
         "activity": "Activity",

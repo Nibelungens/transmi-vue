@@ -1,9 +1,16 @@
 <template>
   <div>
+    <b-modal id="modal-about" :title="$t('message.menuSettings.aboutModal.title')" centered hide-footer>
+      <img src="../assets/logo.png" alt="logo" width="128" height="128" class="mx-auto d-block"/>
+      <div class="font-weight-bold text-center mt-1">{{$t('message.menuSettings.aboutModal.transmission', [this.version])}}</div>
+      <div class="font-weight-bold text-center">{{$t('message.menuSettings.aboutModal.transmissionVue', [this.getClientVersion()])}}</div>
+      <div class="font-weight-lighter text-center mt-2">{{$t('message.menuSettings.aboutModal.description')}}</div>
+      <div class="font-weight-lighter text-center mb-4">{{$t('message.menuSettings.aboutModal.copyright')}}</div>
+    </b-modal>
     <transition name="slide-x">
       <div v-show="extendsTools" class="drown-up" id="menuSettingRoot">
         <ul class="list-group m-list">
-          <li href="#" class="list-group-item m-row list-group-item-action">
+          <li href="#" class="list-group-item m-row list-group-item-action" v-b-modal.modal-about>
             {{$t('message.menuSettings.about')}}
           </li>
           <li class="list-group-item m-divider"/>
@@ -104,6 +111,7 @@
 </template>
 
 <script>
+import { version } from '@/../package.json'
 import events from "@/constantes/key.event.const";
 import bus from "@/config/bus.event";
 import {mapGetters} from "vuex";
@@ -126,7 +134,8 @@ export default {
       reverse: keyStore.GET_SELECT_SORT_REVERSE,
       downloadLimit: keyStore.GET_UPLOAD_LIMIT,
       uploadLimit: keyStore.GET_UPLOAD_LIMIT,
-      col: keyStore.GET_SELECT_SORT_COL
+      col: keyStore.GET_SELECT_SORT_COL,
+      version: keyStore.GET_VERSION
     })
   },
   mounted() {
@@ -134,6 +143,9 @@ export default {
     this.$root.$el.onclick = this.closeAll;
   },
   methods: {
+    getClientVersion() {
+      return version;
+    },
     idNotInPath(event, id) {
       return !event.path.map(element => element.id).includes(id)
     },
