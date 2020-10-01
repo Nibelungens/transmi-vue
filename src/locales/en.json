@@ -47,6 +47,16 @@
         "description": "A fast and easy BitTorrent client",
         "copyright": "Copyright (c) The Transmission Project"
       },
+      "statsModal": {
+        "title": "Statistics",
+        "started": "Started",
+        "current": "Current Session",
+        "total": "Total",
+        "uploaded": "Uploaded",
+        "downloaded": "Downloaded",
+        "ratio": "Ratio",
+        "runningTime": "Running Time"
+      },
       "transferts": {
         "queue": "Queue Order",
         "activity": "Activity",

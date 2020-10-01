@@ -7,11 +7,10 @@ const TORRENT_REMOVE = "torrent-remove";
 const FREE_SPACE = "free-space";
 const SESSION_GET = "session-get";
 const TORRENT_ADD = "torrent-add";
+const SESSION_STATS = "session-stats";
 
 const ARGUMENTS_TORRENT_ADD = {
   "download-dir": null,
-  // "metainfo": null,
-  // "filename": null,
   "paused": null
 }
 
@@ -100,6 +99,31 @@ const Transmission = {
       return axios.post('/api',
           {
             "method": SESSION_GET
+          });
+    },
+    /**
+     * @typedef  {Object} Stats
+     * @property {number} downloadedBytes
+     * @property {number} filesAdded
+     * @property {number} secondsActive
+     * @property {number} sessionCount
+     * @property {number} uploadedBytes
+     *
+     * @typedef  {Object} Arguments
+     * @property {number} activeTorrentCount
+     * @property {Stats} cumulative-stats
+     * @property {Stats} current-stats
+     * @property {number} downloadSpeed
+     * @property {number} pausedTorrentCount
+     * @property {number} torrentCount
+     * @property {number} uploadSpeed
+     *
+     * @return {Promise<Arguments>}
+     */
+    getSessionStat() {
+      return axios.post('/api',
+          {
+            "method": SESSION_STATS
           });
     },
     getFreeSpace(path) {
