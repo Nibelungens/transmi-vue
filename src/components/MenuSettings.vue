@@ -1,13 +1,19 @@
 <template>
   <div>
-    <b-modal id="modal-about" :title="$t('message.menuSettings.aboutModal.title')" centered hide-footer>
+    <b-modal id="modal-about" centered hide-footer>
+      <template v-slot:modal-title>
+        <b-icon icon="question-circle-fill"></b-icon><span class="ml-3">{{ $t('message.menuSettings.aboutModal.title') }}</span>
+      </template>
       <img src="../assets/logo.png" alt="logo" width="128" height="128" class="mx-auto d-block"/>
       <div class="font-weight-bold text-center mt-1">{{$t('message.menuSettings.aboutModal.transmission', [this.version])}}</div>
       <div class="font-weight-bold text-center">{{$t('message.menuSettings.aboutModal.transmissionVue', [this.getClientVersion()])}}</div>
       <div class="font-weight-lighter text-center mt-2">{{$t('message.menuSettings.aboutModal.description')}}</div>
       <div class="font-weight-lighter text-center mb-4">{{$t('message.menuSettings.aboutModal.copyright')}}</div>
     </b-modal>
-    <b-modal id="modal-stat" size="sm" :title="$t('message.menuSettings.statsModal.title')" centered hide-footer>
+    <b-modal id="modal-stat" size="sm" centered hide-footer>
+      <template v-slot:modal-title>
+        <b-icon icon="info-circle-fill"></b-icon><span class="ml-3">{{ $t('message.menuSettings.statsModal.title') }}</span>
+      </template>
       <div class="d-flex justify-content-center">
         <div v-if="!loadedStat" class="info-spin spin-stats">
           <b-spinner type="grow" label="Loading..."></b-spinner>
@@ -91,29 +97,29 @@
     <transition name="slide-y-transfert">
       <div v-show="extendsTransferts" class="drown-up-transfert">
         <ul class="list-group m-list">
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('queue')">
-            <span class="dot"><b-icon v-show="col === 'queue'" icon="check"/></span>{{$t('message.menuSettings.transferts.queue')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('queuePosition')">
+            <span class="dot"><b-icon v-show="col === 'queuePosition'" icon="check"/></span>{{$t('message.menuSettings.transferts.queue')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('activity')">
-            <span class="dot"><b-icon v-show="col === 'activity'" icon="check"/></span>{{$t('message.menuSettings.transferts.activity')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('activityDate')">
+            <span class="dot"><b-icon v-show="col === 'activityDate'" icon="check"/></span>{{$t('message.menuSettings.transferts.activity')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('age')">
-            <span class="dot"><b-icon v-show="col === 'age'" icon="check"/></span>{{$t('message.menuSettings.transferts.age')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('dateCreated')">
+            <span class="dot"><b-icon v-show="col === 'dateCreated'" icon="check"/></span>{{$t('message.menuSettings.transferts.age')}}
           </li>
           <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('name')">
             <span class="dot"><b-icon v-show="col === 'name'" icon="check"/></span>{{$t('message.menuSettings.transferts.name')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('progress')">
-            <span class="dot"><b-icon v-show="col === 'progress'" icon="check"/></span>{{$t('message.menuSettings.transferts.progress')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('metadataPercentComplete')">
+            <span class="dot"><b-icon v-show="col === 'metadataPercentComplete'" icon="check"/></span>{{$t('message.menuSettings.transferts.progress')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('ratio')">
-            <span class="dot"><b-icon v-show="col === 'ratio'" icon="check"/></span>{{$t('message.menuSettings.transferts.ratio')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('uploadRatio')">
+            <span class="dot"><b-icon v-show="col === 'uploadRatio'" icon="check"/></span>{{$t('message.menuSettings.transferts.ratio')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('size')">
-            <span class="dot"><b-icon v-show="col === 'size'" icon="check"/></span>{{$t('message.menuSettings.transferts.size')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('totalSize')">
+            <span class="dot"><b-icon v-show="col === 'totalSize'" icon="check"/></span>{{$t('message.menuSettings.transferts.size')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('state')">
-            <span class="dot"><b-icon v-show="col === 'state'" icon="check"/></span>{{$t('message.menuSettings.transferts.state')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('status')">
+            <span class="dot"><b-icon v-show="col === 'status'" icon="check"/></span>{{$t('message.menuSettings.transferts.state')}}
           </li>
           <li class="list-group-item m-divider"/>
           <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="reverseSort">
@@ -182,6 +188,8 @@ export default {
       extendsUpload: false,
       extendsTools: false,
       idSource: null,
+      downloadLimit: null,
+      uploadLimit: null,
       stats: {
         "current-stats": {
           uploadedBytes: null,
@@ -202,8 +210,6 @@ export default {
   computed: {
     ...mapGetters({
       reverse: keyStore.GET_SELECT_SORT_REVERSE,
-      downloadLimit: keyStore.GET_UPLOAD_LIMIT,
-      uploadLimit: keyStore.GET_UPLOAD_LIMIT,
       col: keyStore.GET_SELECT_SORT_COL,
       version: keyStore.GET_VERSION
     })
@@ -249,6 +255,21 @@ export default {
       this.extendsTools = !this.extendsTools
       this.extendsTransferts = this.extendsDownload = this.extendsUpload = false;
       this.idSource = id;
+
+      if (this.extendsTools) {
+        this.getSession()
+          .then(result => {
+            if (result.data.result === 'success') {
+              result.data.arguments['speed-limit-down-enabled']
+                  ? this.downloadLimit = result.data.arguments['speed-limit-down']
+                  : this.downloadLimit = null;
+              result.data.arguments['speed-limit-up-enabled']
+                  ? this.uploadLimit = result.data.arguments['speed-limit-up']
+                  : this.uploadLimit = null;
+            }
+          })
+        .catch(this.fail)
+      }
     },
     sort(sortCol) {
       this.$store.commit(keyStore.SET_SORT, [sortCol, this.reverse]);
@@ -257,10 +278,14 @@ export default {
       this.$store.commit(keyStore.SET_SORT, [this.col, !this.reverse]);
     },
     setUpload(value) {
-      this.$store.commit(keyStore.SET_UPLOAD, value);
+      this.setUploadLimit(value)
+          .then(() => {this.uploadLimit = value})
+          .catch(this.fail);
     },
     setDownload(value) {
-      this.$store.commit(keyStore.SET_DOWNLOAD, value);
+      this.setDownloadLimit(value)
+          .then(() => {this.downloadLimit = value})
+          .catch(this.fail);
     },
     isLast(value) {
       return this.rates[this.rates.length-1] === value;

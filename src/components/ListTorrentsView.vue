@@ -28,7 +28,11 @@ export default {
     TransmissionApiMixin
   ],
   computed: {
-  ...mapGetters({torrents: keyStore.GET_TORRENT})
+  ...mapGetters({
+    torrents: keyStore.GET_TORRENT,
+    getSortCol: keyStore.GET_SELECT_SORT_COL,
+    getSelectSortReverse: keyStore.GET_SELECT_SORT_REVERSE
+  })
   },
   data: function() {
     return {
@@ -42,14 +46,20 @@ export default {
     switchPanel() {
       this.isPanelShow = !this.isPanelShow;
     },
-    compareName(a, b) {
-      if (a.name > b.name) return 1;
-      if (b.name > a.name) return -1;
+    compare(a, b, col) {
+      if (a[col] > b[col]) return 1;
+      if (b[col] > a[col]) return -1;
 
       return 0;
     },
     getSortedTorrents() {
-      return [...this.torrents].sort(this.compareName);
+      let array = [...this.torrents].sort((a, b) => this.compare(a, b, this.getSortCol));
+
+      if (this.getSelectSortReverse) {
+        array = array.reverse();
+      }
+
+      return array;
     }
   }
 }

@@ -1,9 +1,7 @@
 const state = () => ({
     downloadDirFreeSpace: null,
-    downloadLimit: null,
     timeRefresh: 1000,
     downloadDir: null,
-    uploadLimit: null,
     version: null,
     selectSort: {
         col: 'name',
@@ -15,10 +13,8 @@ const getters = {
     getDownloadDirFreeSpace: s => s.downloadDirFreeSpace,
     getSelectSortReverse: s => s.selectSort.reverse,
     getSelectSortCol: s => s.selectSort.col,
-    getDownloadLimit: s => s.downloadLimit,
-    getTimeRefresh: s => s.timeRefresh,
     getDownloadDir: s => s.downloadDir,
-    getUploadLimit: s => s.uploadLimit,
+    getTimeRefresh: s => s.timeRefresh,
     getVersion: s => s.version,
 }
 
@@ -41,12 +37,6 @@ const mutations = {
     SET_SORT(s, payload) {
         s.selectSort.col = payload[0];
         s.selectSort.reverse = payload[1];
-    },
-    SET_UPLOAD(s, payload) {
-        s.uploadLimit = payload;
-    },
-    SET_DOWNLOAD(s, payload) {
-        s.downloadLimit = payload;
     }
 }
 
