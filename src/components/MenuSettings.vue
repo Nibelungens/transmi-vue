@@ -97,29 +97,29 @@
     <transition name="slide-y-transfert">
       <div v-show="extendsTransferts" class="drown-up-transfert">
         <ul class="list-group m-list">
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('queuePosition')">
-            <span class="dot"><b-icon v-show="col === 'queuePosition'" icon="check"/></span>{{$t('message.menuSettings.transferts.queue')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort(COLUMN.QUEUE_POSITION)">
+            <span class="dot"><b-icon v-show="col === COLUMN.QUEUE_POSITION" icon="check"/></span>{{$t('message.menuSettings.transferts.queue')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('activityDate')">
-            <span class="dot"><b-icon v-show="col === 'activityDate'" icon="check"/></span>{{$t('message.menuSettings.transferts.activity')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort(COLUMN.ACTIVITY_DATE)">
+            <span class="dot"><b-icon v-show="col === COLUMN.ACTIVITY_DATE" icon="check"/></span>{{$t('message.menuSettings.transferts.activity')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('dateCreated')">
-            <span class="dot"><b-icon v-show="col === 'dateCreated'" icon="check"/></span>{{$t('message.menuSettings.transferts.age')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort(COLUMN.DATE_CREATED)">
+            <span class="dot"><b-icon v-show="col === COLUMN.DATE_CREATED" icon="check"/></span>{{$t('message.menuSettings.transferts.age')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('name')">
-            <span class="dot"><b-icon v-show="col === 'name'" icon="check"/></span>{{$t('message.menuSettings.transferts.name')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort(COLUMN.NAME)">
+            <span class="dot"><b-icon v-show="col === COLUMN.NAME" icon="check"/></span>{{$t('message.menuSettings.transferts.name')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('metadataPercentComplete')">
-            <span class="dot"><b-icon v-show="col === 'metadataPercentComplete'" icon="check"/></span>{{$t('message.menuSettings.transferts.progress')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort(COLUMN.METADATA_PERCENT_COMPLETE)">
+            <span class="dot"><b-icon v-show="col === COLUMN.METADATA_PERCENT_COMPLETE" icon="check"/></span>{{$t('message.menuSettings.transferts.progress')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('uploadRatio')">
-            <span class="dot"><b-icon v-show="col === 'uploadRatio'" icon="check"/></span>{{$t('message.menuSettings.transferts.ratio')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort(COLUMN.UPLOAD_RATIO)">
+            <span class="dot"><b-icon v-show="col === COLUMN.UPLOAD_RATIO" icon="check"/></span>{{$t('message.menuSettings.transferts.ratio')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('totalSize')">
-            <span class="dot"><b-icon v-show="col === 'totalSize'" icon="check"/></span>{{$t('message.menuSettings.transferts.size')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort(COLUMN.TOTAL_SIZE)">
+            <span class="dot"><b-icon v-show="col === COLUMN.TOTAL_SIZE" icon="check"/></span>{{$t('message.menuSettings.transferts.size')}}
           </li>
-          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort('status')">
-            <span class="dot"><b-icon v-show="col === 'status'" icon="check"/></span>{{$t('message.menuSettings.transferts.state')}}
+          <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="sort(COLUMN.STATUS)">
+            <span class="dot"><b-icon v-show="col === COLUMN.STATUS" icon="check"/></span>{{$t('message.menuSettings.transferts.state')}}
           </li>
           <li class="list-group-item m-divider"/>
           <li href="#" class="list-group-item m-row list-group-item-action" v-on:click="reverseSort">
@@ -173,7 +173,6 @@ import TransmissionApi from "@/mixins/transmission.api.mixin";
 import Result from "@/mixins/result.mixin";
 import commonUtils from "@/utils/common.utils";
 
-
 export default {
   name: "MenuSettings",
   mixins: [
@@ -214,11 +213,26 @@ export default {
       version: keyStore.GET_VERSION
     })
   },
+  created() {
+    this.COLUMN = {
+      METADATA_PERCENT_COMPLETE: 'metadataPercentComplete',
+      QUEUE_POSITION: 'queuePosition',
+      ACTIVITY_DATE: 'activityDate',
+      DATE_CREATED: 'dateCreated',
+      UPLOAD_RATIO: 'uploadRatio',
+      TOTAL_SIZE: 'totalSize',
+      STATUS: 'status',
+      NAME: 'name'
+    };
+  },
   mounted() {
     bus.$on(events.SWITCH_MENU_SETTINGS, this.switch);
     this.$root.$el.onclick = this.closeAll;
   },
   methods: {
+    // getConstCol() {
+    //   return column;
+    // },
     getRatio(downloaded, uploaded) {
       return commonUtils.ratio(uploaded, downloaded)
     },
