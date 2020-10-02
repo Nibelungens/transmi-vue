@@ -1,5 +1,8 @@
 <template>
-  <b-modal id="add-torrent-modal" :title="$t('message.addModal.title')" button-size="sm" dialog-class="model-add">
+  <b-modal id="add-torrent-modal" button-size="sm" dialog-class="model-add">
+    <template v-slot:modal-title>
+      <b-icon class="mr-3" icon="file-earmark-arrow-up-fill"></b-icon>{{ $t('message.addModal.title') }}
+    </template>
     <b-form v-on:submit="onSubmit">
       <b-form-group id="file" :label="$t('message.addModal.title')" label-for="select-file">
         <b-form-file :file-name-formatter="formatNames" accept=".torrent" size="sm" id="select-file" v-model="filesTorrent" :placeholder="$t('message.addModal.noSelect')" drop-placeholder="Drop file here..." multiple/>

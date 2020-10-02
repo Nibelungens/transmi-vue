@@ -23,8 +23,13 @@
       "stop": "Stop Selected Torrents",
       "startAll": "Start All Torrents",
       "stopAll": "Stop All Torrents",
-      "all": "All",
-      "selected": "Selected"
+      "removeModal": {
+        "titleOne": "Remove {0}?",
+        "titleMany": "Remove {0} transferts?",
+        "description": "Once removed, continuing the transfer will require the torrent file. Are you sure you want to remove it?",
+        "cancel": "Cancel",
+        "remove": "Remove"
+      }
     },
     "footer": {
       "setting": "Setting Menu",
