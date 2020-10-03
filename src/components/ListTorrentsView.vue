@@ -48,6 +48,9 @@ export default {
     deselectAll(event) {
       if (!event.path.map(element => element.id).includes('list-torrent') &&
           !event.path.map(element => element.id).includes('btn-panel-details') &&
+          !event.path.map(element => element.id).includes('header-trash') &&
+          !event.path.map(element => element.id).includes('header-start') &&
+          !event.path.map(element => element.id).includes('header-pause') &&
           !event.path.map(element => element.id).includes('details-panel')) {
         this.$store.commit(keyStore.UNSELECTED);
         bus.$emit(events.UNSELECTED);

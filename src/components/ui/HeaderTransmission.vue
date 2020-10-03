@@ -18,13 +18,13 @@
             <b-button v-b-tooltip.hover :title="$t('message.header.open')" variant="light" v-on:click="openModal">
               <b-icon class="mr-1" icon="file-earmark-arrow-up-fill"></b-icon>{{ $t('message.header.open') }}
             </b-button>
-            <b-button v-b-tooltip.hover v-bind:disabled="!asSelected" :title="$t('message.header.remove')" variant="danger" v-b-modal.remove-torrent-modal>
+            <b-button id="header-trash" v-b-tooltip.hover v-bind:disabled="!asSelected" :title="$t('message.header.remove')" variant="danger" v-b-modal.remove-torrent-modal>
               <b-icon icon="trash-fill"></b-icon>
             </b-button>
-            <b-button v-b-tooltip.hover v-bind:disabled="!asSelected" v-on:click="startSelected" :title="$t('message.header.start')"  variant="info">
+            <b-button id="header-start" v-b-tooltip.hover v-bind:disabled="!asSelected" v-on:click="startSelected" :title="$t('message.header.start')"  variant="info">
               <b-icon class="text-dark" icon="arrow-clockwise"></b-icon>
             </b-button>
-            <b-button v-b-tooltip.hover v-bind:disabled="!asSelected" v-on:click="stopSelected" :title="$t('message.header.stop')"  variant="info">
+            <b-button id="header-pause" v-b-tooltip.hover v-bind:disabled="!asSelected" v-on:click="stopSelected" :title="$t('message.header.stop')"  variant="info">
               <b-icon class="text-dark" icon="pause-fill"></b-icon>
             </b-button>
             <b-button v-b-tooltip.hover v-on:click="startAll" :title="$t('message.header.startAll')"  variant="primary">
