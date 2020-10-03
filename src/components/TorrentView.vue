@@ -3,7 +3,7 @@
        v-on:contextmenu.prevent="openContextMenu"
        v-on:click.exact="selectTorrentRow"
        v-on:click.ctrl.exact="selectTorrentRowCtrl"
-       v-on:click.shift.ctrl.exact="selectTorrentRowCtrlMaj"
+       v-on:click.shift.exact="selectTorrentRowCtrlMaj"
        v-on:dblclick="openDetails">
     <div class="title-row">{{ (torrent != null)? torrent.name: '' }}</div>
     <div class="peers-row">
@@ -89,11 +89,15 @@ export default {
   },
   mounted() {
     bus.$on(events.UNSELECTED, () => this.selected = false);
-    bus.$on(events.SELECT_ALL, () => this.selected = true);
+    bus.$on(events.SELECT_ALL, this.selectThis);
     bus.$on(events.SELECTED, this.onSelectTorrentRowCtrlNotPress);
     bus.$on(events.MAJ_SELECTED, this.majSelected);
   },
   methods: {
+    selectThis() {
+      this.selected = true;
+      this.$store.commit(keyStore.ADD_SELECTED, this.torrent);
+    },
     majSelected() {
       if (this.selectedTorrents.length > 1) {
         const firstIndex = this.torrents.findIndex((element) => element.id === this.selectedTorrents[0].id);
@@ -107,6 +111,7 @@ export default {
             torrentSlice.length !== 0 &&
             torrentSlice.map(torrentElement => torrentElement.id).includes(this.torrent.id)) {
           this.selected = true;
+          this.$store.commit(keyStore.ADD_SELECTED, this.torrent);
         }
       }
     },

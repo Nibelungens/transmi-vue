@@ -20,7 +20,8 @@ const mutations = {
         s.selectedTorrents = [];
     },
     ADD_SELECTED(s, payload) {
-        s.selectedTorrents.push(payload);
+        const index = s.selectedTorrents.findIndex((torrent) => torrent.id === payload.id);
+        if (index === -1) s.selectedTorrents.push(payload);
     },
     REMOVE_SELECTED(s, payload) {
         const index = s.selectedTorrents.findIndex((torrent) => torrent.id === payload.id);
