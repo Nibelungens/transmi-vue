@@ -2,7 +2,8 @@
   <div class="pl-3 pr-3 pb-1 pt-1 torrent-row" v-bind:class="{ 'm-selected': selected }"
        v-on:contextmenu.prevent="openContextMenu"
        v-on:click.exact="selectTorrentRow"
-       v-on:click.ctrl="selectTorrentRowCtrl"
+       v-on:click.ctrl.exact="selectTorrentRowCtrl"
+       v-on:click.shift.ctrl.exact="selectTorrentRowCtrlMaj"
        v-on:dblclick="openDetails">
     <div class="title-row">{{ (torrent != null)? torrent.name: '' }}</div>
     <div class="peers-row">
@@ -25,13 +26,14 @@
 </template>
 
 <script>
-import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import keyStore from "@/constantes/key.store.const";
-import events from "@/constantes/key.event.const"
-import Status from "@/constantes/status.const";
-import bus from "@/config/bus.event";
-import MenuContext from '@/components/MenuContext'
-import ResultMixin from "@/mixins/result.mixin";
+import TransmissionApiMixin from '@/mixins/transmission.api.mixin';
+import keyStore from '@/constantes/key.store.const';
+import MenuContext from '@/components/MenuContext';
+import events from '@/constantes/key.event.const';
+import Status from '@/constantes/status.const';
+import ResultMixin from '@/mixins/result.mixin';
+import bus from '@/config/bus.event';
+import { mapGetters } from "vuex";
 
 export default {
   name: 'TorrentView',
@@ -79,12 +81,34 @@ export default {
     },
     asError() {
       return (this.torrent != null) ? this.torrent.error > 0: 0;
-    }
+    },
+    ...mapGetters({
+      torrents: keyStore.GET_TORRENT,
+      selectedTorrents: keyStore.GET_SELECTED_TORRENTS
+    })
   },
   mounted() {
     bus.$on(events.SELECTED, this.onSelectTorrentRowCtrlNotPress);
+    bus.$on(events.UNSELECTED, () => this.selected = false);
+    bus.$on(events.MAJ_SELECTED, this.majSelected);
   },
   methods: {
+    majSelected() {
+      if (this.selectedTorrents.length > 1) {
+        const firstIndex = this.torrents.findIndex((element) => element.id === this.selectedTorrents[0].id);
+        const lastIndex = this.torrents.findIndex((element) => element.id === this.selectedTorrents[this.selectedTorrents.length-1].id)+1;
+
+        const torrentSlice = (firstIndex < lastIndex)
+            ? [...this.torrents].slice(firstIndex, lastIndex+1)
+            : [...this.torrents].slice(lastIndex, firstIndex+1);
+
+        if (torrentSlice != null &&
+            torrentSlice.length !== 0 &&
+            torrentSlice.map(torrentElement => torrentElement.id).includes(this.torrent.id)) {
+          this.selected = true;
+        }
+      }
+    },
     openContextMenu(event) {
       bus.$emit(events.SELECTED, this.torrent);
       bus.$emit(events.OPEN_CONTEXT, event, this.torrent);
@@ -92,6 +116,10 @@ export default {
     // SELECT
     selectTorrentRow() {
       bus.$emit(events.SELECTED, this.torrent);
+    },
+    selectTorrentRowCtrlMaj() {
+      this.selectTorrentRowCtrl();
+      bus.$emit(events.MAJ_SELECTED);
     },
     selectTorrentRowCtrl() {
       this.selected = !this.selected;

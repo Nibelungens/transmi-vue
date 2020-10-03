@@ -1,6 +1,5 @@
 import events from "@/constantes/key.event.const";
 import bus from "@/config/bus.event";
-import keyStore from "@/constantes/key.store.const";
 
 const result = {
     methods: {
@@ -10,9 +9,6 @@ const result = {
         },
         fail(error) {
             bus.$emit(events.NOTIFICATION_FAIL, error);
-        },
-        successTorrent(response) {
-            this.$store.commit(keyStore.SET_LIST_TORRENT, response.data.arguments.torrents)
         }
     }
 }

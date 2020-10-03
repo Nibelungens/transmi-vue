@@ -164,14 +164,18 @@
 </template>
 
 <script>
-import { version } from '@/../package.json'
-import events from "@/constantes/key.event.const";
-import bus from "@/config/bus.event";
-import {mapGetters} from "vuex";
-import keyStore from "@/constantes/key.store.const";
-import TransmissionApi from "@/mixins/transmission.api.mixin";
-import Result from "@/mixins/result.mixin";
-import commonUtils from "@/utils/common.utils";
+import TransmissionApi from '@/mixins/transmission.api.mixin';
+import keyStore from '@/constantes/key.store.const';
+import events from '@/constantes/key.event.const';
+import commonUtils from '@/utils/common.utils';
+import { version } from '@/../package.json';
+import Result from '@/mixins/result.mixin';
+import bus from '@/config/bus.event';
+import { mapGetters } from 'vuex';
+
+const ID_ROOT = 'menuSettingRoot';
+const MODAL_ABOUT = 'modal-about';
+const MODAL_STAT = 'modal-stat';
 
 export default {
   name: "MenuSettings",
@@ -186,9 +190,9 @@ export default {
       extendsDownload: false,
       extendsUpload: false,
       extendsTools: false,
-      idSource: null,
       downloadLimit: null,
       uploadLimit: null,
+      loadedStat: false,
       stats: {
         "current-stats": {
           uploadedBytes: null,
@@ -202,8 +206,7 @@ export default {
           ratio: null,
           secondsActive: null
         }
-      },
-      loadedStat: false
+      }
     };
   },
   computed: {
@@ -227,22 +230,19 @@ export default {
   },
   mounted() {
     bus.$on(events.SWITCH_MENU_SETTINGS, this.switch);
-    this.$root.$el.onclick = this.closeAll;
+    this.$root.$el.addEventListener('mouseup', this.closeAll);
   },
   methods: {
-    // getConstCol() {
-    //   return column;
-    // },
     getRatio(downloaded, uploaded) {
       return commonUtils.ratio(uploaded, downloaded)
     },
     openModalAbout() {
       this.extendsTransferts = this.extendsDownload = this.extendsUpload = this.extendsTools = false;
-      this.$bvModal.show('modal-about');
+      this.$bvModal.show(MODAL_ABOUT);
     },
     openModalStatistics() {
       this.extendsTransferts = this.extendsDownload = this.extendsUpload = this.extendsTools = false;
-      this.$bvModal.show('modal-stat');
+      this.$bvModal.show(MODAL_STAT);
       this.getSessionStat()
           .then((response => {
               this.stats = response.data.arguments;
@@ -260,15 +260,14 @@ export default {
       return !event.path.map(element => element.id).includes(id)
     },
     closeAll(event) {
-      if (this.idNotInPath(event, this.idSource) &&
-          this.idNotInPath(event, 'menuSettingRoot')) {
+      if (this.extendsTools &&
+          this.idNotInPath(event, ID_ROOT)) {
         this.extendsTransferts = this.extendsDownload = this.extendsUpload = this.extendsTools = false;
       }
     },
-    switch(id) {
+    switch() {
       this.extendsTools = !this.extendsTools
       this.extendsTransferts = this.extendsDownload = this.extendsUpload = false;
-      this.idSource = id;
 
       if (this.extendsTools) {
         this.getSession()

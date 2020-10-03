@@ -10,16 +10,17 @@
 </template>
 
 <script>
-import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import HeaderTransmission from "@/components/ui/HeaderTransmission";
-import FooterTransmission from "@/components/ui/FooterTransmission";
+import TransmissionApiMixin from '@/mixins/transmission.api.mixin';
+import HeaderTransmission from '@/components/ui/HeaderTransmission';
+import FooterTransmission from '@/components/ui/FooterTransmission';
 import ListTorrentsView from '@/components/ListTorrentsView';
-import events from "@/constantes/key.event.const"
-import bus from "@/config/bus.event";
-import IntervalMixin from "@/mixins/interval.mixin"
-import ResultMixin from "@/mixins/result.mixin";
-import AddTorrentModal from "@/components/AddTorrentModal";
-import keyStore from "@/constantes/key.store.const";
+import AddTorrentModal from '@/components/AddTorrentModal';
+import keyStore from '@/constantes/key.store.const';
+import IntervalMixin from '@/mixins/interval.mixin';
+import events from '@/constantes/key.event.const';
+import ResultMixin from '@/mixins/result.mixin';
+import bus from '@/config/bus.event';
+import { mapGetters } from 'vuex';
 
 const s_success = {
   variant: 'success',
@@ -71,6 +72,12 @@ export default {
     bus.$off(events.NOTIFICATION_FAIL);
     bus.$off(events.ACTION);
   },
+  computed: {
+    ...mapGetters({
+      getSortCol: keyStore.GET_SELECT_SORT_COL,
+      getSelectSortReverse: keyStore.GET_SELECT_SORT_REVERSE
+    })
+  },
   methods: {
     notificationSuccess(msg) {
       this.$bvToast.toast(msg, s_success);
@@ -88,8 +95,23 @@ export default {
     },
     click() {
       bus.$emit(events.CLOSE_ALL_CONTEXT);
+    },
+    successTorrent(response) {
+      let torrents = response.data.arguments.torrents;
+
+      torrents.sort((a, b) => this.compare(a, b, this.getSortCol));
+      if (this.getSelectSortReverse) torrents.reverse();
+
+      this.$store.commit(keyStore.SET_LIST_TORRENT, torrents);
+      bus.$emit(events.ACTION);
+    },
+    compare(a, b, col) {
+      if (a[col] > b[col]) return 1;
+      if (b[col] > a[col]) return -1;
+
+      return 0;
     }
-  },
+  }
 }
 </script>
 

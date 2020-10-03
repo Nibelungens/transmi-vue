@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="torrent in getSortedTorrents()" v-bind:key="torrent.id">
+    <div id="list-torrent" v-for="torrent in torrents" v-bind:key="torrent.id">
       <torrent-view v-bind:torrent="torrent"></torrent-view>
     </div>
     <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" class="test">
@@ -29,9 +29,7 @@ export default {
   ],
   computed: {
   ...mapGetters({
-    torrents: keyStore.GET_TORRENT,
-    getSortCol: keyStore.GET_SELECT_SORT_COL,
-    getSelectSortReverse: keyStore.GET_SELECT_SORT_REVERSE
+    torrents: keyStore.GET_TORRENT
   })
   },
   data: function() {
@@ -41,25 +39,17 @@ export default {
   },
   mounted() {
     bus.$on(events.SWITCH_PANEL, this.switchPanel);
+    this.$root.$el.addEventListener('mouseup', this.deselectAll);
   },
   methods: {
+    deselectAll(event) {
+      if (!event.path.map(element => element.id).includes('list-torrent')) {
+        this.$store.commit(keyStore.UNSELECTED);
+        bus.$emit(events.UNSELECTED);
+      }
+    },
     switchPanel() {
       this.isPanelShow = !this.isPanelShow;
-    },
-    compare(a, b, col) {
-      if (a[col] > b[col]) return 1;
-      if (b[col] > a[col]) return -1;
-
-      return 0;
-    },
-    getSortedTorrents() {
-      let array = [...this.torrents].sort((a, b) => this.compare(a, b, this.getSortCol));
-
-      if (this.getSelectSortReverse) {
-        array = array.reverse();
-      }
-
-      return array;
     }
   }
 }
