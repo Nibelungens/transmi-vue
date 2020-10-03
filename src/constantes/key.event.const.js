@@ -11,6 +11,7 @@ const key = {
     SWITCH_PANEL: 'switch_panel',
     OPEN_CONTEXT: 'open_context',
     UNSELECTED: 'unselected',
+    SELECT_ALL: 'select_all',
     SELECTED: 'selected',
     ACTION: 'action'
 }

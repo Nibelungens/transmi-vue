@@ -28,9 +28,9 @@ export default {
     TransmissionApiMixin
   ],
   computed: {
-  ...mapGetters({
-    torrents: keyStore.GET_TORRENT
-  })
+    ...mapGetters({
+      torrents: keyStore.GET_TORRENT
+    })
   },
   data: function() {
     return {

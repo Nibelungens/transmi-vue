@@ -88,8 +88,9 @@ export default {
     })
   },
   mounted() {
-    bus.$on(events.SELECTED, this.onSelectTorrentRowCtrlNotPress);
     bus.$on(events.UNSELECTED, () => this.selected = false);
+    bus.$on(events.SELECT_ALL, () => this.selected = true);
+    bus.$on(events.SELECTED, this.onSelectTorrentRowCtrlNotPress);
     bus.$on(events.MAJ_SELECTED, this.majSelected);
   },
   methods: {

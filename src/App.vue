@@ -68,7 +68,9 @@ export default {
     this.refresh();
     this.getSession()
         .then((response) => this.$store.commit(keyStore.SET_CONFIG, response.data.arguments))
-        .catch(this.error)
+        .catch(this.error);
+
+    window.addEventListener('keydown', this.selectAll);
   },
   beforeDestroy() {
     bus.$off(events.NOTIFICATION_SUCCESS);
@@ -82,6 +84,9 @@ export default {
     })
   },
   methods: {
+    selectAll(event) {
+      if (event.ctrlKey && event.key === 'a') bus.$emit(events.SELECT_ALL);
+    },
     notificationSuccess(msg) {
       this.$bvToast.toast(msg, s_success);
     },
