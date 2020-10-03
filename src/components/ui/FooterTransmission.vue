@@ -4,16 +4,16 @@
       <b-navbar type="dark" variant="dark">
         <b-button-toolbar>
           <b-button-group size="sm" class="mr-1" >
-            <b-button size="sm" id="menuSettings" :title="$t('message.footer.setting')" variant="light" v-on:click="menuSettings">
+            <b-button size="sm" id="menuSettings" v-b-tooltip.hover :title="$t('message.footer.setting')" variant="light" v-on:click="menuSettings">
                 <b-icon icon="gear-fill"></b-icon>
             </b-button>
-            <b-button :title="$t('message.footer.prefs')" variant="outline-light" disabled>
+            <b-button v-b-tooltip.hover :title="$t('message.footer.prefs')" variant="outline-light" disabled>
               <b-icon icon="tools"></b-icon>
             </b-button>
-            <b-button :title="$t('message.footer.limits')" variant="outline-light" disabled>
+            <b-button v-b-tooltip.hover :title="$t('message.footer.limits')" variant="outline-light" disabled>
               <b-icon icon="graph-down" ></b-icon>
             </b-button>
-            <b-button :title="$t('message.footer.compact')" variant="outline-light" disabled>
+            <b-button v-b-tooltip.hover :title="$t('message.footer.compact')" variant="outline-light" disabled>
               <b-icon icon="arrows-collapse"></b-icon>
             </b-button>
           </b-button-group>

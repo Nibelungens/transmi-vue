@@ -62,6 +62,9 @@ export default {
     bus.$on(events.NOTIFICATION_FAIL, this.notificationFail);
     bus.$on(events.ACTION, this.refresh);
 
+    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECT_SORT_COL], this.refresh)
+    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECT_SORT_REVERSE], this.refresh)
+
     this.refresh();
     this.getSession()
         .then((response) => this.$store.commit(keyStore.SET_CONFIG, response.data.arguments))
@@ -96,14 +99,16 @@ export default {
     click() {
       bus.$emit(events.CLOSE_ALL_CONTEXT);
     },
+    sortTorrents(torrents) {
+      let torrentsClone = [...torrents];
+      torrentsClone.sort((a, b) => this.compare(a, b, this.getSortCol));
+
+      if (this.getSelectSortReverse) torrentsClone.reverse();
+
+      return torrentsClone;
+    },
     successTorrent(response) {
-      let torrents = response.data.arguments.torrents;
-
-      torrents.sort((a, b) => this.compare(a, b, this.getSortCol));
-      if (this.getSelectSortReverse) torrents.reverse();
-
-      this.$store.commit(keyStore.SET_LIST_TORRENT, torrents);
-      bus.$emit(events.ACTION);
+      this.$store.commit(keyStore.SET_LIST_TORRENT, this.sortTorrents(response.data.arguments.torrents));
     },
     compare(a, b, col) {
       if (a[col] > b[col]) return 1;

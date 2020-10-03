@@ -23,6 +23,7 @@
       "stop": "Stop Selected Torrents",
       "startAll": "Start All Torrents",
       "stopAll": "Stop All Torrents",
+      "openDetails": "Toggle Inspector",
       "removeModal": {
         "titleOne": "Remove {0}?",
         "titleMany": "Remove {0} transferts?",

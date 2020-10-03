@@ -3,7 +3,7 @@
     <div id="list-torrent" v-for="torrent in torrents" v-bind:key="torrent.id">
       <torrent-view v-bind:torrent="torrent"></torrent-view>
     </div>
-    <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" class="test">
+    <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" class="test" v-on:hidden="closePanel">
       <details-torrent-view v-bind:showPanel="isPanelShow"></details-torrent-view>
     </b-sidebar>
   </div>
@@ -42,14 +42,20 @@ export default {
     this.$root.$el.addEventListener('mouseup', this.deselectAll);
   },
   methods: {
+    closePanel() {
+      this.$store.commit(keyStore.SET_DETAILS_PANEL, false);
+    },
     deselectAll(event) {
-      if (!event.path.map(element => element.id).includes('list-torrent')) {
+      if (!event.path.map(element => element.id).includes('list-torrent') &&
+          !event.path.map(element => element.id).includes('btn-panel-details') &&
+          !event.path.map(element => element.id).includes('details-panel')) {
         this.$store.commit(keyStore.UNSELECTED);
         bus.$emit(events.UNSELECTED);
       }
     },
     switchPanel() {
       this.isPanelShow = !this.isPanelShow;
+      this.$store.commit(keyStore.SET_DETAILS_PANEL, this.isPanelShow);
     }
   }
 }

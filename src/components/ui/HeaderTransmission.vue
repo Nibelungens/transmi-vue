@@ -35,6 +35,10 @@
             </b-button>
           </b-button-group>
         </b-button-toolbar>
+          <b-button id="btn-panel-details" class="ml-auto" v-on:click="openDetails" size="sm" v-b-tooltip.hover :title="$t('message.header.openDetails')"  variant="light">
+            <b-icon icon="arrow-bar-left" v-show="!detailPanel"></b-icon>
+            <b-icon icon="arrow-bar-right" v-show="detailPanel"></b-icon>
+          </b-button>
       </b-navbar>
     </header>
   </div>
@@ -59,7 +63,8 @@ export default {
   computed: {
     ...mapGetters({
       allTorrent: keyStore.GET_TORRENT,
-      selectedTorrent: keyStore.GET_SELECTED_TORRENTS
+      selectedTorrent: keyStore.GET_SELECTED_TORRENTS,
+      detailPanel: keyStore.GET_DETAILS_PANEL
     }),
     asSelected() {
       return this.selectedTorrent !== undefined &&
@@ -68,16 +73,19 @@ export default {
     },
   },
   methods: {
+    openDetails() {
+      bus.$emit(events.SWITCH_PANEL);
+    },
     getTitleRemoveModel() {
       let title = '';
 
-      if (this.selectedTorrent.length === 1) {
-        title = this.$t('message.header.removeModal.titleOne', [this.selectedTorrent[0].name]);
-      } else {
-        title = this.$t('message.header.removeModal.titleMany', [this.selectedTorrent.length]);
-      }
+      this.selectedTorrent.length === 1
+        ? title = this.$t('message.header.removeModal.titleOne', [this.selectedTorrent[0].name])
+        : title = this.$t('message.header.removeModal.titleMany', [this.selectedTorrent.length]);
 
-      return title.length > 70? title.substring(0, 67).concat("..."): title;
+      return title.length > 60
+        ? title.substring(0, 57).concat("...")
+        : title;
     },
     openModal() {
       bus.$emit(events.OPEN_ADD_MODEL);

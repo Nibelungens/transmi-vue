@@ -1,5 +1,6 @@
 const state = () => ({
     downloadDirFreeSpace: null,
+    detailsPanel: false,
     timeRefresh: 1000,
     downloadDir: null,
     version: null,
@@ -13,6 +14,7 @@ const getters = {
     getDownloadDirFreeSpace: s => s.downloadDirFreeSpace,
     getSelectSortReverse: s => s.selectSort.reverse,
     getSelectSortCol: s => s.selectSort.col,
+    getDetailsPanel: s => s.detailsPanel,
     getDownloadDir: s => s.downloadDir,
     getTimeRefresh: s => s.timeRefresh,
     getVersion: s => s.version,
@@ -37,6 +39,9 @@ const mutations = {
     SET_SORT(s, payload) {
         s.selectSort.col = payload[0];
         s.selectSort.reverse = payload[1];
+    },
+    SET_DETAILS_PANEL(s, payload) {
+        s.detailsPanel = payload;
     }
 }
 
