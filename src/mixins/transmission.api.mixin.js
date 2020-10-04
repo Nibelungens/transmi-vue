@@ -51,6 +51,7 @@ const ARGUMENTS_TORRENT_INFO = {
   "fields":[
     "metadataPercentComplete",
     "desiredAvailable",
+    "recheckProgress",
     "downloadedEver",
     "haveUnchecked",
     "leftUntilDone",

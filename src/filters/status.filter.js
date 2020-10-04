@@ -16,7 +16,7 @@ const status = function (torrent, i18n) {
         case Status.STATUS_CHECK_WAIT:
             return i18n.t('message.filter.status.queuedVerification');
         case Status.STATUS_CHECK:
-            return i18n.t('message.filter.status.verifying', [percentFilter(torrent.recheckProgress)]);
+            return i18n.t('message.filter.status.verifying', [percentFilter(torrent.recheckProgress*100)]);
         case Status.STATUS_DOWNLOAD_WAIT:
             return i18n.t('message.filter.status.queuedDownload');
         case Status.STATUS_DOWNLOAD:

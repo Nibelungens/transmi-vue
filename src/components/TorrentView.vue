@@ -8,7 +8,7 @@
          v-on:dblclick="openDetails">
       <div class="d-flex">
         <div class="title-row font-weight-bold mr-auto">{{ (torrent != null)? torrent.name: '' }}</div>
-        <span class="badge badge-primary queue"><span v-b-tooltip.hover :title="$t('message.torrent.queued')"><b-icon-layers-half/> {{ torrent.queuePosition }}</span></span>
+        <span class="badge badge-primary queue"><span v-b-tooltip.hover :title="$t('message.torrent.queued')"><b-icon-layers-half/> {{ torrent.queuePosition+1 }}</span></span>
       </div>
       <div class="peers-row">
         <div class="d-inline-flex text-danger" v-if="asError">{{ $t('message.torrent.error', [torrent.errorString]) }}</div>
@@ -16,11 +16,11 @@
         <div class="d-inline-flex" v-if="showDownloadRate()"><b-icon-arrow-down/>{{ torrent.rateDownload | formatSize }}/s</div>
         <div class="d-inline-flex" v-if="showUploadRate()"><b-icon-arrow-up/>{{ torrent.rateUpload | formatSize }}/s</div>
       </div>
-      <div class="bar-row-ratio">
-        <b-progress v-if="showRatio()" :max="1" :value="torrent.uploadRatio" variant="primary" class="w-100"/>
+      <div class="bar-row-second">
+        <b-progress v-if="showSecondBar()" :max="1" :value="getSecondBarValue()" :variant="getSecondBarStyle()" class="w-100"/>
       </div >
       <div class="bar-row">
-        <b-progress :max="1" :value="torrent.percentDone" :variant="barStyle()" class="w-100"/>
+        <b-progress :max="1" :value="torrent.percentDone" :variant="getMainBarStyle()" class="w-100"/>
         <b-icon-play-fill v-on:click="stop()" v-bind:hidden="!isPlay" class="ml-2 mr-1"></b-icon-play-fill>
         <b-icon-pause-fill v-on:click="start()" v-bind:hidden="!isPause" class="ml-2 mr-1"></b-icon-pause-fill>
       </div >
@@ -39,6 +39,11 @@ import Status from '@/constantes/status.const';
 import ResultMixin from '@/mixins/result.mixin';
 import bus from '@/config/bus.event';
 import { mapGetters } from "vuex";
+
+const STYLE_SECONDARY = 'secondary';
+const STYLE_SUCCESS = 'success';
+const STYLE_PRIMARY = 'primary';
+const STYLE_WARNING = 'warning';
 
 export default {
   name: 'TorrentView',
@@ -101,6 +106,11 @@ export default {
     bus.$on(events.MAJ_SELECTED, this.majSelected);
   },
   methods: {
+    getSecondBarValue() {
+      return (this.torrent.status === Status.STATUS_CHECK_WAIT || this.torrent.status === Status.STATUS_CHECK)
+          ? this.torrent.recheckProgress
+          : this.torrent.uploadRatio;
+    },
     selectThis() {
       this.selected = true;
       this.$store.commit(keyStore.ADD_SELECTED, this.torrent);
@@ -170,35 +180,39 @@ export default {
           ?str.concat(' - ')
           : str;
     },
-    barStyle() {
-      const STYLE_SECONDARY = 'secondary';
-      const STYLE_SUCCESS = 'success';
-      const STYLE_PRIMARY = 'primary';
-
+    getSecondBarStyle() {
       switch (this.torrent.status) {
-        case Status.STATUS_STOPPED:
-          return STYLE_SECONDARY;
         case Status.STATUS_CHECK_WAIT:
-          return STYLE_PRIMARY;
         case Status.STATUS_CHECK:
-          return STYLE_PRIMARY;
+          return STYLE_WARNING;
+        case Status.STATUS_STOPPED:
         case Status.STATUS_DOWNLOAD_WAIT:
+        case Status.STATUS_DOWNLOAD:
+        case Status.STATUS_SEED_WAIT:
+        case Status.STATUS_SEED:
+        default:
           return STYLE_PRIMARY;
+      }
+    },
+    getMainBarStyle() {
+      switch (this.torrent.status) {
+        case Status.STATUS_CHECK_WAIT:
+        case Status.STATUS_CHECK:
+        case Status.STATUS_DOWNLOAD_WAIT:
         case Status.STATUS_DOWNLOAD:
           return STYLE_PRIMARY;
+        case Status.STATUS_STOPPED:
+          return STYLE_SECONDARY;
         case Status.STATUS_SEED_WAIT:
-          return STYLE_SUCCESS;
         case Status.STATUS_SEED:
-          return STYLE_SUCCESS;
         default:
           return STYLE_SUCCESS;
       }
     },
-    showRatio() {
-      return this.torrent.uploadRatio < this.torrent.seedRatioLimit &&
-          this.torrent.percentDone >= 1 &&
-          this.torrent.status !== Status.STATUS_CHECK &&
-          this.torrent.status !== Status.STATUS_CHECK_WAIT
+    showSecondBar() {
+      return (this.torrent.uploadRatio < this.torrent.seedRatioLimit && this.torrent.percentDone >= 1) ||
+          this.torrent.status === Status.STATUS_CHECK_WAIT ||
+          this.torrent.status === Status.STATUS_CHECK;
     },
     start() {
       this.startTorrents(this.torrent)
@@ -244,7 +258,7 @@ export default {
   height: 23px;
 }
 
-.bar-row-ratio {
+.bar-row-second {
   height: 16px;
   margin-top: 8px;
   display: inline-flex;
