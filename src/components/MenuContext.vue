@@ -2,14 +2,14 @@
   <transition name="fade">
     <div ref="contextMenu" v-show="showContext" class="context">
       <b-list-group>
-        <b-list-group-item href="#" class="m-row" v-on:click="stop()" v-bind:disabled="!isPlay">{{ $t('message.torrent.contextMenu.pause') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="start()" v-bind:disabled="!isPause">{{ $t('message.torrent.contextMenu.resume') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row">{{ $t('message.torrent.contextMenu.resumeNow') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="stop" v-bind:disabled="!isPlay">{{ $t('message.torrent.contextMenu.pause') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="start" v-bind:disabled="!isPause">{{ $t('message.torrent.contextMenu.resume') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="startNow" >{{ $t('message.torrent.contextMenu.resumeNow') }}</b-list-group-item>
         <b-list-group-item class="m-divider"></b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="toTop()">{{ $t('message.torrent.contextMenu.moveTop') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="up()">{{ $t('message.torrent.contextMenu.moveUp') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="down()">{{ $t('message.torrent.contextMenu.moveDown') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="toBottom()">{{ $t('message.torrent.contextMenu.moveBottom') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="toTop">{{ $t('message.torrent.contextMenu.moveTop') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="up">{{ $t('message.torrent.contextMenu.moveUp') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="down">{{ $t('message.torrent.contextMenu.moveDown') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="toBottom">{{ $t('message.torrent.contextMenu.moveBottom') }}</b-list-group-item>
         <b-list-group-item class="m-divider"></b-list-group-item>
         <b-list-group-item href="#" class="m-row" v-on:click="remove(false)">{{ $t('message.torrent.contextMenu.remove') }}</b-list-group-item>
         <b-list-group-item href="#" class="m-row" v-on:click="remove(true)">{{ $t('message.torrent.contextMenu.trash') }}</b-list-group-item>
@@ -18,8 +18,8 @@
         <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.location') }}</b-list-group-item>
         <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.rename') }}</b-list-group-item>
         <b-list-group-item class="m-divider"></b-list-group-item>
-        <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.selectAll') }}</b-list-group-item>
-        <b-list-group-item disabled href="#" class="last">{{ $t('message.torrent.contextMenu.deselectAll') }}</b-list-group-item>
+        <b-list-group-item v-on:click="selectAll" href="#" class="m-row">{{ $t('message.torrent.contextMenu.selectAll') }}</b-list-group-item>
+        <b-list-group-item v-on:click="deselectAll"  href="#" class="last">{{ $t('message.torrent.contextMenu.deselectAll') }}</b-list-group-item>
       </b-list-group>
     </div>
   </transition>
@@ -49,8 +49,7 @@ export default {
   },
   props: {
     torrent: {
-      id: Number,
-      status: Number
+      id: Number
     }
   },
   computed: {
@@ -94,39 +93,50 @@ export default {
       }
     },
     start() {
-      this.startTorrents(this.torrent)
+      this.startTorrents(this.selectedTorrents)
+          .then(this.success)
+          .catch(this.error);
+    },
+    startNow() {
+      this.startTorrentsNow(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     stop() {
-      this.stopTorrents(this.torrent)
+      this.stopTorrents(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     remove(trash) {
-      this.removeTorrent(this.torrent, trash)
+      this.removeTorrent(this.selectedTorrents, trash)
           .then(this.success)
           .catch(this.error);
     },
     toTop() {
-      this.moveToTop(this.torrent)
+      this.moveToTop(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     toBottom() {
-      this.moveToBottom(this.torrent)
+      this.moveToBottom(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     up() {
-      this.moveUp(this.torrent)
+      this.moveUp(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     down() {
-      this.moveDown(this.torrent)
+      this.moveDown(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
+    },
+    selectAll() {
+      bus.$emit(events.SELECT_ALL);
+    },
+    deselectAll() {
+      bus.$emit(events.UNSELECTED);
     }
   }
 }

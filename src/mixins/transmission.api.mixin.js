@@ -1,18 +1,19 @@
 import * as axios from "axios";
 
+const TORRENT_START_NOW = "torrent-start-now";
+const QUEUE_MOVE_BOTTOM = "queue-move-bottom";
+const QUEUE_MOVE_DOWN = "queue-move-down";
+const TORRENT_REMOVE = "torrent-remove";
+const QUEUE_MOVE_TOP = "queue-move-top";
 const TORRENT_START = "torrent-start";
+const SESSION_STATS = "session-stats";
+const QUEUE_MOVE_UP = "queue-move-up";
 const TORRENT_STOP = "torrent-stop";
 const TORRENT_GET = "torrent-get";
-const TORRENT_REMOVE = "torrent-remove";
-const FREE_SPACE = "free-space";
 const SESSION_GET = "session-get";
 const SESSION_SET = "session-set";
 const TORRENT_ADD = "torrent-add";
-const SESSION_STATS = "session-stats";
-const QUEUE_MOVE_TOP = "queue-move-top";
-const QUEUE_MOVE_BOTTOM = "queue-move-bottom";
-const QUEUE_MOVE_UP = "queue-move-up";
-const QUEUE_MOVE_DOWN = "queue-move-down";
+const FREE_SPACE = "free-space";
 
 const ARGUMENTS_TORRENT_ADD = {
   "download-dir": null,
@@ -266,9 +267,36 @@ const Transmission = {
       return this.request(TORRENT_REMOVE, args);
     },
     startTorrents(torrent) {
-      return this.requestSimple(TORRENT_START, torrent);
+      const args = ARGUMENT_IDS;
+
+      if (Array.isArray(torrent)) {
+        args.ids = torrent.map(t => t.id)
+      } else if (torrent !== null && torrent.id !== null) {
+        args.ids = [torrent.id]
+      }
+
+      return this.request(TORRENT_START, args);
+    },
+    startTorrentsNow(torrent) {
+      const args = ARGUMENT_IDS;
+
+      if (Array.isArray(torrent)) {
+        args.ids = torrent.map(t => t.id)
+      } else if (torrent !== null && torrent.id !== null) {
+        args.ids = [torrent.id]
+      }
+
+      return this.request(TORRENT_START_NOW, args);
     },
     stopTorrents(torrent) {
+      const args = ARGUMENT_IDS;
+
+      if (Array.isArray(torrent)) {
+        args.ids = torrent.map(t => t.id)
+      } else if (torrent !== null && torrent.id !== null) {
+        args.ids = [torrent.id]
+      }
+
       return this.requestSimple(TORRENT_STOP, torrent);
     },
     /**
@@ -338,25 +366,45 @@ const Transmission = {
     },
     moveToTop(torrent) {
       const args = ARGUMENT_IDS;
-      ARGUMENT_IDS.ids = [torrent.id];
+
+      if (Array.isArray(torrent)) {
+        args.ids = torrent.map(t => t.id)
+      } else if (torrent !== null && torrent.id !== null) {
+        args.ids = [torrent.id]
+      }
 
       return this.request(QUEUE_MOVE_TOP, args);
     },
     moveToBottom(torrent) {
       const args = ARGUMENT_IDS;
-      ARGUMENT_IDS.ids = [torrent.id];
+
+      if (Array.isArray(torrent)) {
+        args.ids = torrent.map(t => t.id)
+      } else if (torrent !== null && torrent.id !== null) {
+        args.ids = [torrent.id]
+      }
 
       return this.request(QUEUE_MOVE_BOTTOM, args);
     },
     moveUp(torrent) {
       const args = ARGUMENT_IDS;
-      ARGUMENT_IDS.ids = [torrent.id];
+
+      if (Array.isArray(torrent)) {
+        args.ids = torrent.map(t => t.id)
+      } else if (torrent !== null && torrent.id !== null) {
+        args.ids = [torrent.id]
+      }
 
       return this.request(QUEUE_MOVE_UP, args);
     },
     moveDown(torrent) {
       const args = ARGUMENT_IDS;
-      ARGUMENT_IDS.ids = [torrent.id];
+
+      if (Array.isArray(torrent)) {
+        args.ids = torrent.map(t => t.id)
+      } else if (torrent !== null && torrent.id !== null) {
+        args.ids = [torrent.id]
+      }
 
       return this.request(QUEUE_MOVE_DOWN, args);
     }

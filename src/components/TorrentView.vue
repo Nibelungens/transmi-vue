@@ -1,29 +1,31 @@
 <template>
-  <div class="pl-3 pr-3 torrent-row" v-bind:class="{ 'm-selected': selected }"
-       v-on:click.shift.exact="selectTorrentRowCtrlMaj"
-       v-on:click.ctrl.exact="selectTorrentRowCtrl"
-       v-on:contextmenu.prevent="openContextMenu"
-       v-on:click.exact="selectTorrentRow"
-       v-on:dblclick="openDetails">
-    <div class="d-flex">
-      <div class="title-row font-weight-bold mr-auto">{{ (torrent != null)? torrent.name: '' }}</div>
-      <span class="badge badge-primary queue"><span v-b-tooltip.hover :title="$t('message.torrent.queued')"><b-icon-layers-half/> {{ torrent.queuePosition }}</span></span>
+  <div>
+    <div class="pl-3 pr-3 torrent-row" v-bind:class="{ 'm-selected': selected }"
+         v-on:click.shift.exact="selectTorrentRowCtrlMaj"
+         v-on:click.ctrl.exact="selectTorrentRowCtrl"
+         v-on:contextmenu.prevent="openContextMenu"
+         v-on:click.exact="selectTorrentRow"
+         v-on:dblclick="openDetails">
+      <div class="d-flex">
+        <div class="title-row font-weight-bold mr-auto">{{ (torrent != null)? torrent.name: '' }}</div>
+        <span class="badge badge-primary queue"><span v-b-tooltip.hover :title="$t('message.torrent.queued')"><b-icon-layers-half/> {{ torrent.queuePosition }}</span></span>
+      </div>
+      <div class="peers-row">
+        <div class="d-inline-flex text-danger" v-if="asError">{{ $t('message.torrent.error', [torrent.errorString]) }}</div>
+        <div class="d-inline-flex" v-else>{{ torrent | formatStatus($i18n) }}{{ postStatus() }}</div>
+        <div class="d-inline-flex" v-if="showDownloadRate()"><b-icon-arrow-down/>{{ torrent.rateDownload | formatSize }}/s</div>
+        <div class="d-inline-flex" v-if="showUploadRate()"><b-icon-arrow-up/>{{ torrent.rateUpload | formatSize }}/s</div>
+      </div>
+      <div class="bar-row-ratio">
+        <b-progress v-if="showRatio()" :max="1" :value="torrent.uploadRatio" variant="primary" class="w-100"/>
+      </div >
+      <div class="bar-row">
+        <b-progress :max="1" :value="torrent.percentDone" :variant="barStyle()" class="w-100"/>
+        <b-icon-play-fill v-on:click="stop()" v-bind:hidden="!isPlay" class="ml-2 mr-1"></b-icon-play-fill>
+        <b-icon-pause-fill v-on:click="start()" v-bind:hidden="!isPause" class="ml-2 mr-1"></b-icon-pause-fill>
+      </div >
+      <div class="dl-row">{{ torrent | formatRemaining($i18n) }}</div>
     </div>
-    <div class="peers-row">
-      <div class="d-inline-flex text-danger" v-if="asError">{{ $t('message.torrent.error', [torrent.errorString]) }}</div>
-      <div class="d-inline-flex" v-else>{{ torrent | formatStatus($i18n) }}{{ postStatus() }}</div>
-      <div class="d-inline-flex" v-if="showDownloadRate()"><b-icon-arrow-down/>{{ torrent.rateDownload | formatSize }}/s</div>
-      <div class="d-inline-flex" v-if="showUploadRate()"><b-icon-arrow-up/>{{ torrent.rateUpload | formatSize }}/s</div>
-    </div>
-    <div class="bar-row-ratio">
-      <b-progress v-if="showRatio()" :max="1" :value="torrent.uploadRatio" variant="primary" class="w-100"/>
-    </div >
-    <div class="bar-row">
-      <b-progress :max="1" :value="torrent.percentDone" :variant="barStyle()" class="w-100"/>
-      <b-icon-play-fill v-on:click="stop()" v-bind:hidden="!isPlay" class="ml-2 mr-1"></b-icon-play-fill>
-      <b-icon-pause-fill v-on:click="start()" v-bind:hidden="!isPause" class="ml-2 mr-1"></b-icon-pause-fill>
-    </div >
-    <div class="dl-row">{{ torrent | formatRemaining($i18n) }}</div>
     <menu-context v-bind:torrent="this.torrent"/>
   </div>
 </template>
@@ -119,7 +121,6 @@ export default {
       }
     },
     openContextMenu(event) {
-      bus.$emit(events.SELECTED, this.torrent);
       bus.$emit(events.OPEN_CONTEXT, event, this.torrent);
     },
     // SELECT
