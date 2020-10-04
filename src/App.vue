@@ -1,5 +1,5 @@
 <template>
-  <div id="app" ref="app" v-on:click="click">
+  <div id="app" ref="app" v-on:click="click" class="user-select-none">
     <header-transmission id="header" ref="header"></header-transmission>
     <main id="content" ref="content">
       <list-torrents-view/>

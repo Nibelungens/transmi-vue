@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal id="modal-about" centered hide-footer>
+    <b-modal id="modal-about" dialog-class="user-select-none" centered hide-footer>
       <template v-slot:modal-title>
         <b-icon icon="question-circle-fill"></b-icon><span class="ml-3">{{ $t('message.menuSettings.aboutModal.title') }}</span>
       </template>
@@ -10,7 +10,7 @@
       <div class="font-weight-lighter text-center mt-2">{{$t('message.menuSettings.aboutModal.description')}}</div>
       <div class="font-weight-lighter text-center mb-4">{{$t('message.menuSettings.aboutModal.copyright')}}</div>
     </b-modal>
-    <b-modal id="modal-stat" size="sm" centered hide-footer>
+    <b-modal id="modal-stat" size="sm" dialog-class="user-select-none" centered hide-footer>
       <template v-slot:modal-title>
         <b-icon icon="info-circle-fill"></b-icon><span class="ml-3">{{ $t('message.menuSettings.statsModal.title') }}</span>
       </template>

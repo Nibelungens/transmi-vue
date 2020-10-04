@@ -1,5 +1,5 @@
 <template>
-  <div class="px-3 py-2 user-select-none" id="details-panel">
+  <div class="px-3 py-2" id="details-panel">
     <div class="d-inline-block text-truncate info-title" v-text="title()"/>
     <b-tabs v-model="tabIndex" content-class="mt-3" fill>
       <b-tab id="info" active>

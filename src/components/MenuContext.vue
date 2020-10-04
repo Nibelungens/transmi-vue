@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div ref="contextMenu" v-show="showContext" class="context user-select-none">
+    <div ref="contextMenu" v-show="showContext" class="context">
       <b-list-group>
         <b-list-group-item href="#" class="m-row" v-on:click="stop()" v-bind:disabled="!isPlay">{{ $t('message.torrent.contextMenu.pause') }}</b-list-group-item>
         <b-list-group-item href="#" class="m-row" v-on:click="start()" v-bind:disabled="!isPause">{{ $t('message.torrent.contextMenu.resume') }}</b-list-group-item>
