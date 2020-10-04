@@ -1,5 +1,5 @@
 <template>
-  <b-modal id="add-torrent-modal" button-size="sm" dialog-class="model-add">
+  <b-modal id="add-torrent-modal" button-size="sm" dialog-class="model-add user-select-none">
     <template v-slot:modal-title>
       <b-icon class="mr-3" icon="file-earmark-arrow-up-fill"></b-icon>{{ $t('message.addModal.title') }}
     </template>

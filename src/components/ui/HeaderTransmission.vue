@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal id="remove-torrent-modal" size="lg" button-size="sm" dialog-class="model-remove">
+    <b-modal id="remove-torrent-modal" button-size="sm" dialog-class="model-remove user-select-none" title-class="text-truncate">
       <template v-slot:modal-title>
         <b-icon class="mr-3" icon="trash-fill"></b-icon>{{ getTitleRemoveModel() }}
       </template>
