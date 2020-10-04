@@ -1,4 +1,4 @@
-import timeInterval from '../timeInterval.filter'
+import timeInterval from '@/filters/timeInterval.filter'
 
 /**
  * @typedef  {Object} Torrent
@@ -28,7 +28,7 @@ const infos = function (torrents, i18n) {
         } else if (lastActivity < 5) {
             return i18n.t('message.filter.lastactivity.active');
         } else {
-            return i18n.t('message.filter.lastactivity.ago', [timeInterval(latest)]);
+            return i18n.t('message.filter.lastactivity.ago', [timeInterval(lastActivity)]);
         }
     }
 }
