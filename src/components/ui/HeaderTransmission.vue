@@ -81,8 +81,10 @@ export default {
     },
     removeSelected() {
       this.removeTorrent(this.selectedTorrent, false)
-          .then(this.success)
-          .catch(this.fail);
+          .then(response => {
+            this.success(response)
+            this.$store.commit(keyStore.UNSELECTED);
+          }).catch(this.fail);
       this.$bvModal.hide(REMOVE_TORRENT_MODAL);
     },
     startSelected() {
