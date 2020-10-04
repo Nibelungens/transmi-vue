@@ -93,10 +93,12 @@ export default {
       }
     },
     refreshPeers() {
-      this.torrents = null;
-      this.getPeersTorrent(this.selectedTorrent)
-          .then(this.detailSuccess)
-          .catch(this.error);
+      if (this.showPanel) {
+        this.torrents = null;
+        this.getPeersTorrent(this.selectedTorrent)
+            .then(this.detailSuccess)
+            .catch(this.error);
+      }
     },
     detailSuccess(response) {
       if (response != null && response.data !== null) {
