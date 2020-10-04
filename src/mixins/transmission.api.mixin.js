@@ -5,6 +5,7 @@ const QUEUE_MOVE_BOTTOM = "queue-move-bottom";
 const QUEUE_MOVE_DOWN = "queue-move-down";
 const TORRENT_REMOVE = "torrent-remove";
 const QUEUE_MOVE_TOP = "queue-move-top";
+const TORRENT_VERIFY = "torrent-verify";
 const TORRENT_START = "torrent-start";
 const SESSION_STATS = "session-stats";
 const QUEUE_MOVE_UP = "queue-move-up";
@@ -22,59 +23,60 @@ const ARGUMENTS_TORRENT_ADD = {
 
 const ARGUMENTS_TORRENT_ALL = {
   "fields": [
-    "id",
-    "name",
-    "totalSize",
-    "dateCreated",
+    "metadataPercentComplete",
     "peersSendingToUs",
-    "isFinished",
+    "recheckProgress",
     "peersConnected",
-    "percentDone",
+    "seedRatioLimit",
+    "leftUntilDone",
+    "queuePosition",
     "sizeWhenDone",
     "rateDownload",
-    "rateUpload" ,
-    "status",
-    "metadataPercentComplete",
-    "leftUntilDone",
     "uploadedEver",
-    "uploadRatio",
-    "seedRatioLimit",
-    "eta" ,
-    "errorString",
-    "queuePosition",
     "activityDate",
+    "dateCreated",
+    "percentDone",
+    "errorString",
     "uploadRatio",
-    "error"]
+    "rateUpload",
+    "isFinished",
+    "totalSize",
+    "status",
+    "name",
+    "eta" ,
+    "error",
+    "id"]
 };
 const ARGUMENTS_TORRENT_INFO = {
   "fields":[
-    "id",
-    "name",
-    "hashString",
-    "sizeWhenDone",
-    "leftUntilDone",
-    "haveUnchecked",
-    "haveValid",
+    "metadataPercentComplete",
     "desiredAvailable",
     "downloadedEver",
-    "uploadedEver",
-    "corruptEver",
-    "isFinished",
-    "status",
-    "startDate",
-    "eta",
+    "haveUnchecked",
+    "leftUntilDone",
     "activityDate",
-    "errorString",
-    "pieceSize",
-    "pieceCount",
-    "totalSize",
+    "uploadedEver",
+    "sizeWhenDone",
     "downloadDir",
-    "isPrivate",
-    "creator",
+    "errorString",
+    "corruptEver",
     "dateCreated",
+    "failedEver",
+    "isFinished",
+    "hashString",
+    "pieceCount",
+    "haveValid",
+    "startDate",
+    "pieceSize",
+    "totalSize",
+    "isPrivate",
     "comment",
-    "metadataPercentComplete",
-    "failedEver"],
+    "creator",
+    "status",
+    "name",
+    "eta",
+    "id"
+  ],
   "ids":[]};
 
 const ARGUMENTS_TORRENT_PEERS = {
@@ -224,6 +226,28 @@ const Transmission = {
           });
     },
     /**
+     * @typedef  {Object} Torrent
+     * @property {number} id
+     *
+     * @typedef  {Object} Response
+     * @property {string} result
+     *
+     * @param {Torrent} torrent
+     *
+     * @return {Promise<Response>}
+     */
+    verifyTorrent(torrent) {
+      const args = ARGUMENT_IDS;
+
+      if (Array.isArray(torrent)) {
+        args.ids = torrent.map(t => t.id)
+      } else if (torrent !== null && torrent.id !== null) {
+        args.ids = [torrent.id]
+      }
+
+      return this.request(TORRENT_VERIFY, args);
+    },
+    /**
      * @typedef  {Object} Stats
      * @property {number} downloadedBytes
      * @property {number} filesAdded
@@ -334,17 +358,44 @@ const Transmission = {
     getTorrents() {
       return this.request(TORRENT_GET, ARGUMENTS_TORRENT_ALL);
     },
-    requestSimple(method, torrent) {
-      let ids = null;
-
-      if (Array.isArray(torrent)) {
-        ids = torrent.map(t => t.id)
-      } else {
-        ids = [torrent.id]
-      }
-
-      return this.request(method, {"ids": ids});
-    },
+    /**
+     *
+     * @typedef  {Object} Torrent
+     * @property {number} metadataPercentComplete
+     * @property {number} desiredAvailable
+     * @property {number} downloadedEver
+     * @property {boolean} haveUnchecked
+     * @property {number} leftUntilDone
+     * @property {number} activityDate
+     * @property {number} uploadedEver
+     * @property {number} sizeWhenDone
+     * @property {string} downloadDir
+     * @property {string} errorString
+     * @property {number} corruptEver
+     * @property {number} dateCreated
+     * @property {number} failedEver
+     * @property {boolean} isFinished
+     * @property {number} hashString
+     * @property {number} pieceCount
+     * @property {boolean} haveValid
+     * @property {number} startDate
+     * @property {number} pieceSize
+     * @property {number} totalSize
+     * @property {boolean} isPrivate
+     * @property {string} comment
+     * @property {string} creator
+     * @property {number} status
+     * @property {string} name
+     * @property {number} eta
+     * @property {number} id
+     *
+     * @typedef  {Object} Arguments
+     * @property {array<Torrent>} torrents
+     *
+     * @param {array<Torrent>} torrents
+     *
+     * @return {Promise<Arguments>}
+     */
     getInfoTorrent(torrents) {
       const args = ARGUMENTS_TORRENT_INFO;
       args.ids = torrents.map(torrent =>torrent.id)
@@ -357,13 +408,17 @@ const Transmission = {
 
       return this.request(TORRENT_GET, args);
     },
-    request(method, args) {
-      return axios.post('/api',
-          {
-            "method": method,
-            "arguments": args
-          });
-    },
+    /**
+     * @typedef  {Object} Torrent
+     * @property {number} id
+     *
+     * @typedef  {Object} Response
+     * @property {string} result
+     *
+     * @param {Torrent} torrent
+     *
+     * @return {Promise<Response>}
+     */
     moveToTop(torrent) {
       const args = ARGUMENT_IDS;
 
@@ -375,6 +430,17 @@ const Transmission = {
 
       return this.request(QUEUE_MOVE_TOP, args);
     },
+    /**
+     * @typedef  {Object} Torrent
+     * @property {number} id
+     *
+     * @typedef  {Object} Response
+     * @property {string} result
+     *
+     * @param {Torrent} torrent
+     *
+     * @return {Promise<Response>}
+     */
     moveToBottom(torrent) {
       const args = ARGUMENT_IDS;
 
@@ -386,6 +452,17 @@ const Transmission = {
 
       return this.request(QUEUE_MOVE_BOTTOM, args);
     },
+    /**
+     * @typedef  {Object} Torrent
+     * @property {number} id
+     *
+     * @typedef  {Object} Response
+     * @property {string} result
+     *
+     * @param {Torrent} torrent
+     *
+     * @return {Promise<Response>}
+     */
     moveUp(torrent) {
       const args = ARGUMENT_IDS;
 
@@ -397,6 +474,17 @@ const Transmission = {
 
       return this.request(QUEUE_MOVE_UP, args);
     },
+    /**
+     * @typedef  {Object} Torrent
+     * @property {number} id
+     *
+     * @typedef  {Object} Response
+     * @property {string} result
+     *
+     * @param {Torrent} torrent
+     *
+     * @return {Promise<Response>}
+     */
     moveDown(torrent) {
       const args = ARGUMENT_IDS;
 
@@ -407,7 +495,26 @@ const Transmission = {
       }
 
       return this.request(QUEUE_MOVE_DOWN, args);
-    }
+    },
+
+    request(method, args) {
+      return axios.post('/api',
+          {
+            "method": method,
+            "arguments": args
+          });
+    },
+    requestSimple(method, torrent) {
+      let ids = null;
+
+      if (Array.isArray(torrent)) {
+        ids = torrent.map(t => t.id)
+      } else {
+        ids = [torrent.id]
+      }
+
+      return this.request(method, {"ids": ids});
+    },
   }
 }
 

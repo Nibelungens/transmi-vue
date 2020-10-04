@@ -162,7 +162,7 @@
         "complete": "Seeding complete",
         "paused": "Paused",
         "queuedVerification": "Queued for verification",
-        "verifying": "Verifying local data",
+        "verifying": "Verifying local data ({0}% tested)",
         "queuedDownload": "Queued for download",
         "downloading": "Downloading",
         "queuedSeeding": "Queued for seeding",

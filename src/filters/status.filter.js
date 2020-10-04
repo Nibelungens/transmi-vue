@@ -1,8 +1,10 @@
 import Status from '../constantes/status.const'
+import percentFilter from '@/filters/percent.filter.js'
 
 /**
  * @typedef  {Object} Torrent
  * @property {string} status
+ * @property {number} recheckProgress
  *
  * @param {Torrent} torrent
  * @param {Object} i18n
@@ -14,7 +16,7 @@ const status = function (torrent, i18n) {
         case Status.STATUS_CHECK_WAIT:
             return i18n.t('message.filter.status.queuedVerification');
         case Status.STATUS_CHECK:
-            return i18n.t('message.filter.status.verifying');
+            return i18n.t('message.filter.status.verifying', [percentFilter(torrent.recheckProgress)]);
         case Status.STATUS_DOWNLOAD_WAIT:
             return i18n.t('message.filter.status.queuedDownload');
         case Status.STATUS_DOWNLOAD:

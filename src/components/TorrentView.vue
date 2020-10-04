@@ -79,7 +79,9 @@ export default {
   computed: {
     isPlay() {
       return this.torrent.status === Status.STATUS_DOWNLOAD ||
-          this.torrent.status === Status.STATUS_SEED;
+          this.torrent.status === Status.STATUS_CHECK_WAIT ||
+          this.torrent.status === Status.STATUS_SEED ||
+          this.torrent.status === Status.STATUS_CHECK;
     },
     isPause() {
       return this.torrent.status === Status.STATUS_STOPPED;
@@ -177,9 +179,9 @@ export default {
         case Status.STATUS_STOPPED:
           return STYLE_SECONDARY;
         case Status.STATUS_CHECK_WAIT:
-          return STYLE_SUCCESS;
+          return STYLE_PRIMARY;
         case Status.STATUS_CHECK:
-          return STYLE_SUCCESS;
+          return STYLE_PRIMARY;
         case Status.STATUS_DOWNLOAD_WAIT:
           return STYLE_PRIMARY;
         case Status.STATUS_DOWNLOAD:
@@ -193,7 +195,10 @@ export default {
       }
     },
     showRatio() {
-      return this.torrent.uploadRatio < this.torrent.seedRatioLimit && this.torrent.percentDone >= 1
+      return this.torrent.uploadRatio < this.torrent.seedRatioLimit &&
+          this.torrent.percentDone >= 1 &&
+          this.torrent.status !== Status.STATUS_CHECK &&
+          this.torrent.status !== Status.STATUS_CHECK_WAIT
     },
     start() {
       this.startTorrents(this.torrent)

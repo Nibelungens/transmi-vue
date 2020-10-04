@@ -14,7 +14,7 @@
         <b-list-group-item href="#" class="m-row" v-on:click="remove(false)">{{ $t('message.torrent.contextMenu.remove') }}</b-list-group-item>
         <b-list-group-item href="#" class="m-row" v-on:click="remove(true)">{{ $t('message.torrent.contextMenu.trash') }}</b-list-group-item>
         <b-list-group-item class="m-divider"></b-list-group-item>
-        <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.verify') }}</b-list-group-item>
+        <b-list-group-item v-on:click="verify" href="#" class="m-row">{{ $t('message.torrent.contextMenu.verify') }}</b-list-group-item>
         <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.location') }}</b-list-group-item>
         <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.rename') }}</b-list-group-item>
         <b-list-group-item class="m-divider"></b-list-group-item>
@@ -94,6 +94,11 @@ export default {
     },
     start() {
       this.startTorrents(this.selectedTorrents)
+          .then(this.success)
+          .catch(this.error);
+    },
+    verify() {
+      this.verifyTorrent(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
