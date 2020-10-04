@@ -37,8 +37,8 @@
           </b-button-group>
         </b-button-toolbar>
           <b-button id="btn-panel-details" class="ml-auto" v-on:click="openDetails" size="sm" v-b-tooltip.hover :title="$t('message.header.openDetails')"  variant="outline-light">
-            <b-icon icon="arrow-bar-left" v-show="!detailPanel"></b-icon>
-            <b-icon icon="arrow-bar-right" v-show="detailPanel"></b-icon>
+            <b-icon class="mx-5" icon="arrow-bar-left" v-show="!detailPanel"></b-icon>
+            <b-icon class="mx-5" icon="arrow-bar-right" v-show="detailPanel"></b-icon>
           </b-button>
       </b-navbar>
     </header>
