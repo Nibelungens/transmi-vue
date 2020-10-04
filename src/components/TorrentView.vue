@@ -143,7 +143,7 @@ export default {
     },
     // ARROW
     showUploadRate() {
-      return this.torrent.status === Status.STATUS_SEED || this.torrent.status === Status.STATUS_DOWNLOAD
+      return (this.torrent.status === Status.STATUS_SEED || this.torrent.status === Status.STATUS_DOWNLOAD) && !this.asError;
     },
     showDownloadRate() {
       return this.torrent.status === Status.STATUS_DOWNLOAD && !this.asError;
