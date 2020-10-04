@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-auto font">
+  <div class="overflow-auto peers">
     <div v-if="torrents === null" class="info-spin">
       <b-spinner type="grow" label="Loading..."></b-spinner>
     </div>
@@ -111,8 +111,9 @@ export default {
 </script>
 
 <style scoped>
-.font {
+.peers {
   font-size: xx-small;
+  max-height: 74vh;
 }
 .border {
   border-top: hidden !important;
