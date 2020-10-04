@@ -4,7 +4,7 @@
       <template v-slot:modal-title>
         <b-icon class="mr-3" icon="trash-fill"/>{{ $tc('message.header.removeModal.title', selectedTorrent.length, [selectedTorrent[0].name, selectedTorrent.length]) }}
       </template>
-      <img src="@/assets/logo-98.png" alt="logo" class="d-inline-flex"/>
+      <img src="@/assets/logo-96.png" alt="logo" class="d-inline-flex"/>
       <div class="d-inline-flex w-75 text-center align-middle">{{ $t('message.header.removeModal.description') }}</div>
       <template v-slot:modal-footer="{ submit, cancel }">
         <b-button size="sm" variant="success" v-on:click="cancel()" v-text="$t('message.header.removeModal.cancel')"/>
@@ -14,6 +14,7 @@
     <header>
       <b-navbar type="dark" variant="dark">
         <b-button-toolbar>
+          <img src="@/assets/logo-32.png" alt="logo"/><h5 class="ml-2 mr-4 pb-0 mb-0 pt-1 font-weight-bold text-light">{{ $t('message.appName') }}</h5>
           <b-button-group size="sm" class="mr-1" >
             <b-button v-b-tooltip.hover :title="$t('message.header.open')" variant="light" v-on:click="openModal">
               <b-icon class="mr-1" icon="file-earmark-arrow-up-fill"></b-icon>{{ $t('message.header.open') }}
@@ -35,7 +36,7 @@
             </b-button>
           </b-button-group>
         </b-button-toolbar>
-          <b-button id="btn-panel-details" class="ml-auto" v-on:click="openDetails" size="sm" v-b-tooltip.hover :title="$t('message.header.openDetails')"  variant="light">
+          <b-button id="btn-panel-details" class="ml-auto" v-on:click="openDetails" size="sm" v-b-tooltip.hover :title="$t('message.header.openDetails')"  variant="outline-light">
             <b-icon icon="arrow-bar-left" v-show="!detailPanel"></b-icon>
             <b-icon icon="arrow-bar-right" v-show="detailPanel"></b-icon>
           </b-button>

@@ -1,5 +1,6 @@
 {
   "message": {
+    "appName": "Transmi(vue)",
     "addModal": {
       "title": "Upload Torrent Files",
       "select": "Please select a torrent file to upload:",
