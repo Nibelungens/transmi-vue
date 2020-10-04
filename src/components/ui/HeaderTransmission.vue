@@ -2,10 +2,10 @@
   <div>
     <b-modal id="remove-torrent-modal" button-size="sm" dialog-class="model-remove user-select-none" title-class="text-truncate">
       <template v-slot:modal-title>
-        <b-icon class="mr-3" icon="trash-fill"></b-icon>{{ getTitleRemoveModel() }}
+        <b-icon class="mr-3" icon="trash-fill"/>{{ $tc('message.header.removeModal.title', selectedTorrent.length, [selectedTorrent[0].name, selectedTorrent.length]) }}
       </template>
-      <img src="@/assets/logo.png" alt="logo" width="98" height="98" class="d-inline-block"/>
-      <div class="ml-5 d-inline-block w-75 text-center">{{ $t('message.header.removeModal.description') }}</div>
+      <img src="@/assets/logo.png" alt="logo" width="98" height="98" class="d-inline-flex"/>
+      <div class="d-inline-flex w-75 text-center align-middle">{{ $t('message.header.removeModal.description') }}</div>
       <template v-slot:modal-footer="{ submit, cancel }">
         <b-button size="sm" variant="success" v-on:click="cancel()" v-text="$t('message.header.removeModal.cancel')"/>
         <b-button size="sm" variant="danger" v-on:click="removeSelected" v-text="$t('message.header.removeModal.remove')"/>
@@ -75,17 +75,6 @@ export default {
   methods: {
     openDetails() {
       bus.$emit(events.SWITCH_PANEL);
-    },
-    getTitleRemoveModel() {
-      let title = '';
-
-      this.selectedTorrent.length === 1
-        ? title = this.$t('message.header.removeModal.titleOne', [this.selectedTorrent[0].name])
-        : title = this.$t('message.header.removeModal.titleMany', [this.selectedTorrent.length]);
-
-      return title.length > 60
-        ? title.substring(0, 57).concat("...")
-        : title;
     },
     openModal() {
       bus.$emit(events.OPEN_ADD_MODEL);

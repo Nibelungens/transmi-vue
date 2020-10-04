@@ -25,8 +25,7 @@
       "stopAll": "Stop All Torrents",
       "openDetails": "Toggle Inspector",
       "removeModal": {
-        "titleOne": "Remove {0}?",
-        "titleMany": "Remove {0} transferts?",
+        "title": "Remove {0}? | Remove {1} transferts?",
         "description": "Once removed, continuing the transfer will require the torrent file. Are you sure you want to remove it?",
         "cancel": "Cancel",
         "remove": "Remove"
