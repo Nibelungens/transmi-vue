@@ -84,6 +84,7 @@
       "to": " to {0} of {1} peer",
       "from": " from {0} of {1} peer",
       "of": "of",
+      "queued": "Queued Position",
       "contextMenu": {
         "pause": "Pause",
         "resume": "Resume",

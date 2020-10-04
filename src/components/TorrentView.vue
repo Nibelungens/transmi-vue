@@ -1,11 +1,14 @@
 <template>
-  <div class="pl-3 pr-3 pb-1 pt-1 torrent-row" v-bind:class="{ 'm-selected': selected }"
+  <div class="pl-3 pr-3 torrent-row" v-bind:class="{ 'm-selected': selected }"
+       v-on:click.shift.exact="selectTorrentRowCtrlMaj"
+       v-on:click.ctrl.exact="selectTorrentRowCtrl"
        v-on:contextmenu.prevent="openContextMenu"
        v-on:click.exact="selectTorrentRow"
-       v-on:click.ctrl.exact="selectTorrentRowCtrl"
-       v-on:click.shift.exact="selectTorrentRowCtrlMaj"
        v-on:dblclick="openDetails">
-    <div class="title-row">{{ (torrent != null)? torrent.name: '' }}</div>
+    <div class="d-flex">
+      <div class="title-row font-weight-bold mr-auto">{{ (torrent != null)? torrent.name: '' }}</div>
+      <span class="badge badge-primary queue"><span v-b-tooltip.hover :title="$t('message.torrent.queued')"><b-icon-layers-half/> {{ torrent.queuePosition }}</span></span>
+    </div>
     <div class="peers-row">
       <div class="d-inline-flex text-danger" v-if="asError">{{ $t('message.torrent.error', [torrent.errorString]) }}</div>
       <div class="d-inline-flex" v-else>{{ torrent | formatStatus($i18n) }}{{ postStatus() }}</div>
@@ -206,6 +209,12 @@ export default {
 </script>
 
 <style scoped>
+.queue {
+  margin-right: 1.6%;
+  margin-top: 5px;
+  width: 40px;
+}
+
 .m-selected {
   border-left-color: cornflowerblue;
   border-left-width: 5px;
@@ -215,12 +224,10 @@ export default {
 }
 
 .torrent-row {
-  user-select: none;
   cursor: pointer;
 }
 
 .title-row {
-  font-weight: bold;
   font-size: small;
 }
 
@@ -241,11 +248,14 @@ export default {
 
 .peers-row {
   font-size: xx-small;
+  margin-bottom: -3px;
+  margin-top: -5px;
   color: gray;
 }
 
 .dl-row {
   font-size: xx-small;
+  margin-top: -3px;
   color: gray;
 }
 </style>
