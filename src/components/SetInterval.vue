@@ -1,6 +1,11 @@
 <template>
   <div>
-    <b-form-select v-model="selectedTimeRefresh" v-on:change="changeRefresh" :options="timeRefreshOptions" size="sm"></b-form-select>
+    <div class="input-group input-group-sm">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="refresh-select"><b-icon-arrow-repeat/></label>
+      </div>
+      <b-form-select id="refresh-select" v-model="selectedTimeRefresh" v-on:change="changeRefresh" :options="timeRefreshOptions" size="sm"></b-form-select>
+    </div>
   </div>
 </template>
 
