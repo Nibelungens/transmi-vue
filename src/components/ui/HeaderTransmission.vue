@@ -14,7 +14,7 @@
     <header>
       <b-navbar type="dark" variant="dark">
         <b-button-toolbar>
-          <img src="@/assets/logo-32.png" alt="logo"/><h5 class="ml-2 mr-4 pb-0 mb-0 pt-1 font-weight-bold text-light">{{ $t('message.appName') }}</h5>
+          <img src="@/assets/logo-31.png" alt="logo"/><h5 class="ml-2 mr-4 pb-0 mb-0 pt-1 font-weight-bold text-light">{{ $t('message.appName') }}</h5>
           <b-button-group size="sm" class="mr-1" >
             <b-button v-b-tooltip.hover :title="$t('message.header.open')" variant="light" v-on:click="openModal">
               <b-icon class="mr-1" icon="file-earmark-arrow-up-fill"></b-icon>{{ $t('message.header.open') }}
