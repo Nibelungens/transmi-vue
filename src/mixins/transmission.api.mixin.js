@@ -9,6 +9,10 @@ const SESSION_GET = "session-get";
 const SESSION_SET = "session-set";
 const TORRENT_ADD = "torrent-add";
 const SESSION_STATS = "session-stats";
+const QUEUE_MOVE_TOP = "queue-move-top";
+const QUEUE_MOVE_BOTTOM = "queue-move-bottom";
+const QUEUE_MOVE_UP = "queue-move-up";
+const QUEUE_MOVE_DOWN = "queue-move-down";
 
 const ARGUMENTS_TORRENT_ADD = {
   "download-dir": null,
@@ -78,6 +82,10 @@ const ARGUMENTS_TORRENT_PEERS = {
 
 const ARGUMENTS_TORRENT_REMOVE = {
   "delete-local-data":false,
+  "ids":[]
+}
+
+const ARGUMENT_IDS = {
   "ids":[]
 }
 
@@ -327,6 +335,30 @@ const Transmission = {
             "method": method,
             "arguments": args
           });
+    },
+    moveToTop(torrent) {
+      const args = ARGUMENT_IDS;
+      ARGUMENT_IDS.ids = [torrent.id];
+
+      return this.request(QUEUE_MOVE_TOP, args);
+    },
+    moveToBottom(torrent) {
+      const args = ARGUMENT_IDS;
+      ARGUMENT_IDS.ids = [torrent.id];
+
+      return this.request(QUEUE_MOVE_BOTTOM, args);
+    },
+    moveUp(torrent) {
+      const args = ARGUMENT_IDS;
+      ARGUMENT_IDS.ids = [torrent.id];
+
+      return this.request(QUEUE_MOVE_UP, args);
+    },
+    moveDown(torrent) {
+      const args = ARGUMENT_IDS;
+      ARGUMENT_IDS.ids = [torrent.id];
+
+      return this.request(QUEUE_MOVE_DOWN, args);
     }
   }
 }

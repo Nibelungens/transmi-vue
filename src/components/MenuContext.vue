@@ -6,10 +6,10 @@
         <b-list-group-item href="#" class="m-row" v-on:click="start()" v-bind:disabled="!isPause">{{ $t('message.torrent.contextMenu.resume') }}</b-list-group-item>
         <b-list-group-item href="#" class="m-row">{{ $t('message.torrent.contextMenu.resumeNow') }}</b-list-group-item>
         <b-list-group-item class="m-divider"></b-list-group-item>
-        <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.moveTop') }}</b-list-group-item>
-        <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.moveUp') }}</b-list-group-item>
-        <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.moveDown') }}</b-list-group-item>
-        <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.moveBottom') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="toTop()">{{ $t('message.torrent.contextMenu.moveTop') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="up()">{{ $t('message.torrent.contextMenu.moveUp') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="down()">{{ $t('message.torrent.contextMenu.moveDown') }}</b-list-group-item>
+        <b-list-group-item href="#" class="m-row" v-on:click="toBottom()">{{ $t('message.torrent.contextMenu.moveBottom') }}</b-list-group-item>
         <b-list-group-item class="m-divider"></b-list-group-item>
         <b-list-group-item href="#" class="m-row" v-on:click="remove(false)">{{ $t('message.torrent.contextMenu.remove') }}</b-list-group-item>
         <b-list-group-item href="#" class="m-row" v-on:click="remove(true)">{{ $t('message.torrent.contextMenu.trash') }}</b-list-group-item>
@@ -86,9 +86,6 @@ export default {
         y = (y >= maxY) ? maxY: y;
         x = (x >= maxX) ? maxX: x;
 
-        console.log(y);
-        console.log(this.$root.$refs.content)
-
         this.$refs.contextMenu.style.left = x
             .toString().concat(PX);
         this.$refs.contextMenu.style.top = y
@@ -108,6 +105,26 @@ export default {
     },
     remove(trash) {
       this.removeTorrent(this.torrent, trash)
+          .then(this.success)
+          .catch(this.error);
+    },
+    toTop() {
+      this.moveToTop(this.torrent)
+          .then(this.success)
+          .catch(this.error);
+    },
+    toBottom() {
+      this.moveToBottom(this.torrent)
+          .then(this.success)
+          .catch(this.error);
+    },
+    up() {
+      this.moveUp(this.torrent)
+          .then(this.success)
+          .catch(this.error);
+    },
+    down() {
+      this.moveDown(this.torrent)
           .then(this.success)
           .catch(this.error);
     }
