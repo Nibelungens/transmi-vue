@@ -4,7 +4,7 @@
       <template v-slot:modal-title>
         <b-icon class="mr-3" icon="trash-fill"/>{{ $tc('message.header.removeModal.title', selectedTorrent.length, [selectedTorrent[0].name, selectedTorrent.length]) }}
       </template>
-      <img src="@/assets/logo.png" alt="logo" width="98" height="98" class="d-inline-flex"/>
+      <img src="@/assets/logo-98.png" alt="logo" class="d-inline-flex"/>
       <div class="d-inline-flex w-75 text-center align-middle">{{ $t('message.header.removeModal.description') }}</div>
       <template v-slot:modal-footer="{ submit, cancel }">
         <b-button size="sm" variant="success" v-on:click="cancel()" v-text="$t('message.header.removeModal.cancel')"/>

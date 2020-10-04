@@ -4,7 +4,7 @@
       <template v-slot:modal-title>
         <b-icon icon="question-circle-fill"></b-icon><span class="ml-3">{{ $t('message.menuSettings.aboutModal.title') }}</span>
       </template>
-      <img src="../assets/logo.png" alt="logo" width="128" height="128" class="mx-auto d-block"/>
+      <img src="@/assets/logo-128.png" alt="logo" class="mx-auto d-block"/>
       <div class="font-weight-bold text-center mt-1">{{$t('message.menuSettings.aboutModal.transmission', [this.version])}}</div>
       <div class="font-weight-bold text-center">{{$t('message.menuSettings.aboutModal.transmissionVue', [this.getClientVersion()])}}</div>
       <div class="font-weight-lighter text-center mt-2">{{$t('message.menuSettings.aboutModal.description')}}</div>
