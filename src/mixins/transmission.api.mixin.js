@@ -263,6 +263,38 @@ const Transmission = {
     stopTorrents(torrent) {
       return this.requestSimple(TORRENT_STOP, torrent);
     },
+    /**
+     *
+     * @typedef  {Object} Torrents
+     * @property {number} id
+     * @property {string} name
+     * @property {number} totalSize
+     * @property {number} dateCreated
+     * @property {number} peersSendingToUs
+     * @property {boolean} isFinished
+     * @property {number} peersConnected
+     * @property {number} percentDone
+     * @property {number} sizeWhenDone
+     * @property {number} rateDownload
+     * @property {number} rateUpload
+     * @property {number} status
+     * @property {number} metadataPercentComplete
+     * @property {number} leftUntilDone
+     * @property {number} uploadedEver
+     * @property {number} uploadRatio
+     * @property {number} seedRatioLimit
+     * @property {number} eta
+     * @property {string} errorString
+     * @property {number} queuePosition
+     * @property {number} activityDate
+     * @property {number} uploadRatio
+     * @property {number} error
+     *
+     * @typedef  {Object} Arguments
+     * @property {array<Torrents>} torrents
+     *
+     * @return {Promise<Arguments>}
+     */
     getTorrents() {
       return this.request(TORRENT_GET, ARGUMENTS_TORRENT_ALL);
     },
