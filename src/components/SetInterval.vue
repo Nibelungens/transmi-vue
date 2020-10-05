@@ -10,15 +10,15 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import keyStore from "@/constantes/key.store.const";
+import events from "@/constantes/event.const";
+import key from "@/constantes/key.store.const";
 import bus from "@/config/bus.event";
-import events from "@/constantes/key.event.const";
+import { mapGetters } from "vuex";
 
 export default {
   name: "SetInterval",
   computed: {
-    ...mapGetters({timeRefresh: keyStore.GET_TIME_REFRESH})
+    ...mapGetters({timeRefresh: key.GET_TIME_REFRESH})
   },
   data: function() {
     return {
@@ -40,7 +40,7 @@ export default {
       bus.$emit(events.REFRESH_LIST_TORRENT)
     },
     changeRefresh(value) {
-      this.$store.commit(keyStore.SET_TIME_REFRESH, value);
+      this.$store.commit(key.SET_TIME_REFRESH, value);
     },
   }
 }

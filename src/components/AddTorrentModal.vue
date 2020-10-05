@@ -23,21 +23,21 @@
 </template>
 
 <script>
-import bus from "@/config/bus.event";
-import events from "@/constantes/key.event.const";
-import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import ResultMixin from "@/mixins/result.mixin";
-import sizeFilter from "@/filters/size.filter";
+import api from "@/mixins/api.transmission.mixin";
 import keyStore from "@/constantes/key.store.const";
-import {mapGetters} from "vuex";
+import events from "@/constantes/event.const";
+import sizeFilter from "@/filters/size.filter";
+import result from "@/mixins/result.mixin";
+import bus from "@/config/bus.event";
+import { mapGetters } from "vuex";
 
 const ADD_TORRENT_MODAL = 'add-torrent-modal'
 
 export default {
   name: "AddTorrentModal",
   mixins: [
-      TransmissionApiMixin,
-      ResultMixin
+      api,
+      result
   ],
   mounted() {
     bus.$on(events.OPEN_MODAL_ADD_TORRENT, this.showModal);
@@ -78,7 +78,7 @@ export default {
     },
     showModal() {
       this.reset();
-      this.getFreeSpace(this.downloadDir)
+      this.api_config.getFreeSpace(this.downloadDir)
           .then((response) => this.$store.commit(keyStore.SET_DOWNLOAD_DIR_FREE_SPACE, response.data.arguments['size-bytes']))
           .catch(this.error)
       this.$bvModal.show(ADD_TORRENT_MODAL);
@@ -119,7 +119,7 @@ export default {
       this.start = true;
     },
     add(path, url, name) {
-      this.addTorrent(this.getFolder(), path, url, this.start === "true")
+      this.api_torrent.addTorrent(this.getFolder(), path, url, this.start === "true")
           .then((response) => this.addSuccess(response, name))
           .catch(this.fail);
     },

@@ -46,26 +46,26 @@
 </template>
 
 <script>
-import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import keyStore from "@/constantes/key.store.const";
-import events from "@/constantes/key.event.const";
+import api from "@/mixins/api.transmission.mixin";
+import events from "@/constantes/event.const";
+import key from "@/constantes/key.store.const";
+import result from "@/mixins/result.mixin";
 import bus from "@/config/bus.event";
-import {mapGetters} from "vuex";
-import ResultMixin from "@/mixins/result.mixin";
+import { mapGetters } from "vuex";
 
 const REMOVE_TORRENT_MODAL = 'remove-torrent-modal';
 
 export default {
   name: 'header-transmission',
   mixins: [
-    TransmissionApiMixin,
-    ResultMixin
+    api,
+    result
   ],
   computed: {
     ...mapGetters({
-      allTorrent: keyStore.GET_TORRENT,
-      selectedTorrent: keyStore.GET_SELECTED_TORRENTS,
-      detailPanel: keyStore.GET_DETAILS_PANEL
+      allTorrent: key.GET_TORRENT,
+      selectedTorrent: key.GET_SELECTED_TORRENTS,
+      detailPanel: key.GET_DETAILS_PANEL
     }),
     asSelected() {
       return this.selectedTorrent !== undefined &&
@@ -81,30 +81,30 @@ export default {
       bus.$emit(events.OPEN_MODAL_ADD_TORRENT);
     },
     removeSelected() {
-      this.removeTorrent(this.selectedTorrent, false)
+      this.api_torrent.removeTorrent(this.selectedTorrent, false)
           .then(response => {
             this.success(response)
-            this.$store.commit(keyStore.UNSELECTED);
+            this.$store.commit(key.UNSELECTED);
           }).catch(this.fail);
       this.$bvModal.hide(REMOVE_TORRENT_MODAL);
     },
     startSelected() {
-      this.startTorrents(this.selectedTorrent)
+      this.api_torrent.startTorrents(this.selectedTorrent)
           .then(this.success)
           .catch(this.fail);
     },
     stopSelected() {
-      this.stopTorrents(this.selectedTorrent)
+      this.api_torrent.stopTorrents(this.selectedTorrent)
           .then(this.success)
           .catch(this.fail);
     },
     startAll() {
-      this.startTorrents(this.allTorrent)
+      this.api_torrent.startTorrents(this.allTorrent)
           .then(this.success)
           .catch(this.fail);
     },
     stopAll() {
-      this.stopTorrents(this.allTorrent)
+      this.api_torrent.stopTorrents(this.allTorrent)
           .then(this.success)
           .catch(this.fail);
     }

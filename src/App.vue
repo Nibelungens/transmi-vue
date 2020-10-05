@@ -10,17 +10,17 @@
 </template>
 
 <script>
-import TransmissionApiMixin from '@/mixins/transmission.api.mixin';
 import HeaderTransmission from '@/components/ui/HeaderTransmission';
 import FooterTransmission from '@/components/ui/FooterTransmission';
 import ListTorrentsView from '@/components/ListTorrentsView';
 import AddTorrentModal from '@/components/AddTorrentModal';
 import keyStore from '@/constantes/key.store.const';
-import IntervalMixin from '@/mixins/interval.mixin';
-import events from '@/constantes/key.event.const';
-import ResultMixin from '@/mixins/result.mixin';
+import interval from '@/mixins/interval.mixin';
+import events from '@/constantes/event.const';
+import result from '@/mixins/result.mixin';
 import bus from '@/config/bus.event';
 import { mapGetters } from 'vuex';
+import api from "@/mixins/api.transmission.mixin";
 
 const s_success = {
   variant: 'success',
@@ -46,15 +46,15 @@ const s_failed = {
 export default {
   name: 'App',
   mixins: [
-    TransmissionApiMixin,
-    IntervalMixin,
-    ResultMixin
+      interval,
+      result,
+      api
   ],
   components: {
-    AddTorrentModal,
     FooterTransmission,
     HeaderTransmission,
-    ListTorrentsView
+    ListTorrentsView,
+    AddTorrentModal
   },
   mounted () {
     document.title = this.$t('message.appName').toString();
@@ -68,7 +68,7 @@ export default {
     this.$store.watch(() => this.$store.getters[keyStore.GET_SELECT_SORT_REVERSE], this.refresh)
 
     this.refresh();
-    this.getSession()
+    this.api_config.getSession()
         .then((response) => this.$store.commit(keyStore.SET_CONFIG, response.data.arguments))
         .catch(this.error);
 
@@ -99,7 +99,7 @@ export default {
       this.$bvToast.toast(msg, s_failed);
     },
     refresh() {
-      this.getTorrents()
+      this.api_torrent.getTorrents()
           .then(this.successTorrent)
           .catch(this.error);
     },

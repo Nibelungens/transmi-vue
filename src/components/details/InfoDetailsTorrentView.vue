@@ -74,22 +74,22 @@
 </template>
 
 <script>
-import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import keyStore from "@/constantes/key.store.const";
-import events from "@/constantes/key.event.const"
+import api from "@/mixins/api.transmission.mixin";
+import events from "@/constantes/event.const";
+import interval from "@/mixins/interval.mixin";
+import key from "@/constantes/key.store.const";
 import bus from "@/config/bus.event";
-import {mapGetters} from "vuex";
-import IntervalMixin from "@/mixins/interval.mixin";
+import { mapGetters } from "vuex";
 
 export default {
   name: "InfoDetailsTorrentView",
   mixins: [
-    TransmissionApiMixin,
-    IntervalMixin
+    api,
+    interval
   ],
   computed: {
     ...mapGetters({
-      selectedTorrents: keyStore.GET_SELECTED_TORRENTS
+      selectedTorrents: key.GET_SELECTED_TORRENTS
     })
   },
   data: function() {
@@ -101,13 +101,13 @@ export default {
     showPanel: Boolean
   },
   mounted() {
-    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENTS], this.refreshMan)
+    this.$store.watch(() => this.$store.getters[key.GET_SELECTED_TORRENTS], this.refreshMan)
   },
   methods: {
     refreshMan() {
       if (this.showPanel) {
         this.infos = null;
-        this.getInfoTorrent(this.selectedTorrents)
+        this.api_torrent.getInfoTorrent(this.selectedTorrents)
             .then(this.detailSuccess)
             .catch(this.error);
       } else {
@@ -116,7 +116,7 @@ export default {
     },
     refresh() {
       if (this.showPanel) {
-        this.getInfoTorrent(this.selectedTorrents)
+        this.api_torrent.getInfoTorrent(this.selectedTorrents)
             .then(this.detailSuccess)
             .catch(this.error);
       } else {

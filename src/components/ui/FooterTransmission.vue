@@ -28,12 +28,15 @@
 <script>
 import MenuSettings from "@/components/MenuSettings";
 import SetInterval from "@/components/SetInterval";
-import events from "@/constantes/key.event.const";
+import events from "@/constantes/event.const";
 import bus from "@/config/bus.event";
 
 export default {
   name: 'footer-transmission',
-  components: {MenuSettings, SetInterval},
+  components: {
+    MenuSettings,
+    SetInterval
+  },
   methods: {
     menuSettings(event) {
       bus.$emit(events.SWITCH_MENU_SETTINGS, event.currentTarget.id);

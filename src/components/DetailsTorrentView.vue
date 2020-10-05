@@ -31,8 +31,8 @@
 <script>
 import InfoDetailsTorrentView from "@/components/details/InfoDetailsTorrentView";
 import PeersDetailsTorrentView from "@/components/details/PeersDetailsTorrentView";
-import keyStore from "@/constantes/key.store.const";
-import {mapGetters} from "vuex";
+import key from "@/constantes/key.store.const";
+import { mapGetters } from "vuex";
 
 export default {
   name: "DetailsTorrentView",
@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      selectedTorrents: keyStore.GET_SELECTED_TORRENTS
+      selectedTorrents: key.GET_SELECTED_TORRENTS
     }),
   },
   data() {

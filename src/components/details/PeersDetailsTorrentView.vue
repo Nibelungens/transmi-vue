@@ -37,13 +37,13 @@
 </template>
 
 <script>
-import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import IntervalMixin from "@/mixins/interval.mixin";
-import keyStore from "@/constantes/key.store.const"
-import events from "@/constantes/key.event.const"
-import filterSize from '@/filters/size.filter'
+import api from "@/mixins/api.transmission.mixin";
+import events from "@/constantes/event.const";
+import key from "@/constantes/key.store.const";
+import interval from "@/mixins/interval.mixin";
+import filterSize from "@/filters/size.filter";
 import bus from "@/config/bus.event";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 /**
  * @param {Object} torrents
@@ -58,12 +58,12 @@ import {mapGetters} from "vuex";
 export default {
   name: "PeersDetailsTorrentView",
   mixins: [
-    TransmissionApiMixin,
-    IntervalMixin
+    api,
+    interval
   ],
   computed: {
     ...mapGetters({
-      selectedTorrent: keyStore.GET_SELECTED_TORRENTS
+      selectedTorrent: key.GET_SELECTED_TORRENTS
     })
   },
   data: function() {
@@ -75,7 +75,7 @@ export default {
     showPanel: Boolean
   },
   created() {
-    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECTED_TORRENTS], this.refreshPeers);
+    this.$store.watch(() => this.$store.getters[key.GET_SELECTED_TORRENTS], this.refreshPeers);
   },
   methods: {
     returnSize(rate) {
@@ -87,7 +87,7 @@ export default {
     },
     refresh() {
       if (this.showPanel) {
-        this.getPeersTorrent(this.selectedTorrent)
+        this.api_torrent.getPeersTorrent(this.selectedTorrent)
             .then(this.detailSuccess)
             .catch(this.error)
       }
@@ -95,7 +95,7 @@ export default {
     refreshPeers() {
       if (this.showPanel) {
         this.torrents = null;
-        this.getPeersTorrent(this.selectedTorrent)
+        this.api_torrent.getPeersTorrent(this.selectedTorrent)
             .then(this.detailSuccess)
             .catch(this.error);
       }

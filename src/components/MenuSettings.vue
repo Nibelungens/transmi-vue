@@ -164,12 +164,12 @@
 </template>
 
 <script>
-import TransmissionApi from '@/mixins/transmission.api.mixin';
-import keyStore from '@/constantes/key.store.const';
-import events from '@/constantes/key.event.const';
+import api from "@/mixins/api.transmission.mixin";
+import events from '@/constantes/event.const';
+import key from '@/constantes/key.store.const';
 import commonUtils from '@/utils/common.utils';
 import { version } from '@/../package.json';
-import Result from '@/mixins/result.mixin';
+import result from '@/mixins/result.mixin';
 import bus from '@/config/bus.event';
 import { mapGetters } from 'vuex';
 
@@ -180,8 +180,8 @@ const MODAL_STAT = 'modal-stat';
 export default {
   name: "MenuSettings",
   mixins: [
-      TransmissionApi,
-      Result
+    api,
+    result
   ],
   data: function() {
     return {
@@ -211,9 +211,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      reverse: keyStore.GET_SELECT_SORT_REVERSE,
-      col: keyStore.GET_SELECT_SORT_COL,
-      version: keyStore.GET_VERSION
+      reverse: key.GET_SELECT_SORT_REVERSE,
+      col: key.GET_SELECT_SORT_COL,
+      version: key.GET_VERSION
     })
   },
   created() {
@@ -243,7 +243,7 @@ export default {
     openModalStatistics() {
       this.extendsTransferts = this.extendsDownload = this.extendsUpload = this.extendsTools = false;
       this.$bvModal.show(MODAL_STAT);
-      this.getSessionStat()
+      this.api_config.getSessionStat()
           .then((response => {
               this.stats = response.data.arguments;
               this.loadedStat = true;
@@ -270,13 +270,13 @@ export default {
       this.extendsTransferts = this.extendsDownload = this.extendsUpload = false;
 
       if (this.extendsTools) {
-        this.getSession()
-          .then(result => {
-            if (result.data.result === 'success') {
-              result.data.arguments['speed-limit-down-enabled']
-                  ? this.downloadLimit = result.data.arguments['speed-limit-down']
+        this.api_config.getSession()
+          .then(response => {
+            if (response.data.result === 'success') {
+              response.data.arguments['speed-limit-down-enabled']
+                  ? this.downloadLimit = response.data.arguments['speed-limit-down']
                   : this.downloadLimit = null;
-              result.data.arguments['speed-limit-up-enabled']
+              response.data.arguments['speed-limit-up-enabled']
                   ? this.uploadLimit = result.data.arguments['speed-limit-up']
                   : this.uploadLimit = null;
             }
@@ -285,18 +285,18 @@ export default {
       }
     },
     sort(sortCol) {
-      this.$store.commit(keyStore.SET_SORT, [sortCol, this.reverse]);
+      this.$store.commit(key.SET_SORT, [sortCol, this.reverse]);
     },
     reverseSort() {
-      this.$store.commit(keyStore.SET_SORT, [this.col, !this.reverse]);
+      this.$store.commit(key.SET_SORT, [this.col, !this.reverse]);
     },
     setUpload(value) {
-      this.setUploadLimit(value)
+      this.api_config.setUploadLimit(value)
           .then(() => {this.uploadLimit = value})
           .catch(this.fail);
     },
     setDownload(value) {
-      this.setDownloadLimit(value)
+      this.api_config.setDownloadLimit(value)
           .then(() => {this.downloadLimit = value})
           .catch(this.fail);
     },

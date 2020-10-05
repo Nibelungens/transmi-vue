@@ -1,4 +1,4 @@
-import events from "@/constantes/key.event.const";
+import events from "@/constantes/event.const";
 import bus from "@/config/bus.event";
 
 const result = {

@@ -11,28 +11,24 @@
 </template>
 
 <script>
-import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
 import DetailsTorrentView from "@/components/DetailsTorrentView";
-import keyStore from "@/constantes/key.store.const";
 import TorrentView from "@/components/TorrentView";
-import {mapGetters} from "vuex";
-import events from "@/constantes/key.event.const";
-import bus from "@/config/bus.event";
 import MenuContext from "@/components/MenuContext";
+import events from "@/constantes/event.const";
+import key from "@/constantes/key.store.const";
+import bus from "@/config/bus.event";
+import { mapGetters } from "vuex";
 
 export default {
   name: 'ListTorrentsView',
   components: {
-    MenuContext,
     DetailsTorrentView,
+    MenuContext,
     TorrentView
   },
-  mixins: [
-    TransmissionApiMixin
-  ],
   computed: {
     ...mapGetters({
-      torrents: keyStore.GET_TORRENT
+      torrents: key.GET_TORRENT
     })
   },
   data: function() {
@@ -46,7 +42,7 @@ export default {
   },
   methods: {
     closePanel() {
-      this.$store.commit(keyStore.SET_DETAILS_PANEL, false);
+      this.$store.commit(key.SET_DETAILS_PANEL, false);
     },
     deselectAll(event) {
       if (!event.path.map(element => element.id).includes('list-torrent') &&
@@ -60,7 +56,7 @@ export default {
     },
     switchPanel() {
       this.isPanelShow = !this.isPanelShow;
-      this.$store.commit(keyStore.SET_DETAILS_PANEL, this.isPanelShow);
+      this.$store.commit(key.SET_DETAILS_PANEL, this.isPanelShow);
     }
   }
 }

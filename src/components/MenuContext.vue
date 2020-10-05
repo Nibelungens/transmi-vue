@@ -66,13 +66,13 @@
 </template>
 
 <script>
+import api from "@/mixins/api.transmission.mixin";
+import key from "@/constantes/key.store.const";
+import events from "@/constantes/event.const";
+import status from "@/constantes/status.const";
+import result from "@/mixins/result.mixin";
 import bus from "@/config/bus.event";
-import events from "@/constantes/key.event.const";
-import Status from "@/constantes/status.const";
-import TransmissionApiMixin from "@/mixins/transmission.api.mixin";
-import {mapGetters} from "vuex";
-import keyStore from "@/constantes/key.store.const";
-import ResultMixin from "@/mixins/result.mixin";
+import { mapGetters } from "vuex";
 
 const LOCATION_MODAL = 'location-torrent-modal';
 const RENAME_MODAL = 'rename-torrent-modal';
@@ -81,8 +81,8 @@ const PX = 'px';
 export default {
   name: "MenuContext",
   mixins: [
-    TransmissionApiMixin,
-    ResultMixin,
+    api,
+    result,
   ],
   data() {
     return {
@@ -94,14 +94,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      selectedTorrents: keyStore.GET_SELECTED_TORRENTS,
-      downloadDir: keyStore.GET_DOWNLOAD_DIR
+      selectedTorrents: key.GET_SELECTED_TORRENTS,
+      downloadDir: key.GET_DOWNLOAD_DIR
     }),
     isPlay() {
-      return this.torrent === null || (this.torrent.status === Status.STATUS_DOWNLOAD || this.torrent.status === Status.STATUS_SEED);
+      return this.torrent === null || (this.torrent.status === status.STATUS_DOWNLOAD || this.torrent.status === status.STATUS_SEED);
     },
     isPause() {
-      return this.torrent === null || (this.torrent.status === Status.STATUS_STOPPED);
+      return this.torrent === null || (this.torrent.status === status.STATUS_STOPPED);
     },
     isRename() {
       return this.selectedTorrents.length === 1;
@@ -134,7 +134,7 @@ export default {
           ? this.inputDownloadDir
           : (this.selectedTorrents.length === 1) ? this.selectedTorrents[0].downloadDir :this.downloadDir;
 
-     this.setLocation(this.selectedTorrents, down)
+     this.api_config.setLocation(this.selectedTorrents, down)
       .then((response) => {
         this.success(response);
         this.$bvModal.hide(LOCATION_MODAL);
@@ -164,47 +164,47 @@ export default {
           .toString().concat(PX);
     },
     start() {
-      this.startTorrents(this.selectedTorrents)
+      this.api_torrent.startTorrents(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     verify() {
-      this.verifyTorrent(this.selectedTorrents)
+      this.api_torrent.verifyTorrent(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     startNow() {
-      this.startTorrentsNow(this.selectedTorrents)
+      this.api_torrent.startTorrentsNow(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     stop() {
-      this.stopTorrents(this.selectedTorrents)
+      this.api_torrent.stopTorrents(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     remove(trash) {
-      this.removeTorrent(this.selectedTorrents, trash)
+      this.api_torrent.removeTorrent(this.selectedTorrents, trash)
           .then(this.success)
           .catch(this.error);
     },
     toTop() {
-      this.moveToTop(this.selectedTorrents)
+      this.api_queue.moveToTop(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     toBottom() {
-      this.moveToBottom(this.selectedTorrents)
+      this.api_queue.moveToBottom(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     up() {
-      this.moveUp(this.selectedTorrents)
+      this.api_queue.moveUp(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },
     down() {
-      this.moveDown(this.selectedTorrents)
+      this.api_queue.moveDown(this.selectedTorrents)
           .then(this.success)
           .catch(this.error);
     },

@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import TransmissionApiMixin from '@/mixins/transmission.api.mixin';
-import keyStore from '@/constantes/key.store.const';
-import events from '@/constantes/key.event.const';
-import Status from '@/constantes/status.const';
-import ResultMixin from '@/mixins/result.mixin';
+import api from "@/mixins/api.transmission.mixin";
+import events from '@/constantes/event.const';
+import key from '@/constantes/key.store.const';
+import status from '@/constantes/status.const';
+import result from '@/mixins/result.mixin';
 import bus from '@/config/bus.event';
 import { mapGetters } from "vuex";
 
@@ -46,8 +46,8 @@ const STYLE_WARNING = 'warning';
 export default {
   name: 'TorrentView',
   mixins: [
-    TransmissionApiMixin,
-    ResultMixin
+    api,
+    result
   ],
   props: {
     torrent: {
@@ -80,20 +80,20 @@ export default {
   },
   computed: {
     isPlay() {
-      return this.torrent.status === Status.STATUS_DOWNLOAD ||
-          this.torrent.status === Status.STATUS_CHECK_WAIT ||
-          this.torrent.status === Status.STATUS_SEED ||
-          this.torrent.status === Status.STATUS_CHECK;
+      return this.torrent.status === status.STATUS_DOWNLOAD ||
+          this.torrent.status === status.STATUS_CHECK_WAIT ||
+          this.torrent.status === status.STATUS_SEED ||
+          this.torrent.status === status.STATUS_CHECK;
     },
     isPause() {
-      return this.torrent.status === Status.STATUS_STOPPED;
+      return this.torrent.status === status.STATUS_STOPPED;
     },
     asError() {
       return (this.torrent != null) ? this.torrent.error > 0: 0;
     },
     ...mapGetters({
-      torrents: keyStore.GET_TORRENT,
-      selectedTorrents: keyStore.GET_SELECTED_TORRENTS
+      torrents: key.GET_TORRENT,
+      selectedTorrents: key.GET_SELECTED_TORRENTS
     })
   },
   mounted() {
@@ -104,19 +104,19 @@ export default {
   },
   methods: {
     getSecondBarValue() {
-      return (this.torrent.status === Status.STATUS_CHECK_WAIT || this.torrent.status === Status.STATUS_CHECK)
+      return (this.torrent.status === status.STATUS_CHECK_WAIT || this.torrent.status === status.STATUS_CHECK)
           ? this.torrent.recheckProgress
           : this.torrent.uploadRatio;
     },
     unselectThis(event) {
       if(!event.path.map(element => element.id).includes('context-menu')) {
         this.selected = false;
-        this.$store.commit(keyStore.REMOVE_SELECTED, this.torrent);
+        this.$store.commit(key.REMOVE_SELECTED, this.torrent);
       }
     },
     selectThis() {
       this.selected = true;
-      this.$store.commit(keyStore.ADD_SELECTED, this.torrent);
+      this.$store.commit(key.ADD_SELECTED, this.torrent);
     },
     majSelected() {
       if (this.selectedTorrents.length > 1) {
@@ -147,14 +147,14 @@ export default {
     selectTorrentRowCtrl() {
       this.selected = !this.selected;
       this.selected
-          ?this.$store.commit(keyStore.ADD_SELECTED, this.torrent)
-          :this.$store.commit(keyStore.REMOVE_SELECTED, this.torrent);
+          ?this.$store.commit(key.ADD_SELECTED, this.torrent)
+          :this.$store.commit(key.REMOVE_SELECTED, this.torrent);
     },
     onSelectUnique(torrent) {
       this.selected = (this.torrent.id === torrent.id);
 
       if(this.selected) {
-        this.$store.commit(keyStore.SELECTED, this.torrent);
+        this.$store.commit(key.SELECTED, this.torrent);
       }
     },
     onSelectMany(torrents) {
@@ -162,7 +162,7 @@ export default {
       this.selected = (listId.includes(this.torrent.id));
 
       if(this.selected) {
-        this.$store.commit(keyStore.ADD_SELECTED, this.torrent);
+        this.$store.commit(key.ADD_SELECTED, this.torrent);
       }
     },
     //DETAILS
@@ -171,19 +171,19 @@ export default {
     },
     // ARROW
     showUploadRate() {
-      return (this.torrent.status === Status.STATUS_SEED || this.torrent.status === Status.STATUS_DOWNLOAD) && !this.asError;
+      return (this.torrent.status === status.STATUS_SEED || this.torrent.status === status.STATUS_DOWNLOAD) && !this.asError;
     },
     showDownloadRate() {
-      return this.torrent.status === Status.STATUS_DOWNLOAD && !this.asError;
+      return this.torrent.status === status.STATUS_DOWNLOAD && !this.asError;
     },
     postStatus() {
       let str = '';
 
       switch (this.torrent.status){
-        case Status.STATUS_SEED:
+        case status.STATUS_SEED:
           str = this.$t('message.torrent.to', [this.torrent.peersSendingToUs, this.torrent.peersConnected]);
           break;
-        case Status.STATUS_DOWNLOAD:
+        case status.STATUS_DOWNLOAD:
           str = this.$t('message.torrent.from', [this.torrent.peersSendingToUs, this.torrent.peersConnected]);
           break;
       }
@@ -194,45 +194,45 @@ export default {
     },
     getSecondBarStyle() {
       switch (this.torrent.status) {
-        case Status.STATUS_CHECK_WAIT:
-        case Status.STATUS_CHECK:
+        case status.STATUS_CHECK_WAIT:
+        case status.STATUS_CHECK:
           return STYLE_WARNING;
-        case Status.STATUS_STOPPED:
-        case Status.STATUS_DOWNLOAD_WAIT:
-        case Status.STATUS_DOWNLOAD:
-        case Status.STATUS_SEED_WAIT:
-        case Status.STATUS_SEED:
+        case status.STATUS_STOPPED:
+        case status.STATUS_DOWNLOAD_WAIT:
+        case status.STATUS_DOWNLOAD:
+        case status.STATUS_SEED_WAIT:
+        case status.STATUS_SEED:
         default:
           return STYLE_PRIMARY;
       }
     },
     getMainBarStyle() {
       switch (this.torrent.status) {
-        case Status.STATUS_CHECK_WAIT:
-        case Status.STATUS_CHECK:
-        case Status.STATUS_DOWNLOAD_WAIT:
-        case Status.STATUS_DOWNLOAD:
+        case status.STATUS_CHECK_WAIT:
+        case status.STATUS_CHECK:
+        case status.STATUS_DOWNLOAD_WAIT:
+        case status.STATUS_DOWNLOAD:
           return STYLE_PRIMARY;
-        case Status.STATUS_STOPPED:
+        case status.STATUS_STOPPED:
           return STYLE_SECONDARY;
-        case Status.STATUS_SEED_WAIT:
-        case Status.STATUS_SEED:
+        case status.STATUS_SEED_WAIT:
+        case status.STATUS_SEED:
         default:
           return STYLE_SUCCESS;
       }
     },
     showSecondBar() {
       return (this.torrent.uploadRatio < this.torrent.seedRatioLimit && this.torrent.percentDone >= 1) ||
-          this.torrent.status === Status.STATUS_CHECK_WAIT ||
-          this.torrent.status === Status.STATUS_CHECK;
+          this.torrent.status === status.STATUS_CHECK_WAIT ||
+          this.torrent.status === status.STATUS_CHECK;
     },
     start() {
-      this.startTorrents(this.torrent)
+      this.api_torrent.startTorrents(this.torrent)
           .then(this.success)
           .catch(this.error);
     },
     stop() {
-      this.stopTorrents(this.torrent)
+      this.api_torrent.stopTorrents(this.torrent)
           .then(this.success)
           .catch(this.error);
     }
