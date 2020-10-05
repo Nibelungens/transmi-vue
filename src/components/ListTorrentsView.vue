@@ -6,6 +6,7 @@
     <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" class="force-index" v-on:hidden="closePanel">
       <details-torrent-view v-bind:showPanel="isPanelShow"></details-torrent-view>
     </b-sidebar>
+    <menu-context></menu-context>
   </div>
 </template>
 
@@ -17,10 +18,12 @@ import TorrentView from "@/components/TorrentView";
 import {mapGetters} from "vuex";
 import events from "@/constantes/key.event.const";
 import bus from "@/config/bus.event";
+import MenuContext from "@/components/MenuContext";
 
 export default {
   name: 'ListTorrentsView',
   components: {
+    MenuContext,
     DetailsTorrentView,
     TorrentView
   },
@@ -38,7 +41,7 @@ export default {
     };
   },
   mounted() {
-    bus.$on(events.SWITCH_PANEL, this.switchPanel);
+    bus.$on(events.SWITCH_INSPECTOR_PANEL, this.switchPanel);
     this.$root.$el.addEventListener('mouseup', this.deselectAll);
   },
   methods: {
@@ -52,8 +55,7 @@ export default {
           !event.path.map(element => element.id).includes('header-start') &&
           !event.path.map(element => element.id).includes('header-pause') &&
           !event.path.map(element => element.id).includes('details-panel')) {
-        this.$store.commit(keyStore.UNSELECTED);
-        bus.$emit(events.UNSELECTED);
+        bus.$emit(events.UNSELECTED_ALL_TORRENT, event);
       }
     },
     switchPanel() {

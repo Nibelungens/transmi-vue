@@ -40,7 +40,7 @@ export default {
       ResultMixin
   ],
   mounted() {
-    bus.$on(events.OPEN_ADD_MODEL, this.showModal);
+    bus.$on(events.OPEN_MODAL_ADD_TORRENT, this.showModal);
   },
   data: function() {
     return {
@@ -101,7 +101,7 @@ export default {
           }
         } else {
           this.$bvModal.hide(ADD_TORRENT_MODAL);
-          bus.$emit(events.ACTION);
+          bus.$emit(events.REFRESH_LIST_TORRENT);
           if (name !== null) {
             bus.$emit(events.NOTIFICATION_SUCCESS, this.$t('message.addModal.addOne', [name]));
           } else {

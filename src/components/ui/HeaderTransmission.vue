@@ -75,10 +75,10 @@ export default {
   },
   methods: {
     openDetails() {
-      bus.$emit(events.SWITCH_PANEL);
+      bus.$emit(events.SWITCH_INSPECTOR_PANEL);
     },
     openModal() {
-      bus.$emit(events.OPEN_ADD_MODEL);
+      bus.$emit(events.OPEN_MODAL_ADD_TORRENT);
     },
     removeSelected() {
       this.removeTorrent(this.selectedTorrent, false)

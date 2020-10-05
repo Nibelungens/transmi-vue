@@ -1,5 +1,5 @@
 <template>
-  <div id="app" ref="app" v-on:click="click" class="user-select-none">
+  <div id="app" ref="app" class="user-select-none">
     <header-transmission id="header" ref="header"></header-transmission>
     <main id="content" ref="content">
       <list-torrents-view/>
@@ -60,7 +60,7 @@ export default {
     bus.$on(events.NOTIFICATION_SUCCESS, this.notificationSuccess);
     bus.$on(events.NOTIFICATION_WARN, this.notificationWarn);
     bus.$on(events.NOTIFICATION_FAIL, this.notificationFail);
-    bus.$on(events.ACTION, this.refresh);
+    bus.$on(events.REFRESH_LIST_TORRENT, this.refresh);
 
     this.$store.watch(() => this.$store.getters[keyStore.GET_SELECT_SORT_COL], this.refresh)
     this.$store.watch(() => this.$store.getters[keyStore.GET_SELECT_SORT_REVERSE], this.refresh)
@@ -75,7 +75,7 @@ export default {
   beforeDestroy() {
     bus.$off(events.NOTIFICATION_SUCCESS);
     bus.$off(events.NOTIFICATION_FAIL);
-    bus.$off(events.ACTION);
+    bus.$off(events.REFRESH_LIST_TORRENT);
   },
   computed: {
     ...mapGetters({
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     selectAll(event) {
-      if (event.ctrlKey && event.key === 'a') bus.$emit(events.SELECT_ALL);
+      if (event.ctrlKey && event.key === 'a') bus.$emit(events.SELECT_ALL_TORRENT);
     },
     notificationSuccess(msg) {
       this.$bvToast.toast(msg, s_success);
@@ -100,9 +100,6 @@ export default {
       this.getTorrents()
           .then(this.successTorrent)
           .catch(this.error);
-    },
-    click() {
-      bus.$emit(events.CLOSE_ALL_CONTEXT);
     },
     sortTorrents(torrents) {
       let torrentsClone = [...torrents];

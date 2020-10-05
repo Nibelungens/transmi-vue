@@ -3,17 +3,16 @@ const key = {
     NOTIFICATION_FAIL: 'notification_fail',
     NOTIFICATION_WARN: 'notification_warn',
 
+    SWITCH_INSPECTOR_PANEL: 'switch_inspector_panel',
+    OPEN_MODAL_ADD_TORRENT: 'open_modal_add_torrent',
     SWITCH_MENU_SETTINGS: 'switch_menu_settings',
-    CLOSE_ALL_CONTEXT: 'close_all_context',
-    OPEN_ADD_MODEL: 'open_add_model',
-    MAJ_SELECTED: 'maj_selected',
-    DOUBLE_CLICK: 'double_click',
-    SWITCH_PANEL: 'switch_panel',
-    OPEN_CONTEXT: 'open_context',
-    UNSELECTED: 'unselected',
-    SELECT_ALL: 'select_all',
-    SELECTED: 'selected',
-    ACTION: 'action'
+    REFRESH_LIST_TORRENT: 'refresh_list_torrent',
+    OPEN_CONTEXT_MENU: 'open_context_menu',
+
+    UNSELECTED_ALL_TORRENT: 'unselected',
+    SELECTED_UNIQUE: 'selected_unique',
+    SELECT_ALL_TORRENT: 'select_all',
+    SELECTED_MANY: 'selected_many'
 }
 
 export default key;

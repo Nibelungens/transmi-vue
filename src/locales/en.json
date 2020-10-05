@@ -25,6 +25,12 @@
       "startAll": "Start All Torrents",
       "stopAll": "Stop All Torrents",
       "openDetails": "Toggle Inspector",
+      "locationModal": {
+        "title": "Set Location",
+        "label": "Location",
+        "cancel": "Cancel",
+        "submit": "Apply"
+      },
       "removeModal": {
         "title": "Remove {0}? | Remove {1} transferts?",
         "description": "Once removed, continuing the transfer will require the torrent file. Are you sure you want to remove it?",

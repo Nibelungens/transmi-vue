@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     refresh() {
-      bus.$emit(events.ACTION)
+      bus.$emit(events.REFRESH_LIST_TORRENT)
     },
     changeRefresh(value) {
       this.$store.commit(keyStore.SET_TIME_REFRESH, value);

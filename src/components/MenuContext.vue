@@ -44,53 +44,55 @@ export default {
   ],
   data() {
     return {
-      showContext: false
-    }
-  },
-  props: {
-    torrent: {
-      id: Number
+      showContext: false,
+      torrent: null
     }
   },
   computed: {
     ...mapGetters({
-      selectedTorrents: keyStore.GET_SELECTED_TORRENTS
+      selectedTorrents: keyStore.GET_SELECTED_TORRENTS,
+      downloadDir: keyStore.GET_DOWNLOAD_DIR
     }),
     isPlay() {
-      return this.torrent.status === Status.STATUS_DOWNLOAD || this.torrent.status === Status.STATUS_SEED;
+      return this.torrent === null || (this.torrent.status === Status.STATUS_DOWNLOAD || this.torrent.status === Status.STATUS_SEED);
     },
     isPause() {
-      return this.torrent.status === Status.STATUS_STOPPED;
+      return this.torrent === null || (this.torrent.status === Status.STATUS_STOPPED);
     }
   },
   mounted() {
-    bus.$on(events.CLOSE_ALL_CONTEXT, this.onCloseOtherContextMenu);
-    bus.$on(events.OPEN_CONTEXT, this.openContextMenu);
+    bus.$on(events.OPEN_CONTEXT_MENU, this.openContextMenu);
+    this.$root.$el.addEventListener('mouseup', this.close);
   },
   methods: {
-    onCloseOtherContextMenu(torrent) {
-      if (torrent !== null && torrent !== undefined) {
-        this.showContext = (this.torrent.id === torrent.id);
-      } else {
-        this.showContext = false;
-      }
+    close() {
+      this.showContext = false;
+    },
+    submitLocation() {
+
     },
     openContextMenu(event, torrent) {
-      if (torrent.id === this.torrent.id) {
-        this.showContext = true;
-        let y = event.clientY;
-        let x = event.clientX;
-        const maxY = (this.$root.$children[0].$refs.content.clientHeight - 370);
-        const maxX = (this.$root.$children[0].$refs.content.clientWidth - 240);
-        y = (y >= maxY) ? maxY: y;
-        x = (x >= maxX) ? maxX: x;
+      //this.selectedTorrents.map(torr => torr.id).includes(torrent.id)
 
-        this.$refs.contextMenu.style.left = x
-            .toString().concat(PX);
-        this.$refs.contextMenu.style.top = y
-            .toString().concat(PX);
-        bus.$emit(events.CLOSE_ALL_CONTEXT, this.torrent);
+      if (this.selectedTorrents.length < 2 || !this.selectedTorrents.map(torr => torr.id).includes(torrent.id)) {
+        bus.$emit(events.SELECTED_UNIQUE, torrent);
+        this.torrent = torrent;
+      } else {
+        this.torrent = null;
       }
+
+      this.showContext = true;
+      let y = event.clientY;
+      let x = event.clientX;
+      const maxY = (this.$root.$children[0].$refs.content.clientHeight - 370);
+      const maxX = (this.$root.$children[0].$refs.content.clientWidth - 240);
+      y = (y >= maxY) ? maxY: y;
+      x = (x >= maxX) ? maxX: x;
+
+      this.$refs.contextMenu.style.left = x
+          .toString().concat(PX);
+      this.$refs.contextMenu.style.top = y
+          .toString().concat(PX);
     },
     start() {
       this.startTorrents(this.selectedTorrents)
@@ -138,10 +140,10 @@ export default {
           .catch(this.error);
     },
     selectAll() {
-      bus.$emit(events.SELECT_ALL);
+      bus.$emit(events.SELECT_ALL_TORRENT);
     },
     deselectAll() {
-      bus.$emit(events.UNSELECTED);
+      bus.$emit(events.UNSELECTED_ALL_TORRENT);
     }
   }
 }

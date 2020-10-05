@@ -26,14 +26,12 @@
       </div >
       <div class="dl-row">{{ torrent | formatRemaining($i18n) }}</div>
     </div>
-    <menu-context v-bind:torrent="this.torrent"/>
   </div>
 </template>
 
 <script>
 import TransmissionApiMixin from '@/mixins/transmission.api.mixin';
 import keyStore from '@/constantes/key.store.const';
-import MenuContext from '@/components/MenuContext';
 import events from '@/constantes/key.event.const';
 import Status from '@/constantes/status.const';
 import ResultMixin from '@/mixins/result.mixin';
@@ -47,7 +45,6 @@ const STYLE_WARNING = 'warning';
 
 export default {
   name: 'TorrentView',
-  components: {MenuContext},
   mixins: [
     TransmissionApiMixin,
     ResultMixin
@@ -100,16 +97,22 @@ export default {
     })
   },
   mounted() {
-    bus.$on(events.UNSELECTED, () => this.selected = false);
-    bus.$on(events.SELECT_ALL, this.selectThis);
-    bus.$on(events.SELECTED, this.onSelectTorrentRowCtrlNotPress);
-    bus.$on(events.MAJ_SELECTED, this.majSelected);
+    bus.$on(events.UNSELECTED_ALL_TORRENT, this.unselectThis);
+    bus.$on(events.SELECT_ALL_TORRENT, this.selectThis);
+    bus.$on(events.SELECTED_UNIQUE, this.onSelectUnique);
+    bus.$on(events.SELECTED_MANY, this.onSelectMany);
   },
   methods: {
     getSecondBarValue() {
       return (this.torrent.status === Status.STATUS_CHECK_WAIT || this.torrent.status === Status.STATUS_CHECK)
           ? this.torrent.recheckProgress
           : this.torrent.uploadRatio;
+    },
+    unselectThis(event) {
+      if(!event.path.map(element => element.id).includes('context-menu')) {
+        this.selected = false;
+        this.$store.commit(keyStore.REMOVE_SELECTED, this.torrent);
+      }
     },
     selectThis() {
       this.selected = true;
@@ -121,27 +124,25 @@ export default {
         const lastIndex = this.torrents.findIndex((element) => element.id === this.selectedTorrents[this.selectedTorrents.length-1].id)+1;
 
         const torrentSlice = (firstIndex < lastIndex)
-            ? [...this.torrents].slice(firstIndex, lastIndex+1)
-            : [...this.torrents].slice(lastIndex, firstIndex+1);
+            ? [...this.torrents].slice(firstIndex, lastIndex)
+            : [...this.torrents].slice(lastIndex, firstIndex);
 
         if (torrentSlice != null &&
-            torrentSlice.length !== 0 &&
-            torrentSlice.map(torrentElement => torrentElement.id).includes(this.torrent.id)) {
-          this.selected = true;
-          this.$store.commit(keyStore.ADD_SELECTED, this.torrent);
+            torrentSlice.length !== 0) {
+          bus.$emit(events.SELECTED_MANY, torrentSlice);
         }
       }
     },
     openContextMenu(event) {
-      bus.$emit(events.OPEN_CONTEXT, event, this.torrent);
+      bus.$emit(events.OPEN_CONTEXT_MENU, event, this.torrent);
     },
     // SELECT
     selectTorrentRow() {
-      bus.$emit(events.SELECTED, this.torrent);
+      bus.$emit(events.SELECTED_UNIQUE, this.torrent);
     },
     selectTorrentRowCtrlMaj() {
       this.selectTorrentRowCtrl();
-      bus.$emit(events.MAJ_SELECTED);
+      this.majSelected();
     },
     selectTorrentRowCtrl() {
       this.selected = !this.selected;
@@ -149,13 +150,24 @@ export default {
           ?this.$store.commit(keyStore.ADD_SELECTED, this.torrent)
           :this.$store.commit(keyStore.REMOVE_SELECTED, this.torrent);
     },
-    onSelectTorrentRowCtrlNotPress(torrent) {
+    onSelectUnique(torrent) {
       this.selected = (this.torrent.id === torrent.id);
-      if(this.selected) this.$store.commit(keyStore.SELECTED, this.torrent);
+
+      if(this.selected) {
+        this.$store.commit(keyStore.SELECTED, this.torrent);
+      }
+    },
+    onSelectMany(torrents) {
+      const listId = torrents.map(torr => torr.id);
+      this.selected = (listId.includes(this.torrent.id));
+
+      if(this.selected) {
+        this.$store.commit(keyStore.ADD_SELECTED, this.torrent);
+      }
     },
     //DETAILS
     openDetails() {
-      bus.$emit(events.SWITCH_PANEL);
+      bus.$emit(events.SWITCH_INSPECTOR_PANEL);
     },
     // ARROW
     showUploadRate() {
