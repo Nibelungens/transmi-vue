@@ -38,8 +38,8 @@ export default {
     SetInterval
   },
   methods: {
-    menuSettings(event) {
-      bus.$emit(events.SWITCH_MENU_SETTINGS, event.currentTarget.id);
+    menuSettings() {
+      bus.$emit(events.SWITCH_MENU_SETTINGS);
     }
   }
 }
