@@ -102,7 +102,10 @@ export default {
           : (this.selectedTorrents.length === 1) ? this.selectedTorrents[0].downloadDir :this.downloadDir;
 
      this.setLocation(this.selectedTorrents, down)
-      .then(this.success)
+      .then((response) => {
+        this.success(response);
+        this.$bvModal.hide(LOCATION_MODAL);
+      })
       .catch(this.fail);
     },
     openContextMenu(event, torrent) {
