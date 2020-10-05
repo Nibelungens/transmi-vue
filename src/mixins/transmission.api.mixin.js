@@ -1,6 +1,7 @@
 import * as axios from "axios";
 
 const TORRENT_SET_LOCATION = "torrent-set-location";
+const TORRENT_RENAME_PATH = "torrent-rename-path";
 const TORRENT_START_NOW = "torrent-start-now";
 const QUEUE_MOVE_BOTTOM = "queue-move-bottom";
 const QUEUE_MOVE_DOWN = "queue-move-down";
@@ -20,6 +21,12 @@ const FREE_SPACE = "free-space";
 const ARGUMENTS_TORRENT_ADD = {
   "download-dir": null,
   "paused": null
+}
+
+const ARGUMENTS_RENAME = {
+  ids: [],
+  name: null,
+  path: null
 }
 
 const ARGUMENTS_TORRENT_ALL = {
@@ -133,6 +140,34 @@ const Transmission = {
 
       return this.request(TORRENT_SET_LOCATION, args);
     },
+    /**
+     * @typedef  {Object} Torrent
+     * @property {number} id
+     * @property {number} name
+     *
+     * @typedef  {Object} Results
+     * @property {Arguments} arguments
+     * @property {string} result
+     *
+     * @typedef  {Object} Arguments
+     *
+     * @param {string} newName
+     * @param {Torrent} torrent
+     *
+     * @return {Promise<Results>}
+     */
+    setRename(torrent, newName) {
+      let args = ARGUMENTS_RENAME;
+
+      if (torrent != null) {
+        args.name = newName;
+        args.path = torrent.name;
+        args.ids.push(torrent.id);
+      }
+
+      return this.request(TORRENT_RENAME_PATH, args);
+    },
+
     /**
      * @param {number} limit
      *

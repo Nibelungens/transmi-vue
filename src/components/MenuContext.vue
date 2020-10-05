@@ -2,43 +2,63 @@
   <div>
     <b-modal id="location-torrent-modal" dialog-class="model-location user-select-none">
       <template v-slot:modal-title>
-        <b-icon-box-arrow-in-down-right class="mr-3"/>{{ $t('message.header.locationModal.title') }}
+        <b-icon-box-arrow-in-down-right class="mr-3"/>{{ $t('message.contextMenu.locationModal.title') }}
       </template>
 
       <div class="d-flex flex-row">
         <img src="@/assets/logo-96.png" alt="logo" class="d-inline-flex"/>
         <b-form class="flex-column w-75 text-left align-middle" v-on:submit="submitLocation">
-          <label class="ml-2 pt-2" for="location-input">{{ $t('message.header.locationModal.label') }}:</label>
+          <label class="ml-2 pt-2" for="location-input">{{ $t('message.contextMenu.locationModal.label') }}:</label>
           <b-form-input id="location-input" size="sm" class="ml-2" type="text" :placeholder="placeHolderLocation" v-model="inputDownloadDir"/>
         </b-form>
       </div>
 
       <template v-slot:modal-footer="{ submit, cancel }">
-        <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.header.locationModal.cancel')"/>
-        <b-button size="sm" variant="success" v-on:click="submitLocation" v-text="$t('message.header.locationModal.submit')"/>
+        <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.contextMenu.locationModal.cancel')"/>
+        <b-button size="sm" variant="success" v-on:click="submitLocation" v-text="$t('message.contextMenu.locationModal.submit')"/>
       </template>
     </b-modal>
+
+    <b-modal id="rename-torrent-modal" dialog-class="model-rename user-select-none">
+      <template v-slot:modal-title>
+        <b-icon-fonts class="mr-3"/>{{ $t('message.contextMenu.renameModal.title') }}
+      </template>
+
+      <div class="d-flex flex-row">
+        <img src="@/assets/logo-96.png" alt="logo" class="d-inline-flex"/>
+        <b-form class="flex-column w-75 text-left align-middle" v-on:submit="submitRename">
+          <label class="ml-2 pt-2" for="location-input">{{ $t('message.contextMenu.renameModal.label') }}:</label>
+          <b-form-input id="location-input" size="sm" class="ml-2" type="text" v-model="newName"/>
+        </b-form>
+      </div>
+
+      <template v-slot:modal-footer="{ submit, cancel }">
+        <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.contextMenu.renameModal.cancel')"/>
+        <b-button size="sm" variant="success" v-on:click="submitRename" v-text="$t('message.contextMenu.renameModal.submit')"/>
+      </template>
+    </b-modal>
+
     <transition name="fade">
       <div id="context-menu" ref="contextMenu" v-show="showContext" class="context">
         <b-list-group>
-          <b-list-group-item href="#" class="m-row" v-on:click="stop" v-bind:disabled="!isPlay">{{ $t('message.torrent.contextMenu.pause') }}</b-list-group-item>
-          <b-list-group-item href="#" class="m-row" v-on:click="start" v-bind:disabled="!isPause">{{ $t('message.torrent.contextMenu.resume') }}</b-list-group-item>
-          <b-list-group-item href="#" class="m-row" v-on:click="startNow" >{{ $t('message.torrent.contextMenu.resumeNow') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="stop" v-bind:disabled="!isPlay">{{ $t('message.contextMenu.pause') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="start" v-bind:disabled="!isPause">{{ $t('message.contextMenu.resume') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="startNow" >{{ $t('message.contextMenu.resumeNow') }}</b-list-group-item>
           <b-list-group-item class="m-divider"></b-list-group-item>
-          <b-list-group-item href="#" class="m-row" v-on:click="toTop">{{ $t('message.torrent.contextMenu.moveTop') }}</b-list-group-item>
-          <b-list-group-item href="#" class="m-row" v-on:click="up">{{ $t('message.torrent.contextMenu.moveUp') }}</b-list-group-item>
-          <b-list-group-item href="#" class="m-row" v-on:click="down">{{ $t('message.torrent.contextMenu.moveDown') }}</b-list-group-item>
-          <b-list-group-item href="#" class="m-row" v-on:click="toBottom">{{ $t('message.torrent.contextMenu.moveBottom') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="toTop">{{ $t('message.contextMenu.moveTop') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="up">{{ $t('message.contextMenu.moveUp') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="down">{{ $t('message.contextMenu.moveDown') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="toBottom">{{ $t('message.contextMenu.moveBottom') }}</b-list-group-item>
           <b-list-group-item class="m-divider"></b-list-group-item>
-          <b-list-group-item href="#" class="m-row" v-on:click="remove(false)">{{ $t('message.torrent.contextMenu.remove') }}</b-list-group-item>
-          <b-list-group-item href="#" class="m-row" v-on:click="remove(true)">{{ $t('message.torrent.contextMenu.trash') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="remove(false)">{{ $t('message.contextMenu.remove') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="remove(true)">{{ $t('message.contextMenu.trash') }}</b-list-group-item>
           <b-list-group-item class="m-divider"></b-list-group-item>
-          <b-list-group-item v-on:click="verify" href="#" class="m-row">{{ $t('message.torrent.contextMenu.verify') }}</b-list-group-item>
-          <b-list-group-item v-b-modal.location-torrent-modal href="#" class="m-row">{{ $t('message.torrent.contextMenu.location') }}</b-list-group-item>
-          <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.rename') }}</b-list-group-item>
+          <b-list-group-item v-on:click="verify" href="#" class="m-row">{{ $t('message.contextMenu.verify') }}</b-list-group-item>
+          <b-list-group-item v-b-modal.location-torrent-modal href="#" class="m-row">{{ $t('message.contextMenu.location') }}</b-list-group-item>
+          <b-list-group-item v-b-modal.rename-torrent-modal v-bind:disabled="!isRename" href="#" class="m-row">{{ $t('message.contextMenu.rename') }}</b-list-group-item>
           <b-list-group-item class="m-divider"></b-list-group-item>
-          <b-list-group-item v-on:click="selectAll" href="#" class="m-row">{{ $t('message.torrent.contextMenu.selectAll') }}</b-list-group-item>
-          <b-list-group-item v-on:click="deselectAll"  href="#" class="last">{{ $t('message.torrent.contextMenu.deselectAll') }}</b-list-group-item>
+          <b-list-group-item v-on:click="selectAll" href="#" class="m-row">{{ $t('message.contextMenu.selectAll') }}</b-list-group-item>
+          <b-list-group-item v-on:click="deselectAll"  href="#" class="last">{{ $t('message.contextMenu.deselectAll') }}</b-list-group-item>
         </b-list-group>
       </div>
     </transition>
@@ -54,8 +74,9 @@ import {mapGetters} from "vuex";
 import keyStore from "@/constantes/key.store.const";
 import ResultMixin from "@/mixins/result.mixin";
 
-const PX = 'px';
 const LOCATION_MODAL = 'location-torrent-modal';
+const RENAME_MODAL = 'rename-torrent-modal';
+const PX = 'px';
 
 export default {
   name: "MenuContext",
@@ -66,6 +87,7 @@ export default {
   data() {
     return {
       inputDownloadDir: '',
+      newName: '',
       showContext: false,
       torrent: null
     }
@@ -81,6 +103,9 @@ export default {
     isPause() {
       return this.torrent === null || (this.torrent.status === Status.STATUS_STOPPED);
     },
+    isRename() {
+      return this.selectedTorrents.length === 1;
+    },
     placeHolderLocation() {
       return (this.selectedTorrents.length === 1)
           ? this.selectedTorrents[0].downloadDir
@@ -95,6 +120,14 @@ export default {
     close() {
       this.showContext = false;
       this.inputDownloadDir = '';
+    },
+    submitRename() {
+      this.setRename(this.selectedTorrents[0], this.newName)
+          .then((response) => {
+            this.success(response);
+            this.$bvModal.hide(RENAME_MODAL);
+          })
+          .catch(this.fail);
     },
     submitLocation() {
       const down = (this.inputDownloadDir !== '' && this.inputDownloadDir !== null && this.inputDownloadDir !== undefined)
@@ -112,6 +145,7 @@ export default {
       if (this.selectedTorrents.length < 2 || !this.selectedTorrents.map(torr => torr.id).includes(torrent.id)) {
         bus.$emit(events.SELECTED_UNIQUE, torrent);
         this.torrent = torrent;
+        this.newName = torrent.name;
       } else {
         this.torrent = null;
       }
@@ -185,6 +219,10 @@ export default {
 </script>
 
 <style scoped>
+div >>> .model-rename {
+  margin-top: 5%;
+}
+
 div >>> .model-location {
   margin-top: 5%;
 }

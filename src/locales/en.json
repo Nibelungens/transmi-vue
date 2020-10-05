@@ -25,12 +25,6 @@
       "startAll": "Start All Torrents",
       "stopAll": "Stop All Torrents",
       "openDetails": "Toggle Inspector",
-      "locationModal": {
-        "title": "Set Location",
-        "label": "Location",
-        "cancel": "Cancel",
-        "submit": "Apply"
-      },
       "removeModal": {
         "title": "Remove {0}? | Remove {1} transferts?",
         "description": "Once removed, continuing the transfer will require the torrent file. Are you sure you want to remove it?",
@@ -86,28 +80,40 @@
         "rate": "{0} kB/s"
       }
     },
+    "contextMenu": {
+      "pause": "Pause",
+      "resume": "Resume",
+      "resumeNow": "Resume Now",
+      "moveTop": "Move to Top",
+      "moveUp": "Move Up",
+      "moveDown": "Move Down",
+      "moveBottom": "Move to Bottom",
+      "remove": "Remove From List",
+      "trash": "Trash Data and Remove From List",
+      "verify": "Verify Local Data",
+      "location": "Set Location...",
+      "rename": "Rename...",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All",
+      "locationModal": {
+        "title": "Set Location",
+        "label": "Location",
+        "cancel": "Cancel",
+        "submit": "Apply"
+      },
+      "renameModal": {
+        "title": "Rename torrent",
+        "label": "Enter new name:",
+        "cancel": "Cancel",
+        "submit": "Rename"
+      }
+    },
     "torrent": {
       "error": "Tracker returned an error: {0}",
       "to": " to {0} of {1} peer",
       "from": " from {0} of {1} peer",
       "of": "of",
-      "queued": "Queued Position",
-      "contextMenu": {
-        "pause": "Pause",
-        "resume": "Resume",
-        "resumeNow": "Resume Now",
-        "moveTop": "Move to Top",
-        "moveUp": "Move Up",
-        "moveDown": "Move Down",
-        "moveBottom": "Move to Bottom",
-        "remove": "Remove From List",
-        "trash": "Trash Data and Remove From List",
-        "verify": "Verify Local Data",
-        "location": "Set Location...",
-        "rename": "Rename...",
-        "selectAll": "Select All",
-        "deselectAll": "Deselect All"
-      }
+      "queued": "Queued Position"
     },
     "details": {
       "titleMany": "{0} Transferts Selected",
