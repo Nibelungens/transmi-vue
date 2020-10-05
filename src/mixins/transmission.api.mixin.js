@@ -1,5 +1,6 @@
 import * as axios from "axios";
 
+const TORRENT_SET_LOCATION = "torrent-set-location";
 const TORRENT_START_NOW = "torrent-start-now";
 const QUEUE_MOVE_BOTTOM = "queue-move-bottom";
 const QUEUE_MOVE_DOWN = "queue-move-down";
@@ -36,6 +37,7 @@ const ARGUMENTS_TORRENT_ALL = {
     "activityDate",
     "dateCreated",
     "percentDone",
+    "downloadDir",
     "errorString",
     "uploadRatio",
     "rateUpload",
@@ -89,6 +91,12 @@ const ARGUMENTS_TORRENT_REMOVE = {
   "ids":[]
 }
 
+const ARGUMENTS_SET_LOCATION = {
+  "location": null,
+  "move": false,
+  "ids":[]
+}
+
 const ARGUMENT_IDS = {
   "ids":[]
 }
@@ -99,6 +107,32 @@ const ARGUMENT_FREE_SPACE = {
 
 const Transmission = {
   methods: {
+    /**
+     * @typedef  {Object} Torrent
+     * @property {number} id
+     *
+     * @typedef  {Object} Results
+     * @property {Arguments} arguments
+     * @property {string} result
+     *
+     * @typedef  {Object} Arguments
+     *
+     * @param {number} location
+     * @param {array<Torrent>} torrents
+     *
+     * @return {Promise<Results>}
+     */
+    setLocation(torrents, location) {
+      let args = ARGUMENTS_SET_LOCATION;
+
+      if (torrents != null) {
+        args.move = true;
+        args.location = location;
+        args.ids = torrents.map(torrent => torrent.id);
+      }
+
+      return this.request(TORRENT_SET_LOCATION, args);
+    },
     /**
      * @param {number} limit
      *

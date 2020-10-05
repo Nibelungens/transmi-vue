@@ -1,28 +1,48 @@
 <template>
-  <transition name="fade">
-    <div ref="contextMenu" v-show="showContext" class="context">
-      <b-list-group>
-        <b-list-group-item href="#" class="m-row" v-on:click="stop" v-bind:disabled="!isPlay">{{ $t('message.torrent.contextMenu.pause') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="start" v-bind:disabled="!isPause">{{ $t('message.torrent.contextMenu.resume') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="startNow" >{{ $t('message.torrent.contextMenu.resumeNow') }}</b-list-group-item>
-        <b-list-group-item class="m-divider"></b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="toTop">{{ $t('message.torrent.contextMenu.moveTop') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="up">{{ $t('message.torrent.contextMenu.moveUp') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="down">{{ $t('message.torrent.contextMenu.moveDown') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="toBottom">{{ $t('message.torrent.contextMenu.moveBottom') }}</b-list-group-item>
-        <b-list-group-item class="m-divider"></b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="remove(false)">{{ $t('message.torrent.contextMenu.remove') }}</b-list-group-item>
-        <b-list-group-item href="#" class="m-row" v-on:click="remove(true)">{{ $t('message.torrent.contextMenu.trash') }}</b-list-group-item>
-        <b-list-group-item class="m-divider"></b-list-group-item>
-        <b-list-group-item v-on:click="verify" href="#" class="m-row">{{ $t('message.torrent.contextMenu.verify') }}</b-list-group-item>
-        <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.location') }}</b-list-group-item>
-        <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.rename') }}</b-list-group-item>
-        <b-list-group-item class="m-divider"></b-list-group-item>
-        <b-list-group-item v-on:click="selectAll" href="#" class="m-row">{{ $t('message.torrent.contextMenu.selectAll') }}</b-list-group-item>
-        <b-list-group-item v-on:click="deselectAll"  href="#" class="last">{{ $t('message.torrent.contextMenu.deselectAll') }}</b-list-group-item>
-      </b-list-group>
-    </div>
-  </transition>
+  <div>
+    <b-modal id="location-torrent-modal" dialog-class="model-location user-select-none">
+      <template v-slot:modal-title>
+        <b-icon-box-arrow-in-down-right class="mr-3"/>{{ $t('message.header.locationModal.title') }}
+      </template>
+
+      <div class="d-flex flex-row">
+        <img src="@/assets/logo-96.png" alt="logo" class="d-inline-flex"/>
+        <b-form class="flex-column w-75 text-left align-middle" v-on:submit="submitLocation">
+          <label class="ml-2 pt-2" for="location-input">{{ $t('message.header.locationModal.label') }}:</label>
+          <b-form-input id="location-input" size="sm" class="ml-2" type="text" :placeholder="getPlaceHolder" v-model="inputDownloadDir"/>
+        </b-form>
+      </div>
+
+      <template v-slot:modal-footer="{ submit, cancel }">
+        <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.header.locationModal.cancel')"/>
+        <b-button size="sm" variant="success" v-on:click="submitLocation" v-text="$t('message.header.locationModal.submit')"/>
+      </template>
+    </b-modal>
+    <transition name="fade">
+      <div id="context-menu" ref="contextMenu" v-show="showContext" class="context">
+        <b-list-group>
+          <b-list-group-item href="#" class="m-row" v-on:click="stop" v-bind:disabled="!isPlay">{{ $t('message.torrent.contextMenu.pause') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="start" v-bind:disabled="!isPause">{{ $t('message.torrent.contextMenu.resume') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="startNow" >{{ $t('message.torrent.contextMenu.resumeNow') }}</b-list-group-item>
+          <b-list-group-item class="m-divider"></b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="toTop">{{ $t('message.torrent.contextMenu.moveTop') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="up">{{ $t('message.torrent.contextMenu.moveUp') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="down">{{ $t('message.torrent.contextMenu.moveDown') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="toBottom">{{ $t('message.torrent.contextMenu.moveBottom') }}</b-list-group-item>
+          <b-list-group-item class="m-divider"></b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="remove(false)">{{ $t('message.torrent.contextMenu.remove') }}</b-list-group-item>
+          <b-list-group-item href="#" class="m-row" v-on:click="remove(true)">{{ $t('message.torrent.contextMenu.trash') }}</b-list-group-item>
+          <b-list-group-item class="m-divider"></b-list-group-item>
+          <b-list-group-item v-on:click="verify" href="#" class="m-row">{{ $t('message.torrent.contextMenu.verify') }}</b-list-group-item>
+          <b-list-group-item v-b-modal.location-torrent-modal href="#" class="m-row">{{ $t('message.torrent.contextMenu.location') }}</b-list-group-item>
+          <b-list-group-item disabled href="#" class="m-row">{{ $t('message.torrent.contextMenu.rename') }}</b-list-group-item>
+          <b-list-group-item class="m-divider"></b-list-group-item>
+          <b-list-group-item v-on:click="selectAll" href="#" class="m-row">{{ $t('message.torrent.contextMenu.selectAll') }}</b-list-group-item>
+          <b-list-group-item v-on:click="deselectAll"  href="#" class="last">{{ $t('message.torrent.contextMenu.deselectAll') }}</b-list-group-item>
+        </b-list-group>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -44,6 +64,7 @@ export default {
   ],
   data() {
     return {
+      inputDownloadDir: '',
       showContext: false,
       torrent: null
     }
@@ -58,6 +79,11 @@ export default {
     },
     isPause() {
       return this.torrent === null || (this.torrent.status === Status.STATUS_STOPPED);
+    },
+    getPlaceHolder() {
+      return (this.selectedTorrents.length === 1)
+          ? this.torrent.downloadDir
+          : this.downloadDir;
     }
   },
   mounted() {
@@ -69,11 +95,15 @@ export default {
       this.showContext = false;
     },
     submitLocation() {
+      const down = (this.inputDownloadDir !== '' && this.inputDownloadDir !== null && this.inputDownloadDir !== undefined)
+          ? this.inputDownloadDir
+          : (this.selectedTorrents.length === 1) ? this.torrent.downloadDir :this.downloadDir;
 
+     this.setLocation(this.selectedTorrents, down)
+      .then(this.success)
+      .catch(this.fail);
     },
     openContextMenu(event, torrent) {
-      //this.selectedTorrents.map(torr => torr.id).includes(torrent.id)
-
       if (this.selectedTorrents.length < 2 || !this.selectedTorrents.map(torr => torr.id).includes(torrent.id)) {
         bus.$emit(events.SELECTED_UNIQUE, torrent);
         this.torrent = torrent;
@@ -150,6 +180,10 @@ export default {
 </script>
 
 <style scoped>
+div >>> .model-location {
+  margin-top: 5%;
+}
+
 .m-divider {
   height: 1px;
   background-color: lightgray;
