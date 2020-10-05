@@ -99,8 +99,7 @@ export default {
   mounted() {
     bus.$on(events.UNSELECTED_ALL_TORRENT, this.unselectThis);
     bus.$on(events.SELECT_ALL_TORRENT, this.selectThis);
-    bus.$on(events.SELECTED_UNIQUE, this.onSelectUnique);
-    bus.$on(events.SELECTED_MANY, this.onSelectMany);
+    bus.$on(events.SELECTED, this.onSelectMany);
   },
   methods: {
     getSecondBarValue() {
@@ -109,7 +108,7 @@ export default {
           : this.torrent.uploadRatio;
     },
     unselectThis(event) {
-      if(!event.path.map(element => element.id).includes('context-menu')) {
+      if(event === undefined || !event.path.map(element => element.id).includes('context-menu')) {
         this.selected = false;
         this.$store.commit(key.REMOVE_SELECTED, this.torrent);
       }
@@ -129,7 +128,7 @@ export default {
 
         if (torrentSlice != null &&
             torrentSlice.length !== 0) {
-          bus.$emit(events.SELECTED_MANY, torrentSlice);
+          bus.$emit(events.SELECTED, torrentSlice);
         }
       }
     },
@@ -138,7 +137,8 @@ export default {
     },
     // SELECT
     selectTorrentRow() {
-      bus.$emit(events.SELECTED_UNIQUE, this.torrent);
+      bus.$emit(events.UNSELECTED_ALL_TORRENT);
+      bus.$emit(events.SELECTED, [this.torrent]);
     },
     selectTorrentRowCtrlMaj() {
       this.selectTorrentRowCtrl();
@@ -150,16 +150,9 @@ export default {
           ?this.$store.commit(key.ADD_SELECTED, this.torrent)
           :this.$store.commit(key.REMOVE_SELECTED, this.torrent);
     },
-    onSelectUnique(torrent) {
-      this.selected = (this.torrent.id === torrent.id);
-
-      if(this.selected) {
-        this.$store.commit(key.SELECTED, this.torrent);
-      }
-    },
     onSelectMany(torrents) {
-      const listId = torrents.map(torr => torr.id);
-      this.selected = (listId.includes(this.torrent.id));
+      const listId = torrents.map(torrent => torrent.id);
+      this.selected = listId.includes(this.torrent.id);
 
       if(this.selected) {
         this.$store.commit(key.ADD_SELECTED, this.torrent);

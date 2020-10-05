@@ -143,7 +143,7 @@ export default {
     },
     openContextMenu(event, torrent) {
       if (this.selectedTorrents.length < 2 || !this.selectedTorrents.map(torr => torr.id).includes(torrent.id)) {
-        bus.$emit(events.SELECTED_UNIQUE, torrent);
+        bus.$emit(events.SELECTED, [torrent]);
         this.torrent = torrent;
         this.newName = torrent.name;
       } else {

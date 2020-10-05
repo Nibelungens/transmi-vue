@@ -36,11 +36,6 @@ const event = {
      */
     UNSELECTED_ALL_TORRENT: 'unselected',
     /**
-     * Selectione seulement le torrent spécifié
-     * @param torrent => le torrent a selectioner
-     */
-    SELECTED_UNIQUE: 'selected_unique',
-    /**
      * Selectione tout les torrents
      * @param none
      */
@@ -49,7 +44,7 @@ const event = {
      * Selectionne une liste de torrents
      * @param torrents => Liste des torrents a slectionner
      */
-    SELECTED_MANY: 'selected_many'
+    SELECTED: 'selected'
 }
 
 export default event;
