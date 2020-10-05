@@ -9,7 +9,7 @@
         <img src="@/assets/logo-96.png" alt="logo" class="d-inline-flex"/>
         <b-form class="flex-column w-75 text-left align-middle" v-on:submit="submitLocation">
           <label class="ml-2 pt-2" for="location-input">{{ $t('message.header.locationModal.label') }}:</label>
-          <b-form-input id="location-input" size="sm" class="ml-2" type="text" :placeholder="getPlaceHolder" v-model="inputDownloadDir"/>
+          <b-form-input id="location-input" size="sm" class="ml-2" type="text" :placeholder="placeHolderLocation" v-model="inputDownloadDir"/>
         </b-form>
       </div>
 
@@ -55,6 +55,7 @@ import keyStore from "@/constantes/key.store.const";
 import ResultMixin from "@/mixins/result.mixin";
 
 const PX = 'px';
+const LOCATION_MODAL = 'location-torrent-modal';
 
 export default {
   name: "MenuContext",
@@ -80,9 +81,9 @@ export default {
     isPause() {
       return this.torrent === null || (this.torrent.status === Status.STATUS_STOPPED);
     },
-    getPlaceHolder() {
+    placeHolderLocation() {
       return (this.selectedTorrents.length === 1)
-          ? this.torrent.downloadDir
+          ? this.selectedTorrents[0].downloadDir
           : this.downloadDir;
     }
   },
@@ -93,11 +94,12 @@ export default {
   methods: {
     close() {
       this.showContext = false;
+      this.inputDownloadDir = '';
     },
     submitLocation() {
       const down = (this.inputDownloadDir !== '' && this.inputDownloadDir !== null && this.inputDownloadDir !== undefined)
           ? this.inputDownloadDir
-          : (this.selectedTorrents.length === 1) ? this.torrent.downloadDir :this.downloadDir;
+          : (this.selectedTorrents.length === 1) ? this.selectedTorrents[0].downloadDir :this.downloadDir;
 
      this.setLocation(this.selectedTorrents, down)
       .then(this.success)
