@@ -57,6 +57,8 @@ export default {
     ListTorrentsView
   },
   mounted () {
+    document.title = this.$t('message.appName').toString();
+
     bus.$on(events.NOTIFICATION_SUCCESS, this.notificationSuccess);
     bus.$on(events.NOTIFICATION_WARN, this.notificationWarn);
     bus.$on(events.NOTIFICATION_FAIL, this.notificationFail);
