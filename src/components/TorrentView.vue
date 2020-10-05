@@ -120,11 +120,11 @@ export default {
     majSelected() {
       if (this.selectedTorrents.length > 1) {
         const firstIndex = this.torrents.findIndex((element) => element.id === this.selectedTorrents[0].id);
-        const lastIndex = this.torrents.findIndex((element) => element.id === this.selectedTorrents[this.selectedTorrents.length-1].id)+1;
+        const lastIndex = this.torrents.findIndex((element) => element.id === this.selectedTorrents[this.selectedTorrents.length-1].id);
 
         const torrentSlice = (firstIndex < lastIndex)
-            ? [...this.torrents].slice(firstIndex, lastIndex)
-            : [...this.torrents].slice(lastIndex, firstIndex);
+            ? [...this.torrents].slice(firstIndex, lastIndex+1)
+            : [...this.torrents].slice(lastIndex, firstIndex+1);
 
         if (torrentSlice != null &&
             torrentSlice.length !== 0) {
