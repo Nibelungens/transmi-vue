@@ -14,7 +14,7 @@
     </div>
     <div v-else v-for="torrent in sortTorrents(torrents)" :key="torrent.id">
       <div class="d-flex bd-highlight" v-bind:class="{ 'pointer': trackerEmpty(torrent) }" v-on:click="collapse(torrent)">
-        <div class="pb-1 w-100 bd-highlight">{{ torrent.name }}</div>
+        <div class="pb-1 w-100 bd-highlight font-weight-bold">{{ torrent.name }}</div>
         <div class="bd-highlight text-right d-flex">
           <div class="chevron mr-2">
             <b-icon-chevron-up v-show="isVisible(torrent) && trackerEmpty(torrent)"/>
@@ -23,20 +23,26 @@
         </div>
       </div>
       <b-collapse :id="getId(torrent)" :visible="!collapse_all" v-on:hide="setVisible(torrent)" v-on:show="setVisible(torrent)">
-        <ul>
-          <li v-for="tracker in torrent.trackerStats" :key="tracker.id" class="d-flex flex-column">
-            <div>Tier {{ tracker.id+1 }}</div>
-            <div>{{ tracker.host }}</div>
+        <ul class="px-0 mx-0">
+          <li v-for="tracker in torrent.trackerStats" :key="tracker.id" class="d-flex flex-column py-1 px-2" v-bind:class="{'alt': tracker.id % 2 !== 0}">
+            <b-badge class="w-25 py-1" variant="primary">Tier {{ tracker.id+1 }}</b-badge>
+            <div class="host pb-1">{{ tracker.host }}</div>
             <div class="d-flex">
-              <div class="mr-auto d-flex flex-column">
-                <span>{{ tracker | trackersLastAnnounce($i18n) }}</span>
-                <span>{{ tracker | trackersState($i18n) }}</span>
-                <span>{{ tracker | trackersLastScraps($i18n) }}</span>
+              <div class="mr-auto d-flex flex-column w-75">
+                <div class="text-truncate" :title="tracker | trackersLastAnnounce($i18n)">{{ tracker | trackersLastAnnounce($i18n) }}</div>
+                <div class="text-truncate" :title="tracker | trackersState($i18n)">{{ tracker | trackersState($i18n) }}</div>
+                <div class="text-truncate" :title="tracker | trackersLastScraps($i18n)">{{ tracker | trackersLastScraps($i18n) }}</div>
               </div>
-              <div class="ml-auto d-flex flex-column">
-                <span>{{ $t('message.details.tracker.seeders') }}: {{ (tracker.seederCount !== -1)? tracker.seederCount: $t('message.details.tracker.none')}}</span>
-                <span>{{ $t('message.details.tracker.leechers') }}: {{ (tracker.leecherCount !== -1)? tracker.leecherCount: $t('message.details.tracker.none') }}</span>
-                <span>{{ $t('message.details.tracker.downloads') }}: {{ (tracker.downloadCount !== -1)? tracker.downloadCount: $t('message.details.tracker.none') }}</span>
+              <div class="ml-auto d-flex flex-column w-25 pl-2">
+                <div class="ml-4">
+                  <span class="font-weight-bold">{{ $t('message.details.tracker.seeders') }}:</span> {{ (tracker.seederCount !== -1)? tracker.seederCount: $t('message.details.tracker.none')}}
+                </div>
+                <div class="ml-4">
+                  <span class="font-weight-bold">{{ $t('message.details.tracker.leechers') }}:</span> {{ (tracker.leecherCount !== -1)? tracker.leecherCount: $t('message.details.tracker.none') }}
+                </div>
+                <div class="ml-4">
+                  <span class="font-weight-bold">{{ $t('message.details.tracker.downloads') }}:</span> {{ (tracker.downloadCount !== -1)? tracker.downloadCount: $t('message.details.tracker.none') }}
+                </div>
               </div>
             </div>
           </li>
@@ -148,6 +154,18 @@ export default {
 </script>
 
 <style scoped>
+.alt {
+  background-color: lightgrey;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.host {
+  font-weight: bold;
+  font-size: small;
+  color: black;
+}
+
 .overflow-man {
   overflow-y: scroll;
 }
