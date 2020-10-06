@@ -99,21 +99,13 @@ const ARGUMENTS_TORRENT_PEERS = {
 const ARGUMENTS_TORRENT_TRACKERS = {
   "fields":[
     "metadataPercentComplete",
-    "desiredAvailable",
-    "downloadedEver",
-    "haveUnchecked",
     "queuePosition",
     "trackerStats",
     "activityDate",
     "dateCreated",
-    "corruptEver",
     "uploadRatio",
-    "haveValid",
-    "startDate",
     "totalSize",
-    "fileStats",
     "status",
-    "peers",
     "name",
     "id"],
   "ids":[]};

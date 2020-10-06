@@ -4,7 +4,7 @@ import * as axios from "axios";
  * @typedef  {Object} Torrent
  * @property {number} metadataPercentComplete
  * @property {array<FileStats>} status
- * @property {TrackerStats} trackerStats
+ * @property {array<TrackerStats>} trackerStats
  * @property {number} desiredAvailable
  * @property {number} downloadedEver
  * @property {number} haveUnchecked
