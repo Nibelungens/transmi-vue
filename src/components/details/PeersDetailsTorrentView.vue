@@ -25,7 +25,7 @@
           </div>
         </div>
       </div>
-        <b-collapse :id="getId(torrent)" visible v-on:hide="setVisible(torrent)" v-on:show="setVisible(torrent)">
+        <b-collapse :id="getId(torrent)" :visible="!collapse_all" v-on:hide="setVisible(torrent)" v-on:show="setVisible(torrent)">
         <table class="table table-striped table-sm border" v-if="peersEmpty(torrent)" :aria-describedby="$t('message.peers.tableDescriptor')">
           <thead>
           <tr>
