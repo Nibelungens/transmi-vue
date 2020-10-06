@@ -21,6 +21,7 @@ import result from '@/mixins/result.mixin';
 import bus from '@/config/bus.event';
 import { mapGetters } from 'vuex';
 import api from "@/mixins/api.transmission.mixin";
+import common from "@/utils/common.utils";
 
 const s_success = {
   variant: 'success',
@@ -103,22 +104,11 @@ export default {
           .then(this.successTorrent)
           .catch(this.error);
     },
-    sortTorrents(torrents) {
-      let torrentsClone = [...torrents];
-      torrentsClone.sort((a, b) => this.compare(a, b, this.getSortCol));
-
-      if (this.getSelectSortReverse) torrentsClone.reverse();
-
-      return torrentsClone;
-    },
     successTorrent(response) {
       this.$store.commit(keyStore.SET_LIST_TORRENT, this.sortTorrents(response.data.arguments.torrents));
     },
-    compare(a, b, col) {
-      if (a[col] > b[col]) return 1;
-      if (b[col] > a[col]) return -1;
-
-      return 0;
+    sortTorrents(torrents) {
+      return common.sortTorrents(torrents, this.getSelectSortReverse, this.getSortCol);
     }
   }
 }

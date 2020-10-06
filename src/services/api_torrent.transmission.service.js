@@ -82,7 +82,17 @@ const ARGUMENTS_TORRENT_INFO = {
   "ids":[]};
 
 const ARGUMENTS_TORRENT_PEERS = {
-  "fields":["peers", "name"],
+  "fields":[
+    "metadataPercentComplete",
+    "queuePosition",
+    "activityDate",
+    "dateCreated",
+    "uploadRatio",
+    "totalSize",
+    "status",
+    "peers",
+    "name",
+    "id"],
   "ids":[]};
 
 const ARGUMENTS_TORRENT_REMOVE = {

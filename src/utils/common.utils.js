@@ -16,6 +16,22 @@ const common = class CommonUtils {
         const ret = Math.floor(number * Math.pow(10, place)) / Math.pow(10, place);
         return ret.toFixed(place);
     }
+
+    static sortTorrents(torrents, selectSortReverse, sortCol) {
+        let torrentsClone = [...torrents];
+        torrentsClone.sort((a, b) => this.compare(a, b, sortCol));
+
+        if (selectSortReverse) torrentsClone.reverse();
+
+        return torrentsClone;
+    }
+
+    static compare(a, b, col) {
+        if (a[col] > b[col]) return 1;
+        if (b[col] > a[col]) return -1;
+
+        return 0;
+    }
 }
 
 export default common;
