@@ -1,4 +1,5 @@
 import api_parent from "@/services/api_parent.transmission.service";
+import priority from "@/constantes/priority.const";
 
 const TORRENT_SET_LOCATION = "torrent-set-location";
 const TORRENT_RENAME_PATH = "torrent-rename-path";
@@ -8,6 +9,7 @@ const TORRENT_VERIFY = "torrent-verify";
 const TORRENT_START = "torrent-start";
 const TORRENT_STOP = "torrent-stop";
 const TORRENT_GET = "torrent-get";
+const TORRENT_SET = "torrent-set";
 const TORRENT_ADD = "torrent-add";
 
 const ARGUMENTS_TORRENT_ADD = {
@@ -110,6 +112,21 @@ const ARGUMENTS_TORRENT_TRACKERS = {
     "id"],
   "ids":[]};
 
+const ARGUMENTS_TORRENT_FILE = {
+  "fields":[
+    "metadataPercentComplete",
+    "queuePosition",
+    "activityDate",
+    "dateCreated",
+    "uploadRatio",
+    "totalSize",
+    "fileStats",
+    "status",
+    "files",
+    "name",
+    "id"],
+  "ids":[]};
+
 const ARGUMENTS_TORRENT_REMOVE = {
   "delete-local-data":false,
   "ids":[]
@@ -140,7 +157,7 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   setLocation(torrents, location) {
-    let args = ARGUMENTS_SET_LOCATION;
+    let args = {...ARGUMENTS_SET_LOCATION};
 
     if (torrents != null) {
       args.ids = torrents.map(torrent => torrent.id);
@@ -156,7 +173,7 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   setRename(torrent, newName) {
-    let args = ARGUMENTS_RENAME;
+    let args = {...ARGUMENTS_RENAME};
     args.ids.push(torrent.id);
     args.path = torrent.name;
     args.name = newName;
@@ -165,7 +182,7 @@ const api_torrent = {
   },
 
   addTorrent(downloadDir, metaInfo, url, start) {
-    const args = ARGUMENTS_TORRENT_ADD;
+    const args = {...ARGUMENTS_TORRENT_ADD};
     args['download-dir'] = downloadDir;
 
     if (url != null) {
@@ -183,7 +200,7 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   verifyTorrent(torrents) {
-    const args = ARGUMENT_IDS;
+    const args = {...ARGUMENT_IDS};
     args.ids = torrents.map(torrent => torrent.id);
 
     return api_parent.request(TORRENT_VERIFY, args);
@@ -195,7 +212,7 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   removeTorrent(torrents, trash) {
-    const args = ARGUMENTS_TORRENT_REMOVE;
+    const args = {...ARGUMENTS_TORRENT_REMOVE};
     args.ids = torrents.map(torrent => torrent.id);
     args['delete-local-data'] = trash;
 
@@ -207,7 +224,7 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   startTorrents(torrents) {
-    const args = ARGUMENT_IDS;
+    const args = {...ARGUMENT_IDS};
     args.ids = torrents.map(torrent => torrent.id);
 
     return api_parent.request(TORRENT_START, args);
@@ -218,8 +235,8 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   startTorrentsNow(torrents) {
-    const args = ARGUMENT_IDS;
-    args.ids = torrents.map(torrent => torrent.id)
+    const args = {...ARGUMENT_IDS};
+    args.ids = torrents.map(torrent => torrent.id);
 
     return api_parent.request(TORRENT_START_NOW, args);
   },
@@ -229,8 +246,8 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   stopTorrents(torrents) {
-    const args = ARGUMENT_IDS;
-    args.ids = torrents.map(torrent => torrent.id)
+    const args = {...ARGUMENT_IDS};
+    args.ids = torrents.map(torrent => torrent.id);
 
     return api_parent.request(TORRENT_STOP, args);
   },
@@ -247,8 +264,8 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   getInfoTorrent(torrents) {
-    const args = ARGUMENTS_TORRENT_INFO;
-    args.ids = torrents.map(torrent => torrent.id)
+    const args = {...ARGUMENTS_TORRENT_INFO};
+    args.ids = torrents.map(torrent => torrent.id);
 
     return api_parent.request(TORRENT_GET, args);
   },
@@ -258,8 +275,8 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   getPeersTorrent(torrents) {
-    const args = ARGUMENTS_TORRENT_PEERS;
-    args.ids = torrents.map(torrent => torrent.id)
+    const args = {...ARGUMENTS_TORRENT_PEERS};
+    args.ids = torrents.map(torrent => torrent.id);
 
     return api_parent.request(TORRENT_GET, args);
   },
@@ -269,10 +286,72 @@ const api_torrent = {
    * @return {AxiosPromise<Response>}
    */
   getTrackerTorrent(torrents) {
-    const args = ARGUMENTS_TORRENT_TRACKERS;
-    args.ids = torrents.map(torrent => torrent.id)
+    const args = {...ARGUMENTS_TORRENT_TRACKERS};
+    args.ids = torrents.map(torrent => torrent.id);
 
     return api_parent.request(TORRENT_GET, args);
+  },
+
+  /**
+   * @param {array<Torrent>} torrents
+   * @return {AxiosPromise<Response>}
+   */
+  getFileTorrent(torrents) {
+    const args = {...ARGUMENTS_TORRENT_FILE};
+    args.ids = torrents.map(torrent => torrent.id);
+
+    return api_parent.request(TORRENT_GET, args);
+  },
+
+  /**
+   * @param {Number} torrent_id
+   * @param {array<Number>} ids
+   * @return {AxiosPromise<Response>}
+   */
+  setUnwantedTorrent(torrent_id, ids) {
+    const args = {...ARGUMENT_IDS};
+    args.ids = [torrent_id];
+    args["files-unwanted"] = ids
+
+    return api_parent.request(TORRENT_SET, args);
+  },
+
+  /**
+   * @param {Number} torrent_id
+   * @param {array<Number>} ids
+   * @return {AxiosPromise<Response>}
+   */
+  setWantedTorrent(torrent_id, ids) {
+    const args = {...ARGUMENT_IDS};
+    args.ids = [torrent_id];
+    args["files-wanted"] = ids;
+
+    return api_parent.request(TORRENT_SET, args);
+  },
+
+  /**
+   * @param {Number} torrent_id
+   * @param {array<Number>} ids
+   * @param {String} type_priority
+   * @return {AxiosPromise<Response>}
+   */
+  setPriorityTorrent(torrent_id, ids, type_priority) {
+    const args = {...ARGUMENT_IDS};
+    args.ids = [torrent_id];
+
+    switch (parseInt(type_priority)) {
+      case priority.HIGH:
+        args["priority-high"] = ids;
+        break;
+      case priority.LOW:
+        args["priority-low"] = ids;
+        break;
+      case priority.NORM:
+      default:
+        args["priority-normal"] = ids;
+    }
+
+    return api_parent.request(TORRENT_SET, args);
   }
 }
 

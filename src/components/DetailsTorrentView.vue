@@ -24,6 +24,7 @@
         <template v-slot:title>
           <b-icon icon="files"></b-icon>
         </template>
+        <files-details-torrent-view v-bind:showPanel="showPanel && (tabIndex === 3)"></files-details-torrent-view>
       </b-tab>
     </b-tabs>
   </div>
@@ -35,10 +36,12 @@ import PeersDetailsTorrentView from "@/components/details/PeersDetailsTorrentVie
 import key from "@/constantes/key.store.const";
 import { mapGetters } from "vuex";
 import TrackersDetailsTorrentView from "@/components/details/TrackersDetailsTorrentView";
+import FilesDetailsTorrentView from "@/components/details/FilesDetailsTorrentView";
 
 export default {
   name: "DetailsTorrentView",
   components: {
+    FilesDetailsTorrentView,
     TrackersDetailsTorrentView,
     PeersDetailsTorrentView,
     InfoDetailsTorrentView
