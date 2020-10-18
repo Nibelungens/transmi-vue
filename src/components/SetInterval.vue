@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="interval-select">
     <div class="input-group input-group-sm">
       <div class="input-group-prepend" v-on:click="refresh">
         <button class="btn btn-secondary"><b-icon-arrow-repeat/></button >
