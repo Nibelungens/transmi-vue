@@ -1,3 +1,5 @@
+import api_parent from "@/services/api_parent.transmission.service";
+
 const QUEUE_MOVE_BOTTOM = "queue-move-bottom";
 const QUEUE_MOVE_DOWN = "queue-move-down";
 const QUEUE_MOVE_UP = "queue-move-up";
@@ -7,97 +9,53 @@ const ARGUMENT_IDS = {
   "ids":[]
 }
 
+/**
+ * @typedef  {Object} Response
+ * @property {string} result
+ */
 const api_queue = {
   /**
-   * @typedef  {Object} Torrent
-   * @property {number} id
-   *
-   * @typedef  {Object} Response
-   * @property {string} result
-   *
-   * @param {Torrent} torrent
-   *
-   * @return {Promise<Response>}
+   * @param {array<Torrent>} torrents
+   * @return {AxiosPromise<Response>}
    */
-  moveToTop(torrent) {
+  moveToTop(torrents) {
     const args = ARGUMENT_IDS;
+    args.ids = torrents.map(t => t.id)
 
-    if (Array.isArray(torrent)) {
-      args.ids = torrent.map(t => t.id)
-    } else if (torrent !== null && torrent.id !== null) {
-      args.ids = [torrent.id]
-    }
-
-    return this.api_parent.request(QUEUE_MOVE_TOP, args);
+    return api_parent.request(QUEUE_MOVE_TOP, args);
   },
 
   /**
-   * @typedef  {Object} Torrent
-   * @property {number} id
-   *
-   * @typedef  {Object} Response
-   * @property {string} result
-   *
-   * @param {Torrent} torrent
-   *
-   * @return {Promise<Response>}
+   * @param {array<Torrent>} torrents
+   * @return {AxiosPromise<Response>}
    */
-  moveToBottom(torrent) {
+  moveToBottom(torrents) {
     const args = ARGUMENT_IDS;
+    args.ids = torrents.map(t => t.id)
 
-    if (Array.isArray(torrent)) {
-      args.ids = torrent.map(t => t.id)
-    } else if (torrent !== null && torrent.id !== null) {
-      args.ids = [torrent.id]
-    }
-
-    return this.api_parent.request(QUEUE_MOVE_BOTTOM, args);
+    return api_parent.request(QUEUE_MOVE_BOTTOM, args);
   },
 
   /**
-   * @typedef  {Object} Torrent
-   * @property {number} id
-   *
-   * @typedef  {Object} Response
-   * @property {string} result
-   *
-   * @param {Torrent} torrent
-   *
-   * @return {Promise<Response>}
+   * @param {array<Torrent>} torrents
+   * @return {AxiosPromise<Response>}
    */
-  moveUp(torrent) {
+  moveUp(torrents) {
     const args = ARGUMENT_IDS;
+    args.ids = torrents.map(t => t.id)
 
-    if (Array.isArray(torrent)) {
-      args.ids = torrent.map(t => t.id)
-    } else if (torrent !== null && torrent.id !== null) {
-      args.ids = [torrent.id]
-    }
-
-    return this.api_parent.request(QUEUE_MOVE_UP, args);
+    return api_parent.request(QUEUE_MOVE_UP, args);
   },
 
   /**
-   * @typedef  {Object} Torrent
-   * @property {number} id
-   *
-   * @typedef  {Object} Response
-   * @property {string} result
-   *
-   * @param {Torrent} torrent
-   *
-   * @return {Promise<Response>}
+   * @param {array<Torrent>} torrents
+   * @return {AxiosPromise<Response>}
    */
-  moveDown(torrent) {
+  moveDown(torrents) {
     const args = ARGUMENT_IDS;
+    args.ids = torrents.map(t => t.id)
 
-    if (Array.isArray(torrent)) {
-      args.ids = torrent.map(t => t.id)
-    } else if (torrent !== null && torrent.id !== null) {
-      args.ids = [torrent.id]
-    }
-
-    return this.api_parent.request(QUEUE_MOVE_DOWN, args);
+    return api_parent.request(QUEUE_MOVE_DOWN, args);
   }
 }
 

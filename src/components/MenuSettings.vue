@@ -10,6 +10,7 @@
       <div class="font-weight-lighter text-center mt-2">{{$t('message.menuSettings.aboutModal.description')}}</div>
       <div class="font-weight-lighter text-center mb-4">{{$t('message.menuSettings.aboutModal.copyright')}}</div>
     </b-modal>
+
     <b-modal id="modal-stat" size="sm" dialog-class="user-select-none" centered hide-footer>
       <template v-slot:modal-title>
         <b-icon icon="info-circle-fill"></b-icon><span class="ml-3">{{ $t('message.menuSettings.statsModal.title') }}</span>
@@ -35,7 +36,7 @@
         </div>
         <div class="ml-4 stat-row">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.runningTime')}}: </div>
-          <div class="d-inline-flex">{{ this.stats['current-stats'].secondsActive | formatSize }}</div>
+          <div class="d-inline-flex">{{ this.stats['current-stats'].secondsActive | formatTimeInterval }}</div>
         </div>
         <div class="font-weight-bold mb-2 ml-2 mt-2">{{$t('message.menuSettings.statsModal.total')}}</div>
         <div class="ml-4 stat-row">
@@ -56,7 +57,7 @@
         </div>
         <div class="ml-4 stat-row mb-2">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.runningTime')}}: </div>
-          <div class="d-inline-flex">{{ this.stats['cumulative-stats'].secondsActive | formatSize }}</div>
+          <div class="d-inline-flex">{{ this.stats['cumulative-stats'].secondsActive | formatTimeInterval }}</div>
         </div>
       </div>
     </b-modal>

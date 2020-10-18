@@ -138,6 +138,12 @@
         "comment": "Comment",
         "privateTracker": "Private to this tracker -- DHT and PEX disabled",
         "publicTracker": "Public torrent"
+      },
+      "tracker": {
+        "seeders": "Seeders",
+        "leechers": "Leechers",
+        "downloads": "Downloads",
+        "none": "-"
       }
     },
     "peers": {
@@ -151,6 +157,24 @@
     },
     "filter": {
       "none": "-",
+      "lastScrape": {
+        "na": "Last Scrape: -",
+        "succeeded": "Last Scrape: {0}",
+        "error": "Scrape error {0}, {1}"
+      },
+      "trackerState": {
+        "progress": "Announce in progress",
+        "next": "Next announce in {0}",
+        "queued": "Announce is queued",
+        "backup": "Tracker will be used as a backup",
+        "scheduled": "Announce not scheduled",
+        "unknown": "unknown announce state: {0}"
+      },
+      "lastAnnounce": {
+        "lastAnnounceNA": "Last Announce: N/A",
+        "lastAnnounceGot": "Last Announce: {0} (got {1})",
+        "lastAnnounceError": "Announce error {0} {1}"
+      },
       "remaining": {
         "timeUnknown": "remaining time unknown",
         "retrieving": "retrieving",

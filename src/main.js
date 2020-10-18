@@ -26,6 +26,9 @@ import remainingTimeFilter from '@/filters/infos/infos.remaining.time.filter'
 import errorFilter from '@/filters/infos/infos.error.filter'
 import basicFilter from '@/filters/infos/infos.basic.filter'
 import privacyFilter from '@/filters/infos/infos.privacy.filter'
+import lastAnnounceFilter from "@/filters/trackers/trackers.lastannounce.filter";
+import trackersStateFilter from "@/filters/trackers/trackers.state.filter";
+import trackersLastScrapsFilter from "@/filters/trackers/trackers.lastScraps.filter";
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);
@@ -50,6 +53,10 @@ Vue.filter('infosState', stateFilter);
 Vue.filter('infosError', errorFilter);
 Vue.filter('infosBasic', basicFilter);
 Vue.filter('infosHave', haveFilter);
+
+Vue.filter('trackersLastAnnounce', lastAnnounceFilter);
+Vue.filter('trackersState', trackersStateFilter);
+Vue.filter('trackersLastScraps', trackersLastScrapsFilter);
 
 new Vue({
     store: store,

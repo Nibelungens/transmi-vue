@@ -44,7 +44,9 @@ const event = {
      * Selectionne une liste de torrents
      * @param torrents => Liste des torrents a slectionner
      */
-    SELECTED: 'selected'
+    SELECTED: 'selected',
+
+    REFRESH_FILES: 'refresh_files'
 }
 
 export default event;
