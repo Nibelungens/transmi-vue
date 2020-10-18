@@ -144,17 +144,25 @@
         "leechers": "Leechers",
         "downloads": "Downloads",
         "none": "-"
+      },
+      "peers": {
+        "up": "Up",
+        "down": "Down",
+        "percent": "%",
+        "status": "Status",
+        "address": "Address",
+        "client": "Client",
+        "tableDescriptor": "Peers list"
+      },
+      "files": {
+        "priority": {
+          "high": "High",
+          "norm": "Normal",
+          "low": "Low"
+        }
       }
     },
-    "peers": {
-      "up": "Up",
-      "down": "Down",
-      "percent": "%",
-      "status": "Status",
-      "address": "Address",
-      "client": "Client",
-      "tableDescriptor": "Peers list"
-    },
+
     "filter": {
       "none": "-",
       "lastScrape": {
