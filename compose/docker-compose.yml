@@ -1,0 +1,26 @@
+version: "2.1"
+services:
+  transmission:
+    image: linuxserver/transmission:latest
+    container_name: transmission-linuxserver
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - ${CONFIG_VOL}:/config
+      - ${DOWNLOAD_VOL}:/downloads
+      - ${WATCH_VOL}:/watch
+    ports:
+      - ${PORT_API}:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+  transmi-vue:
+    image: nibelungens/transmi-vue:latest
+    container_name: transmi-vue
+    environment:
+      - URL_TRANSMISION=http://${HOST_API}:${PORT_API}
+    ports:
+      - ${PORT_HTTP}:80
+    restart: unless-stopped

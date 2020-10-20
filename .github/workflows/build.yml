@@ -1,4 +1,4 @@
-name: CI
+name: CI-Build
 
 on:
   push:
@@ -16,9 +16,13 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        registry-url: 'https://npm.pkg.github.com'
     steps:
       - uses: actions/checkout@v2
+
+      - name: Get version
+        id: version
+        run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
+
       - name: Cache dist
         uses: actions/cache@v2
         env:
@@ -26,15 +30,17 @@ jobs:
         with:
           path: ./dist
           key: ${{ runner.os }}-build-${{ env.cache-name }}
-      - name: Install
+
+      - name: npm install
         run: npm install --progress=false
-      - name: Build npm package
+      - name: npm build
         run: npm run build
-      - name: Get version
-        id: version
-        run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
-      - name: Publish package
-        run: npm publish
+
+      - name: Publish artefact
+        uses: actions/upload-artifact@v2
+        with:
+          name: $IMAGE_NAME-${{ steps.version.outputs.version }}
+          path: ./dist
 
   docker:
     needs: build
@@ -42,6 +48,7 @@ jobs:
     if: contains(github.ref, 'master')
     steps:
       - uses: actions/checkout@v2
+
       - name: Cache dist
         uses: actions/cache@v2
         env:
@@ -49,11 +56,14 @@ jobs:
         with:
           path: ./dist
           key: ${{ runner.os }}-build-${{ env.cache-name }}
+
       - name: Get image name
         id: name
         run: echo "::set-output name=image_name::$(echo ${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')"
+
       - name: Build docker image
         run: docker build . --file Dockerfile --tag ${{ steps.name.outputs.image_name }}:latest
+
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.CR_PAT }}" | docker login --username nibelungens --password-stdin
       - name: Push image to GitHub Container Registry
