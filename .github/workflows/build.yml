@@ -16,6 +16,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
+        registry-url: 'https://npm.pkg.github.com'
     steps:
       - uses: actions/checkout@v2
       - name: Cache dist
@@ -32,11 +33,8 @@ jobs:
       - name: Get version
         id: version
         run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: transmi-vue-${{ steps.version.outputs.version }}
-          path: ./dist
+      - name: Publish package
+        run: npm publish
 
   docker:
     needs: build
