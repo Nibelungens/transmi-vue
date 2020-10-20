@@ -53,14 +53,13 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}
       - name: Get image name
         id: name
-        run: echo "::set-output name=version::${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]'"
+        run: echo "::set-output name=image_name::$(echo ${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')"
       - name: Build docker image
-        run: docker build . --file Dockerfile --tag ${{ steps.name.outputs.version }}:latest
+        run: docker build . --file Dockerfile --tag ${{ steps.name.outputs.image_name }}:latest
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.CR_PAT }}" | docker login --username nibelungens --password-stdin
       - name: Push image to GitHub Container Registry
         run: |
-          IMAGE_ID=$(echo ${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
-          docker push $IMAGE_ID:latest
-          docker tag $IMAGE_ID:latest $IMAGE_ID:${{ needs.build.outputs.version }}
-          docker push $IMAGE_ID:${{ needs.build.outputs.version }}
+          docker push ${{ steps.name.outputs.image_name }}:latest
+          docker tag ${{ steps.name.outputs.image_name }}:latest ${{ steps.name.outputs.image_name }}:${{ needs.build.outputs.version }}
+          docker push ${{ steps.name.outputs.image_name }}:${{ needs.build.outputs.version }}
