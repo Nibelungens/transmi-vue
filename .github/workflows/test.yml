@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: '**'
+
+env:
+  IMAGE_NAME: transmi-vue
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install
+        run: npm install --progress=false
+
+      - name: Test
+        run: npm run test:unit
