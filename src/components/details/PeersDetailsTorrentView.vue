@@ -26,16 +26,16 @@
         </div>
       </div>
         <b-collapse :id="getId(torrent)" :visible="!collapse_all" v-on:hide="setVisible(torrent)" v-on:show="setVisible(torrent)">
-        <table class="table table-striped table-sm border" v-if="peersEmpty(torrent)" :aria-describedby="$t('message.peers.tableDescriptor')">
+        <table class="table table-striped table-sm border" v-if="peersEmpty(torrent)" :aria-describedby="$t('message.details.peers.tableDescriptor')">
           <thead>
           <tr>
             <th scope="col" class="fix-cad"></th>
-            <th scope="col">{{ $t('message.peers.up')}}</th>
-            <th scope="col">{{ $t('message.peers.down')}}</th>
-            <th scope="col">{{ $t('message.peers.percent')}}</th>
-            <th scope="col">{{ $t('message.peers.status')}}</th>
-            <th scope="col">{{ $t('message.peers.address')}}</th>
-            <th scope="col">{{ $t('message.peers.client')}}</th>
+            <th scope="col">{{ $t('message.details.peers.up')}}</th>
+            <th scope="col">{{ $t('message.details.peers.down')}}</th>
+            <th scope="col">{{ $t('message.details.peers.percent')}}</th>
+            <th scope="col">{{ $t('message.details.peers.status')}}</th>
+            <th scope="col">{{ $t('message.details.peers.address')}}</th>
+            <th scope="col">{{ $t('message.details.peers.client')}}</th>
           </tr>
           </thead>
           <tbody>

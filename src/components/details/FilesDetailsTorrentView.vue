@@ -17,7 +17,6 @@ import PathDetailsTorrentView from "@/components/details/path/PathDetailsTorrent
 import keyStore from "@/constantes/key.store.const";
 import api from "@/mixins/api.transmission.mixin";
 import key from "@/constantes/key.store.const";
-import interval from "@/mixins/interval.mixin";
 import event from "@/constantes/event.const";
 import result from "@/mixins/result.mixin";
 import pathUtils from "@/utils/path.utils";
@@ -29,8 +28,7 @@ export default {
   components: {PathDetailsTorrentView},
   mixins: [
     api,
-    result,
-    interval
+    result
   ],
   computed: {
     ...mapGetters({
@@ -58,9 +56,6 @@ export default {
     this.$root.$on(event.REFRESH_FILES, () => this.refreshFiles(false));
   },
   methods: {
-    refresh() {
-      this.refreshFiles(false);
-    },
     refreshFiles(withSpin) {
       if (this.showPanel) {
         if (withSpin) this.torrents = null;

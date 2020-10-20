@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - master
+
+env:
+  IMAGE_NAME: transmi-vue
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache dist
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-dist
+        with:
+          path: ./dist
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+      - name: Install
+        run: npm install --progress=false
+      - name: Build npm package
+        run: npm run build
+      - name: Get version
+        id: version
+        run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: transmi-vue-${{ steps.version.outputs.version }}
+          path: ./dist
+
+  docker:
+    needs: build
+    runs-on: ubuntu-20.04
+    if: contains(github.ref, 'master')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache dist
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-dist
+        with:
+          path: ./dist
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+      - name: Get image name
+        id: name
+        run: echo "::set-output name=version::${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]'"
+      - name: Build docker image
+        run: docker build . --file Dockerfile --tag ${{ steps.name.outputs.version }}:latest
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login --username nibelungens --password-stdin
+      - name: Push image to GitHub Container Registry
+        run: |
+          IMAGE_ID=$(echo ${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
+          docker push $IMAGE_ID:latest
+          docker tag $IMAGE_ID:latest $IMAGE_ID:${{ needs.build.outputs.version }}
+          docker push $IMAGE_ID:${{ needs.build.outputs.version }}

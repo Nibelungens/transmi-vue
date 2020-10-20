@@ -4,7 +4,13 @@
       <div class="d-flex">
         <div class="mr-auto">
           <div class="d-inline-flex">
-            <input ref="checkbox-files" type="checkbox" :id="getId('checkbox', path)" :checked="path.wanted" class="mr-2" v-on:change="selectWanted($event, path)" :disabled="disableCheck(path)"/>
+            <input ref="checkbox-files"
+                   type="checkbox"
+                   class="mr-2"
+                   :id="getId('checkbox', path)"
+                   :checked="path.wanted"
+                   :disabled="disableCheck(path)"
+                   v-on:change="selectWanted($event, path)"/>
             <b-icon-folder-fill v-if="path.folder" class="text-warning mr-1"/>
             <b-icon-file-earmark-fill v-else class="text-success mr-1"/>
             <label class="mb-1 label-file" :for="getId('checkbox', path)" :title="path.name" v-on:click.prevent="onClickCollapse(path)">{{ path.name }}</label>
@@ -12,15 +18,36 @@
         </div>
         <div class="ml-auto">
           <label class="container">
-            <input type="checkbox" :ref="getId('radio-low', path)" :id="getId('radio-low', path)" value="-1" :checked="path.priority === -1" :disabled="disableCheck(path)" v-on:change="selectPriority(-1, path)">
+            <input type="checkbox"
+                   :title="$t('message.details.files.priority.low')"
+                   :value="priority().LOW"
+                   :ref="getId('radio-low', path)"
+                   :id="getId('radio-low', path)"
+                   :checked="path.priority === priority().LOW"
+                   :disabled="disableCheck(path)"
+                   v-on:change="selectPriority(priority().LOW, path)">
             <span title="Low" class="checkmark-low checkmark"></span>
           </label>
           <label class="container">
-            <input type="checkbox" :ref="getId('radio-norm', path)" title="Normal" :id="getId('radio-norm', path)" value="0" :checked="path.priority === 0" :disabled="disableCheck(path)" v-on:change="selectPriority(0, path)">
+            <input type="checkbox"
+                   :title="$t('message.details.files.priority.norm')"
+                   :value="priority().NORM"
+                   :id="getId('radio-norm', path)"
+                   :ref="getId('radio-norm', path)"
+                   :checked="path.priority === priority().NORM"
+                   :disabled="disableCheck(path)"
+                   v-on:change="selectPriority(priority().NORM, path)">
             <span title="Normal" class="checkmark-norm checkmark"></span>
           </label>
           <label class="container">
-            <input type="checkbox" :ref="getId('radio-high', path)" title="High" :id="getId('radio-high', path)" value="1" :checked="path.priority === 1" :disabled="disableCheck(path)" v-on:change="selectPriority(1, path)">
+            <input type="checkbox"
+                   :title="$t('message.details.files.priority.high')"
+                   :value="priority().HIGH"
+                   :ref="getId('radio-high', path)"
+                   :id="getId('radio-high', path)"
+                   :checked="path.priority === priority().HIGH"
+                   :disabled="disableCheck(path)"
+                   v-on:change="selectPriority(priority().HIGH, path)">
             <span title="High" class="checkmark-high checkmark"></span>
           </label>
         </div>
@@ -33,10 +60,10 @@
 </template>
 
 <script>
-import result from "@/mixins/result.mixin";
+import priority from "@/constantes/priority.const";
 import api from "@/mixins/api.transmission.mixin";
 import event from "@/constantes/event.const";
-import priority from "@/constantes/priority.const";
+import result from "@/mixins/result.mixin";
 
 export default {
   name: "PathDetailsTorrentView",
@@ -46,6 +73,10 @@ export default {
     torrent_id: Number
   },
   methods: {
+    priority() {
+      return priority;
+    },
+
     getClassSelected(path) {
       let radioPriority = this.getId('select-priority', path);
 
@@ -66,19 +97,13 @@ export default {
     },
 
     getIdCheckedByFolder(path) {
-      let listId;
+      let listId  = [];
 
       if (path.folder) {
-        listId = [];
-
-        if (path.folder) {
-          for (const child of path.children) {
-            listId = listId.concat(this.getIdCheckedByFolder(child));
-          }
-        } else if (!this.disableCheck(path)){
-          listId.push(path.id);
+        for (const child of path.children) {
+          listId = listId.concat(this.getIdCheckedByFolder(child));
         }
-      } else {
+      } else if (!this.disableCheck(path)) {
         listId = [path.id];
       }
 
@@ -86,10 +111,22 @@ export default {
     },
 
     selectPriority(value, path) {
-      if (path.folder) {
-        this.$refs[this.getId('radio-low', path)][0].checked = false;
-        this.$refs[this.getId('radio-norm', path)][0].checked = false;
-        this.$refs[this.getId('radio-high', path)][0].checked = false;
+      this.$refs[this.getId('radio-low', path)][0].checked = false;
+      this.$refs[this.getId('radio-norm', path)][0].checked = false;
+      this.$refs[this.getId('radio-high', path)][0].checked = false;
+
+      if (!path.folder) {
+        switch (value) {
+          case priority.LOW:
+            this.$refs[this.getId('radio-low', path)][0].checked = true;
+            break;
+          case priority.NORM:
+            this.$refs[this.getId('radio-norm', path)][0].checked = true;
+            break;
+          case priority.HIGH:
+            this.$refs[this.getId('radio-high', path)][0].checked = true;
+            break;
+        }
       }
 
       this.api_torrent.setPriorityTorrent(this.torrent_id, this.getIdCheckedByFolder(path), value)
@@ -101,8 +138,20 @@ export default {
 
     selectWanted(event, path) {
       let checked = event.target.checked;
-      this.setWantedUnwantedTorrent(checked, this.getIdCheckedByFolder(path));
 
+      if (checked) {
+        this.api_torrent.setWantedTorrent(this.torrent_id, this.getIdCheckedByFolder(path))
+            .then(response => {
+              this.success(response);
+              this.$root.$emit(event.REFRESH_FILES);
+            }).catch(this.error);
+      } else {
+        this.api_torrent.setUnwantedTorrent(this.torrent_id, this.getIdCheckedByFolder(path))
+            .then(response => {
+              this.success(response);
+              this.$root.$emit(event.REFRESH_FILES);
+            }).catch(this.error);
+      }
     },
 
     onClickCollapse(path) {
@@ -113,22 +162,6 @@ export default {
 
     disableCheck(path) {
       return !path.folder && path.bytesCompleted === path.length;
-    },
-
-    setWantedUnwantedTorrent(checked, ids) {
-      if (checked) {
-        this.api_torrent.setWantedTorrent(this.torrent_id, ids)
-            .then(response => {
-              this.success(response);
-              this.$root.$emit(event.REFRESH_FILES);
-            }).catch(this.error);
-      } else {
-        this.api_torrent.setUnwantedTorrent(this.torrent_id, ids)
-            .then(response => {
-              this.success(response);
-              this.$root.$emit(event.REFRESH_FILES);
-            }).catch(this.error);
-      }
     },
 
     getId(input, path) {
@@ -192,19 +225,46 @@ export default {
 }
 
 .container:hover input:disabled ~ .checkmark {
-  background-color: inherit;
+  background-color: #eee;
+}
+
+.container input:disabled ~ .checkmark-norm {
+  border-color: #99c6a3;
+}
+
+.container input:disabled ~ .checkmark-low {
+  border-color: #d0c092;
+}
+
+.container input:disabled ~ .checkmark-high {
+  border-color: #d9989e;
+}
+
+.container input:checked:disabled ~ .checkmark-norm {
+  background-color: #99c6a3;
+  border-color: #99c6a3;
+}
+
+.container input:checked:disabled ~ .checkmark-low {
+  background-color: #d0c092;
+  border-color: #d0c092;
+}
+
+.container input:checked:disabled ~ .checkmark-high {
+  background-color: #d9989e;
+  border-color: #d9989e;
 }
 
 .container:hover input:checked:disabled ~ .checkmark-norm {
-  background-color: #28a745;
+  background-color: #99c6a3;
 }
 
 .container:hover input:checked:disabled ~ .checkmark-low {
-  background-color: #ffc107;
+  background-color: #d0c092;
 }
 
 .container:hover input:checked:disabled ~ .checkmark-high {
-  background-color: #dc3545;
+  background-color: #d9989e;
 }
 
 .container input ~ .checkmark-norm {

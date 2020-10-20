@@ -50,6 +50,7 @@ export default {
           !event.path.map(element => element.id).includes('header-trash') &&
           !event.path.map(element => element.id).includes('header-start') &&
           !event.path.map(element => element.id).includes('header-pause') &&
+          !event.path.map(element => element.id).includes('interval-select') &&
           !event.path.map(element => element.id).includes('details-panel')) {
         bus.$emit(events.UNSELECTED_ALL_TORRENT, event);
       }
