@@ -7,12 +7,14 @@ New front-end in Vue-js for Bitorrent client transmission (https://transmissionb
 ![CI-Test](https://github.com/Nibelungens/transmi-vue/workflows/CI-Test/badge.svg?branch=master)
 ![CI-Build](https://github.com/Nibelungens/transmi-vue/workflows/CI-Build/badge.svg?branch=master)
 
-<p align="center">
+<div>
+  <p align="center">
     <img src="https://github.com/Nibelungens/transmi-vue/raw/master/ressources/main.png">
-</p>
+  </p>
 
-<img align="left" src="https://github.com/Nibelungens/transmi-vue/raw/master/ressources/panel.png" alt="Panel Transmi(vue)" width="45%"/>
-<img align="right" src="https://github.com/Nibelungens/transmi-vue/raw/master/ressources/peers.png" alt="Peers Transmi(vue)" width="45%"/>
+  <img align="left" src="https://github.com/Nibelungens/transmi-vue/raw/master/ressources/panel.png" alt="Panel Transmi(vue)" width="45%"/>
+  <img align="right" src="https://github.com/Nibelungens/transmi-vue/raw/master/ressources/peers.png" alt="Peers Transmi(vue)" width="45%"/>
+</div>
 
 ## Documentation
 
