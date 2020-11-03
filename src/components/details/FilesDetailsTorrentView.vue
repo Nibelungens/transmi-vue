@@ -6,14 +6,14 @@
         <b-icon-chevron-double-down v-show="collapse_all"/>
       </div>
     </div>
-    <div v-if="torrents === null" class="info-spin">
+    <div v-if="paths === null" class="info-spin">
       <b-spinner type="grow" label="Loading..."></b-spinner>
     </div>
-    <div v-else-if="torrents !== null && torrents.length === 0" class="info-spin">
+    <div v-else-if="paths !== null && paths.length === 0" class="info-spin">
       {{ $t('message.filter.none') }}
     </div>
-    <div v-else v-for="torrent in torrents" :key="torrent.id">
-      <path-details-torrent-view :collapse_all="collapse_all" :paths="getPath(torrent)" :torrent_id="torrent.id" class="p-0 m-0"/>
+    <div v-else v-for="path in paths" :key="path.id">
+      <path-details-torrent-view :collapse_all="collapse_all" :paths="path" :torrent_id="path.id" class="p-0 m-0"/>
     </div>
   </div>
 </template>
@@ -22,10 +22,12 @@
 import PathDetailsTorrentView from "@/components/details/path/PathDetailsTorrentView";
 import keyStore from "@/constantes/key.store.const";
 import api from "@/services/api.transmission.mixin";
+import interval from "@/mixins/interval.mixin";
 import key from "@/constantes/key.store.const";
 import event from "@/constantes/event.const";
 import result from "@/mixins/result.mixin";
 import pathUtils from "@/utils/path.utils";
+import common from "@/utils/common.utils";
 import { mapGetters } from "vuex";
 
 export default {
@@ -33,18 +35,21 @@ export default {
   components: {PathDetailsTorrentView},
   mixins: [
     api,
-    result
+    result,
+    interval
   ],
   computed: {
     ...mapGetters({
-      selectedTorrent: keyStore.GET_SELECTED_TORRENTS
+      selectedTorrent: keyStore.GET_SELECTED_TORRENTS,
+      getSortCol: keyStore.GET_SELECT_SORT_COL,
+      getSelectSortReverse: keyStore.GET_SELECT_SORT_REVERSE
     })
   },
   data: function() {
     return {
       collapse_all: false,
-      torrents: null,
-      allChecked: true
+      allChecked: true,
+      paths: null
     };
   },
   props: {
@@ -68,13 +73,29 @@ export default {
       if (this.showPanel) {
         if (withSpin) this.torrents = null;
         this.api_torrent.getFileTorrent(this.selectedTorrent)
-            .then(this.detailSuccess)
+            .then(this.detailSuccessFile)
             .catch(this.fail);
+      }
+    },
+
+    detailSuccessFile(response) {
+      if (response?.data) {
+        const sortedTorrents = common.sortTorrents(response.data.arguments.torrents, this.getSelectSortReverse, this.getSortCol);
+        const pathPromise = new Promise(function(resolve) {
+          resolve(sortedTorrents.map(pathUtils.toTPath));
+        });
+
+        pathPromise
+            .then(response => this.paths = response);
       }
     },
 
     getPath(torrent) {
       return pathUtils.toTPath(torrent);
+    },
+
+    refresh() {
+      this.refreshFiles(false);
     }
   }
 }

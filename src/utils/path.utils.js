@@ -112,6 +112,7 @@ const path = {
     toTPath(torrent) {
         const rootPath = {
             name: torrent.name,
+            id: torrent.id,
             folder: true,
             children: []
         };

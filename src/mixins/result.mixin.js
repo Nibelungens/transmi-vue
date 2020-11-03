@@ -18,6 +18,7 @@ const result = {
                 this.$store.commit(keyStore.SET_LIST_TORRENT, torrents);
             }
         },
+
         detailSuccess(response) {
             if (response != null && response.data !== null) {
                 this.torrents = common.sortTorrents(response.data.arguments.torrents, this.getSelectSortReverse, this.getSortCol);
