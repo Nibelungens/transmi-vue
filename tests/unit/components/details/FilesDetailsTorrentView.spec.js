@@ -13,6 +13,7 @@ describe("TrackersDetailsTorrentView", () => {
 
         const jT = {
             name: "test",
+            id: 666,
             files: [
                 {name: "files01.f" ,bytesCompleted: 101, length: 0},
                 {name: "files02.f" ,bytesCompleted: 102, length: 0}
@@ -28,6 +29,7 @@ describe("TrackersDetailsTorrentView", () => {
         console.log(result);
         expect(result).toStrictEqual({
             name: "test",
+            id: 666,
             folder: true,
             wanted: true,
             priority: 0,
@@ -42,6 +44,7 @@ describe("TrackersDetailsTorrentView", () => {
 
         const jT = {
             name: "test",
+            id: 666,
             files: [
                 {name: "folder01/files01.f" ,bytesCompleted: 101, length: 0},
                 {name: "folder01/files02.f" ,bytesCompleted: 102, length: 0},
@@ -60,6 +63,7 @@ describe("TrackersDetailsTorrentView", () => {
 
         expect(result).toStrictEqual({
             name: "test",
+            id: 666,
             folder: true,
             wanted: true,
             priority: 0,
@@ -90,6 +94,7 @@ describe("TrackersDetailsTorrentView", () => {
 
         const jT = {
             name: "test",
+            id: 666,
             files: [
                 {   name: "folder01/folder01/folder01/folder01/folder01/folder01/folder01/folder01/folder01/folder01/folder01/files01.f",
                     bytesCompleted: 101, length: 0}
@@ -104,6 +109,7 @@ describe("TrackersDetailsTorrentView", () => {
         console.log(result);
         expect(result).toStrictEqual({
             name: "test",
+            id: 666,
             folder: true, wanted: true, priority: 0,
             children: [{folder: true, wanted: true, priority: 0,
                 children: [{folder: true, wanted: true, priority: 0,
@@ -134,6 +140,7 @@ describe("TrackersDetailsTorrentView", () => {
 
         const jT = {
             name: "test",
+            id: 666,
             files: [
                 {name: "folder01/files01.f" ,bytesCompleted: 101, length: 0},
                 {name: "folder01/files02.f" ,bytesCompleted: 102, length: 0},
@@ -153,6 +160,7 @@ describe("TrackersDetailsTorrentView", () => {
         console.log(result);
         expect(result).toStrictEqual({
             name: "test",
+            id: 666,
             folder: true,
             wanted: true,
             priority: 0,
@@ -180,6 +188,7 @@ describe("TrackersDetailsTorrentView", () => {
 
         const jT = {
             name: "test",
+            id: 666,
             files: [
                 {name: "folder01/files01.f" ,bytesCompleted: 101, length: 0},
                 {name: "folder01/files02.f" ,bytesCompleted: 102, length: 0},
@@ -201,6 +210,7 @@ describe("TrackersDetailsTorrentView", () => {
         console.log(result);
         expect(result).toStrictEqual({
             name: "test",
+            id: 666,
             folder: true,
             wanted: true,
             priority: null,
