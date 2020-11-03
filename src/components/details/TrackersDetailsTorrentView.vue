@@ -12,7 +12,7 @@
     <div v-else-if="torrents !== null && torrents.length === 0" class="info-spin">
       {{ $t('message.filter.none') }}
     </div>
-    <div v-else v-for="torrent in sortTorrents(torrents)" :key="torrent.id">
+    <div v-else v-for="torrent in torrents" :key="torrent.id">
       <div class="d-flex bd-highlight" v-bind:class="{ 'pointer': trackerEmpty(torrent) }" v-on:click="collapse(torrent)">
         <div class="pb-1 w-100 bd-highlight font-weight-bold">{{ torrent.name }}</div>
         <div class="bd-highlight text-right d-flex">
@@ -58,7 +58,6 @@ import key from "@/constantes/key.store.const";
 import interval from "@/mixins/interval.mixin";
 import filterSize from "@/filters/size.filter";
 import { mapGetters } from "vuex";
-import common from "@/utils/common.utils";
 import keyStore from "@/constantes/key.store.const";
 import result from "@/mixins/result.mixin";
 
@@ -71,8 +70,6 @@ export default {
   ],
   computed: {
     ...mapGetters({
-      getSortCol: keyStore.GET_SELECT_SORT_COL,
-      selectedTorrent: key.GET_SELECTED_TORRENTS,
       getSelectSortReverse: keyStore.GET_SELECT_SORT_REVERSE
     })
   },
@@ -145,9 +142,6 @@ export default {
       if (response != null && response.data !== null) {
         this.torrents = response.data.arguments.torrents;
       }
-    },
-    sortTorrents(torrents) {
-      return common.sortTorrents(torrents, this.getSelectSortReverse, this.getSortCol);
     }
   }
 }

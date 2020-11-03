@@ -15,13 +15,11 @@ import FooterTransmission from '@/components/ui/FooterTransmission';
 import ListTorrentsView from '@/components/ListTorrentsView';
 import AddTorrentModal from '@/components/AddTorrentModal';
 import keyStore from '@/constantes/key.store.const';
+import api from "@/mixins/api.transmission.mixin";
 import interval from '@/mixins/interval.mixin';
 import events from '@/constantes/event.const';
 import result from '@/mixins/result.mixin';
 import bus from '@/config/bus.event';
-import { mapGetters } from 'vuex';
-import api from "@/mixins/api.transmission.mixin";
-import common from "@/utils/common.utils";
 
 const s_success = {
   variant: 'success',
@@ -80,12 +78,6 @@ export default {
     bus.$off(events.NOTIFICATION_FAIL);
     bus.$off(events.REFRESH_LIST_TORRENT);
   },
-  computed: {
-    ...mapGetters({
-      getSortCol: keyStore.GET_SELECT_SORT_COL,
-      getSelectSortReverse: keyStore.GET_SELECT_SORT_REVERSE
-    })
-  },
   methods: {
     selectAll(event) {
       if (event.ctrlKey && event.key === 'a') bus.$emit(events.SELECT_ALL_TORRENT);
@@ -101,14 +93,8 @@ export default {
     },
     refresh() {
       this.api_torrent.getTorrents()
-          .then(this.successTorrent)
+          .then(this.detailSuccessStore)
           .catch(this.error);
-    },
-    successTorrent(response) {
-      this.$store.commit(keyStore.SET_LIST_TORRENT, this.sortTorrents(response.data.arguments.torrents));
-    },
-    sortTorrents(torrents) {
-      return common.sortTorrents(torrents, this.getSelectSortReverse, this.getSortCol);
     }
   }
 }

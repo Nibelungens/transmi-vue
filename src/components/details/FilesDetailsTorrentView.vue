@@ -6,7 +6,7 @@
     <div v-else-if="torrents !== null && torrents.length === 0" class="info-spin">
       {{ $t('message.filter.none') }}
     </div>
-    <div v-else v-for="torrent in sortTorrents(torrents)" :key="torrent.id">
+    <div v-else v-for="torrent in torrents" :key="torrent.id">
       <path-details-torrent-view :paths="getPath(torrent)" :torrent_id="torrent.id" class="p-0"/>
     </div>
   </div>
@@ -20,7 +20,6 @@ import key from "@/constantes/key.store.const";
 import event from "@/constantes/event.const";
 import result from "@/mixins/result.mixin";
 import pathUtils from "@/utils/path.utils";
-import common from "@/utils/common.utils";
 import { mapGetters } from "vuex";
 
 export default {
@@ -32,8 +31,6 @@ export default {
   ],
   computed: {
     ...mapGetters({
-      getSortCol: keyStore.GET_SELECT_SORT_COL,
-      selectedTorrent: key.GET_SELECTED_TORRENTS,
       getSelectSortReverse: keyStore.GET_SELECT_SORT_REVERSE
     })
   },
@@ -63,11 +60,6 @@ export default {
             .then(this.detailSuccess)
             .catch(this.fail);
       }
-    },
-
-
-    sortTorrents(torrents) {
-      return common.sortTorrents(torrents, this.getSelectSortReverse, this.getSortCol);
     },
 
     getPath(torrent) {
