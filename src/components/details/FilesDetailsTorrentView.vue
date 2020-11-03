@@ -1,5 +1,11 @@
 <template>
   <div class="overflow-man files">
+    <div class="d-flex flex-row-reverse" >
+      <div class="chevron mr-1 mb-2 pointer" v-on:click="collapseAll">
+        <b-icon-chevron-double-up v-show="!collapse_all"/>
+        <b-icon-chevron-double-down v-show="collapse_all"/>
+      </div>
+    </div>
     <div v-if="torrents === null" class="info-spin">
       <b-spinner type="grow" label="Loading..."></b-spinner>
     </div>
@@ -7,7 +13,7 @@
       {{ $t('message.filter.none') }}
     </div>
     <div v-else v-for="torrent in torrents" :key="torrent.id">
-      <path-details-torrent-view :paths="getPath(torrent)" :torrent_id="torrent.id" class="p-0"/>
+      <path-details-torrent-view :collapse_all="collapse_all" :paths="getPath(torrent)" :torrent_id="torrent.id" class="p-0 m-0"/>
     </div>
   </div>
 </template>
@@ -36,6 +42,7 @@ export default {
   },
   data: function() {
     return {
+      collapse_all: false,
       torrents: null,
       allChecked: true
     };
@@ -53,6 +60,10 @@ export default {
     this.$root.$on(event.REFRESH_FILES, () => this.refreshFiles(false));
   },
   methods: {
+    collapseAll() {
+      this.collapse_all = !this.collapse_all;
+    },
+
     refreshFiles(withSpin) {
       if (this.showPanel) {
         if (withSpin) this.torrents = null;
@@ -70,6 +81,15 @@ export default {
 </script>
 
 <style scoped>
+.chevron {
+  font-size: x-small;
+  min-width: 15px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
 .overflow-man {
   overflow-y: scroll;
 }
