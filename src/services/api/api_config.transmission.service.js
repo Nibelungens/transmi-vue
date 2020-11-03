@@ -67,9 +67,11 @@ import Methods from "@/services/const/methods.const";
  * @typedef {Object} Response
  * @property {Arguments} arguments
  * @property {string} result
+ *
  */
 const api_config = {
   /**
+   * @method setDownloadLimit
    * @param {number} limit
    * @return {AxiosPromise<Response>}
    */
@@ -82,6 +84,7 @@ const api_config = {
   },
 
   /**
+   * @method setUploadLimit
    * @param {number} limit
    * @return {AxiosPromise<Response>}
    */
@@ -94,6 +97,7 @@ const api_config = {
   },
 
   /**
+   * @method getSession
    * @return {AxiosPromise<Arguments>}
    */
   getSession() {
@@ -101,6 +105,7 @@ const api_config = {
   },
 
   /**
+   * @method getSessionStat
    * @return {AxiosPromise<Arguments>}
    */
   getSessionStat() {
@@ -108,6 +113,7 @@ const api_config = {
   },
 
   /**
+   * @method getFreeSpace
    * @param {string} path
    * @return {AxiosPromise<Arguments>}
    */

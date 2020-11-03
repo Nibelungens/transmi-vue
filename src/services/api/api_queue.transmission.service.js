@@ -8,6 +8,7 @@ import Methods from "@/services/const/methods.const";
  */
 const api_queue = {
   /**
+   * @method moveToTop
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -16,6 +17,7 @@ const api_queue = {
   },
 
   /**
+   * @method moveToBottom
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -24,6 +26,7 @@ const api_queue = {
   },
 
   /**
+   * @method moveUp
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -32,6 +35,7 @@ const api_queue = {
   },
 
   /**
+   * @method moveDown
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */

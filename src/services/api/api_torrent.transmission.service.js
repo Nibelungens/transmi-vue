@@ -20,6 +20,7 @@ import Methods from "@/services/const/methods.const";
  */
 const api_torrent = {
   /**
+   * @method setLocation
    * @param {string} location
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
@@ -31,6 +32,7 @@ const api_torrent = {
   },
 
   /**
+   * @method setRename
    * @param {string} newName
    * @param {Torrent} torrent
    * @return {AxiosPromise<Response>}
@@ -40,6 +42,14 @@ const api_torrent = {
         new ArgumentsRename(torrent.name, newName, Array.of(torrent.id)));
   },
 
+  /**
+   * @method addTorrent
+   * @param {string} downloadDir
+   * @param {string} metaInfo
+   * @param {boolean} start
+   * @param {string} url
+   * @return {AxiosPromise<Response>}
+   */
   addTorrent(downloadDir, metaInfo, url, start) {
     const argumentsTorrentAdd = url
         ?ArgumentsTorrentAdd.url(downloadDir, !start, url)
@@ -49,6 +59,7 @@ const api_torrent = {
   },
 
   /**
+   * @method verifyTorrent
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -58,6 +69,7 @@ const api_torrent = {
   },
 
   /**
+   * @method removeTorrent
    * @param {array<Torrent>} torrents
    * @param {boolean} trash
    * @return {AxiosPromise<Response>}
@@ -69,6 +81,7 @@ const api_torrent = {
   },
 
   /**
+   * @method startTorrents
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -78,6 +91,7 @@ const api_torrent = {
   },
 
   /**
+   * @method startTorrentsNow
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -87,6 +101,7 @@ const api_torrent = {
   },
 
   /**
+   * @method stopTorrents
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -96,6 +111,7 @@ const api_torrent = {
   },
 
   /**
+   * @method getTorrents
    * @return {AxiosPromise<Response>}
    */
   getTorrents() {
@@ -104,6 +120,7 @@ const api_torrent = {
   },
 
   /**
+   * @method getInfoTorrent
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -114,6 +131,7 @@ const api_torrent = {
   },
 
   /**
+   * @method getPeersTorrent
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -124,6 +142,7 @@ const api_torrent = {
   },
 
   /**
+   * @method getTrackerTorrent
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -134,6 +153,7 @@ const api_torrent = {
   },
 
   /**
+   * @method getFileTorrent
    * @param {array<Torrent>} torrents
    * @return {AxiosPromise<Response>}
    */
@@ -144,6 +164,7 @@ const api_torrent = {
   },
 
   /**
+   * @method setUnwantedTorrent
    * @param {Number} torrent_id
    * @param {array<Number>} ids
    * @return {AxiosPromise<Response>}
@@ -154,6 +175,7 @@ const api_torrent = {
   },
 
   /**
+   * @method setWantedTorrent
    * @param {Number} torrent_id
    * @param {array<Number>} ids
    * @return {AxiosPromise<Response>}
@@ -164,6 +186,7 @@ const api_torrent = {
   },
 
   /**
+   * @method setPriorityTorrent
    * @param {Number} torrent_id
    * @param {array<Number>} ids
    * @param {String} type_priority
