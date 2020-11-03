@@ -8,31 +8,33 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-import haveFilter from '@/filters/infos/infos.have.filter'
-import stateFilter from '@/filters/infos/infos.state.filter'
-import sizeFilter from '@/filters/size.filter.js'
-import statusFilter from '@/filters/status.filter'
-import percentFilter from '@/filters/percent.filter'
-import uploadFilter from '@/filters/infos/infos.uploaded.filter'
-import creatorFilter from '@/filters/infos/infos.creator.filter'
-import remainingFilter from '@/filters/remaining.filter'
-import downloadFilter from '@/filters/infos/infos.downloaded.filter'
-import sizeDetailsFilter from '@/filters/infos/infos.size.details.filter'
-import runningTimeFilter from '@/filters/infos/infos.running.time.filter'
-import availabilityFilter from '@/filters/infos/infos.availability.filter'
-import timeIntervalFilter from '@/filters/timeInterval.filter'
-import lastActivityFilter from '@/filters/infos/infos.last.activity.filter'
-import remainingTimeFilter from '@/filters/infos/infos.remaining.time.filter'
-import errorFilter from '@/filters/infos/infos.error.filter'
-import basicFilter from '@/filters/infos/infos.basic.filter'
-import privacyFilter from '@/filters/infos/infos.privacy.filter'
-import lastAnnounceFilter from "@/filters/trackers/trackers.lastannounce.filter";
+import sizeFilter from '@/filters/size.filter.js';
+import statusFilter from '@/filters/status.filter';
+import percentFilter from '@/filters/percent.filter';
+import remainingFilter from '@/filters/remaining.filter';
+import haveFilter from '@/filters/infos/infos.have.filter';
+import stateFilter from '@/filters/infos/infos.state.filter';
+import errorFilter from '@/filters/infos/infos.error.filter';
+import basicFilter from '@/filters/infos/infos.basic.filter';
+import timeIntervalFilter from '@/filters/timeInterval.filter';
+import privacyFilter from '@/filters/infos/infos.privacy.filter';
+import uploadFilter from '@/filters/infos/infos.uploaded.filter';
+import creatorFilter from '@/filters/infos/infos.creator.filter';
+import downloadFilter from '@/filters/infos/infos.downloaded.filter';
+import sizeDetailsFilter from '@/filters/infos/infos.size.details.filter';
+import runningTimeFilter from '@/filters/infos/infos.running.time.filter';
+import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
+import availabilityFilter from '@/filters/infos/infos.availability.filter';
 import trackersStateFilter from "@/filters/trackers/trackers.state.filter";
+import lastActivityFilter from '@/filters/infos/infos.last.activity.filter';
+import remainingTimeFilter from '@/filters/infos/infos.remaining.time.filter';
+import lastAnnounceFilter from "@/filters/trackers/trackers.lastannounce.filter";
 import trackersLastScrapsFilter from "@/filters/trackers/trackers.lastScraps.filter";
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+Vue.use(VueFilterDateFormat);
 
 Vue.filter('formatTimeInterval', timeIntervalFilter);
 Vue.filter('formatRemaining', remainingFilter);

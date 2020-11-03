@@ -12,35 +12,16 @@
 <script>
 import HeaderTransmission from '@/components/ui/HeaderTransmission';
 import FooterTransmission from '@/components/ui/FooterTransmission';
+import Notification from "@/store/module/class/notification.class";
 import ListTorrentsView from '@/components/ListTorrentsView';
 import AddTorrentModal from '@/components/AddTorrentModal';
 import keyStore from '@/constantes/key.store.const';
 import api from "@/services/api.transmission.mixin";
 import interval from '@/mixins/interval.mixin';
+import key from "@/constantes/key.store.const";
 import events from '@/constantes/event.const';
 import result from '@/mixins/result.mixin';
 import bus from '@/config/bus.event';
-
-const s_success = {
-  variant: 'success',
-  toaster: 'b-toaster-bottom-left',
-  solid: true,
-  noCloseButton: true
-};
-
-const s_warning = {
-  variant: 'warning',
-  toaster: 'b-toaster-bottom-left',
-  solid: true,
-  noCloseButton: true
-};
-
-const s_failed = {
-  variant: 'error',
-  toaster: 'b-toaster-bottom-left',
-  solid: true,
-  noCloseButton: true
-};
 
 export default {
   name: 'App',
@@ -83,13 +64,13 @@ export default {
       if (event.ctrlKey && event.key === 'a') bus.$emit(events.SELECT_ALL_TORRENT);
     },
     notificationSuccess(msg) {
-      this.$bvToast.toast(msg, s_success);
+      this.$store.commit(key.ADD_NOTIFICATION, Notification.success(msg));
     },
     notificationWarn(msg) {
-      this.$bvToast.toast(msg, s_warning);
+      this.$store.commit(key.ADD_NOTIFICATION, Notification.warning(msg));
     },
     notificationFail(msg) {
-      this.$bvToast.toast(msg, s_failed);
+      this.$store.commit(key.ADD_NOTIFICATION, Notification.error(msg));
     },
     refresh() {
       this.api_torrent.getTorrents()
