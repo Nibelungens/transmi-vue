@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import api from "@/mixins/api.transmission.mixin";
+import api from "@/services/api.transmission.mixin";
 import events from "@/constantes/event.const";
 import interval from "@/mixins/interval.mixin";
 import key from "@/constantes/key.store.const";

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import api from "@/mixins/api.transmission.mixin";
+import api from "@/services/api.transmission.mixin";
 import keyStore from "@/constantes/key.store.const";
 import events from "@/constantes/event.const";
 import sizeFilter from "@/filters/size.filter";

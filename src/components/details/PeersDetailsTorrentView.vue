@@ -57,7 +57,7 @@
 
 <script>
 import keyStore from "@/constantes/key.store.const";
-import api from "@/mixins/api.transmission.mixin";
+import api from "@/services/api.transmission.mixin";
 import key from "@/constantes/key.store.const";
 import interval from "@/mixins/interval.mixin";
 import filterSize from "@/filters/size.filter";

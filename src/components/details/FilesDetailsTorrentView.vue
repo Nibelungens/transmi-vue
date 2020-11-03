@@ -15,7 +15,7 @@
 <script>
 import PathDetailsTorrentView from "@/components/details/path/PathDetailsTorrentView";
 import keyStore from "@/constantes/key.store.const";
-import api from "@/mixins/api.transmission.mixin";
+import api from "@/services/api.transmission.mixin";
 import key from "@/constantes/key.store.const";
 import event from "@/constantes/event.const";
 import result from "@/mixins/result.mixin";
@@ -31,7 +31,7 @@ export default {
   ],
   computed: {
     ...mapGetters({
-      getSelectSortReverse: keyStore.GET_SELECT_SORT_REVERSE
+      selectedTorrent: keyStore.GET_SELECTED_TORRENTS
     })
   },
   data: function() {

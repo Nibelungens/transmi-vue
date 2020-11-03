@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import api from "@/mixins/api.transmission.mixin";
+import api from "@/services/api.transmission.mixin";
 import key from "@/constantes/key.store.const";
 import events from "@/constantes/event.const";
 import status from "@/constantes/status.const";
@@ -122,7 +122,7 @@ export default {
       this.inputDownloadDir = '';
     },
     submitRename() {
-      this.setRename(this.selectedTorrents[0], this.newName)
+      this.api_torrent.setRename(this.selectedTorrents[0], this.newName)
           .then((response) => {
             this.success(response);
             this.$bvModal.hide(RENAME_MODAL);

@@ -61,7 +61,7 @@
 
 <script>
 import priority from "@/constantes/priority.const";
-import api from "@/mixins/api.transmission.mixin";
+import api from "@/services/api.transmission.mixin";
 import event from "@/constantes/event.const";
 import result from "@/mixins/result.mixin";
 

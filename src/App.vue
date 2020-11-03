@@ -15,7 +15,7 @@ import FooterTransmission from '@/components/ui/FooterTransmission';
 import ListTorrentsView from '@/components/ListTorrentsView';
 import AddTorrentModal from '@/components/AddTorrentModal';
 import keyStore from '@/constantes/key.store.const';
-import api from "@/mixins/api.transmission.mixin";
+import api from "@/services/api.transmission.mixin";
 import interval from '@/mixins/interval.mixin';
 import events from '@/constantes/event.const';
 import result from '@/mixins/result.mixin';
