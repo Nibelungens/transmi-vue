@@ -52,8 +52,8 @@
           </label>
         </div>
       </div>
-      <b-collapse :id="getId('collapse', path)" visible>
-        <path-details-torrent-view ref="folder-files" :paths="path" :torrent_id="torrent_id" v-if="path.folder" class="pl-3"/>
+      <b-collapse :id="getId('collapse', path)" :refs="getId('collapse', path)" :visible="!collapse_all">
+        <path-details-torrent-view ref="folder-files" :paths="path" :torrent_id="torrent_id" v-if="path.folder" :collapse_all="collapse_all" class="pl-3"/>
       </b-collapse>
     </li>
   </ul>
@@ -61,7 +61,7 @@
 
 <script>
 import priority from "@/constantes/priority.const";
-import api from "@/mixins/api.transmission.mixin";
+import api from "@/services/api.transmission.mixin";
 import event from "@/constantes/event.const";
 import result from "@/mixins/result.mixin";
 
@@ -70,7 +70,8 @@ export default {
   mixins: [result, api],
   props: {
     paths: {},
-    torrent_id: Number
+    torrent_id: Number,
+    collapse_all: Boolean
   },
   methods: {
     priority() {

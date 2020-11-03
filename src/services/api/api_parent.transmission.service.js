@@ -1,4 +1,5 @@
-import * as axios from "axios";
+import ArgumentsIds from "@/services/class/arguments.ids.class";
+import axios from "axios";
 
 /**
  * @typedef  {Object} Torrent
@@ -98,7 +99,7 @@ import * as axios from "axios";
  * @typedef {Promise} AxiosPromise
  */
 const api_parent = {
-  request(method, args) {
+  request(method, args = undefined) {
     return axios.post('/api',
         {
           "method": method,
@@ -106,15 +107,13 @@ const api_parent = {
         });
   },
   requestSimple(method, torrent) {
-    let ids = null;
+    return Array.isArray(torrent)
+        ?this.request(method, ArgumentsIds.many(torrent))
+        :this.request(method, ArgumentsIds.one(torrent.id));
+  },
 
-    if (Array.isArray(torrent)) {
-      ids = torrent.map(t => t.id)
-    } else {
-      ids = [torrent.id]
-    }
-
-    return this.request(method, {"ids": ids});
+  getAxios() {
+      return axios;
   }
 }
 

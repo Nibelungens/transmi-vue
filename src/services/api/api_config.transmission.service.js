@@ -1,14 +1,8 @@
-import * as axios from "axios";
-import api_parent from "@/services/api_parent.transmission.service";
-
-const SESSION_STATS = "session-stats";
-const SESSION_GET = "session-get";
-const SESSION_SET = "session-set";
-const FREE_SPACE = "free-space";
-
-const ARGUMENT_FREE_SPACE = {
-  "path":null
-}
+import ArgumentsLimitDown from "@/services/class/arguments.limit.down.class";
+import ArgumentsLimitUp from "@/services/class/arguments.limit.up.class";
+import api_parent from "@/services/api/api_parent.transmission.service";
+import ArgumentsSpace from "@/services/class/arguments.space.class";
+import Methods from "@/services/const/methods.const";
 
 /**
  * @typedef  {Object} Arguments
@@ -73,71 +67,58 @@ const ARGUMENT_FREE_SPACE = {
  * @typedef {Object} Response
  * @property {Arguments} arguments
  * @property {string} result
+ *
  */
 const api_config = {
   /**
+   * @method setDownloadLimit
    * @param {number} limit
    * @return {AxiosPromise<Response>}
    */
   setDownloadLimit(limit) {
-    let args = {};
+    const argumentsLimitDown = limit
+        ?new ArgumentsLimitDown(true, limit)
+        :new ArgumentsLimitDown(false)
 
-    if (limit != null) {
-      args["speed-limit-down"] = limit;
-      args["speed-limit-down-enabled"] = true;
-    } else {
-      args["speed-limit-down-enabled"] = false;
-    }
-
-    return api_parent.request(SESSION_SET, args);
+    return api_parent.request(Methods.SESSION_SET, argumentsLimitDown);
   },
 
   /**
+   * @method setUploadLimit
    * @param {number} limit
    * @return {AxiosPromise<Response>}
    */
   setUploadLimit(limit) {
-    let args = {};
+    const argumentsLimitUp = limit
+        ?new ArgumentsLimitUp(true, limit)
+        :new ArgumentsLimitUp(false)
 
-    if (limit != null) {
-      args["speed-limit-up"] = limit;
-      args["speed-limit-up-enabled"] = true;
-    } else {
-      args["speed-limit-up-enabled"] = false;
-    }
-
-    return api_parent.request(SESSION_SET, args);
+    return api_parent.request(Methods.SESSION_SET, argumentsLimitUp);
   },
 
   /**
-   * @return {Promise<Arguments>}
+   * @method getSession
+   * @return {AxiosPromise<Arguments>}
    */
   getSession() {
-    return axios.post('/api',
-        {
-          "method": SESSION_GET
-        });
+    return api_parent.request(Methods.SESSION_GET);
   },
 
   /**
-   * @return {Promise<Arguments>}
+   * @method getSessionStat
+   * @return {AxiosPromise<Arguments>}
    */
   getSessionStat() {
-    return axios.post('/api',
-        {
-          "method": SESSION_STATS
-        });
+    return api_parent.request(Methods.SESSION_STATS);
   },
 
   /**
+   * @method getFreeSpace
    * @param {string} path
-   * @return {Promise<Arguments>}
+   * @return {AxiosPromise<Arguments>}
    */
   getFreeSpace(path) {
-    const args = ARGUMENT_FREE_SPACE;
-    args.path = path;
-
-    return api_parent.request(FREE_SPACE, args);
+    return api_parent.request(Methods.FREE_SPACE, new ArgumentsSpace(path));
   }
 };
 

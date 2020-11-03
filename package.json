@@ -1,6 +1,6 @@
 {
   "name": "transmi-vue",
-  "version": "0.9.0",
+  "version": "0.11.0",
   "private": false,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
@@ -22,7 +22,8 @@
     "portal-vue": "~2.1.0",
     "vue": "^2.6.11",
     "vue-i18n": "^8.17.3",
-    "vuex": "~3.5.1"
+    "vuex": "~3.5.1",
+    "@vuejs-community/vue-filter-date-format": "~1.6.2"
   },
   "devDependencies": {
     "@vue/cli": "^4.5.6",

@@ -1,4 +1,7 @@
 const key = {
+    // GETTERS STORE NOTIFICATION
+    GET_LAST: 'Notification/getLast',
+    GET_HISTORY: 'Notification/getHistory',
     // GETTERS STORE TORRENT
     GET_SELECTED_TORRENTS: 'Torrents/getSelectedTorrents',
     GET_TORRENT: 'Torrents/getTorrents',
@@ -21,7 +24,9 @@ const key = {
     SET_DOWNLOAD_DIR_FREE_SPACE: 'Config/SET_DOWNLOAD_DIR_FREE_SPACE',
     SET_DETAILS_PANEL: 'Config/SET_DETAILS_PANEL',
     SET_CONFIG: 'Config/SET_CONFIG',
-    SET_SORT: 'Config/SET_SORT'
+    SET_SORT: 'Config/SET_SORT',
+    // MUTATION STORE NOTIFICATION
+    ADD_NOTIFICATION: 'Notification/ADD_NOTIFICATION'
 }
 
 export default key;

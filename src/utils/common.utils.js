@@ -2,7 +2,6 @@ const common = class CommonUtils {
     static ratio(numerator, denominator) {
         let result = Math.floor((100 * numerator) / denominator) / 100;
 
-        // check for special cases
         if (result === Number.POSITIVE_INFINITY || result === Number.NEGATIVE_INFINITY) {
             result = -2;
         } else if (isNaN(result)) {
@@ -18,17 +17,17 @@ const common = class CommonUtils {
     }
 
     static sortTorrents(torrents, selectSortReverse, sortCol) {
-        let torrentsClone = [...torrents];
-        torrentsClone.sort((a, b) => this.compare(a, b, sortCol));
+        torrents.sort((a, b) => this.compare(a, b, sortCol));
 
-        if (selectSortReverse) torrentsClone.reverse();
-
-        return torrentsClone;
+        return selectSortReverse
+            ?torrents.reverse()
+            :torrents;
     }
 
-    static compare(a, b, col) {
+    static compare(a, b, col = 'queuePosition') {
         if (a[col] > b[col]) return 1;
         if (b[col] > a[col]) return -1;
+        if (b[col] === a[col]) return this.compare(a, b);
 
         return 0;
     }

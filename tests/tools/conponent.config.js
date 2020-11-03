@@ -1,5 +1,6 @@
-import {createLocalVue} from "@vue/test-utils";
+import Notification from "@/store/module/class/notification.class"
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import {createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex";
 
 const localVue = createLocalVue();
@@ -32,6 +33,7 @@ const store = new Vuex.Store({
         'Torrents/getSelectedTorrents': () => [],
         'Torrents/getTorrents': () => [],
         'Config/getTimeRefresh': () => 1000,
+        'Notification/getLast': () => Notification.start()
     },
     mutations: {
         'Torrents/ADD_SELECTED': () => null,
