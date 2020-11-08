@@ -35,7 +35,9 @@ function createPath(torrent, root) {
                     const tFolder = {
                         name: folders[ii],
                         folder: true,
-                        children: []
+                        children: [],
+                        bytesCompleted: 0,
+                        length: 0
                     };
 
                     length = relativeFolder.children.push(tFolder);
@@ -60,17 +62,22 @@ function createPath(torrent, root) {
 function postProcessWantedAndPriority(tPath) {
     let process = {
         wanted: null,
-        priority: null
+        priority: null,
+        bytesCompleted: null,
+        length: null,
     };
 
     if (tPath.folder) {
         process.wanted = false;
         process.priority = undefined;
+        process.bytesCompleted = 0;
+        process.length = 0;
 
         for (const child of tPath.children) {
             let tmpWanted = postProcessWantedAndPriority(child);
             process.wanted = process.wanted || tmpWanted.wanted;
-
+            process.bytesCompleted += tmpWanted.bytesCompleted;
+            process.length += tmpWanted.length;
 
             if (process.priority === undefined) {
                 process.priority = tmpWanted.priority;
@@ -81,9 +88,13 @@ function postProcessWantedAndPriority(tPath) {
 
         tPath.wanted = process.wanted;
         tPath.priority = process.priority;
+        tPath.bytesCompleted += process.bytesCompleted;
+        tPath.length += process.length;
     } else {
         process.wanted = tPath.wanted;
         process.priority = tPath.priority;
+        process.bytesCompleted += tPath.bytesCompleted;
+        process.length += tPath.length;
     }
 
     return process;

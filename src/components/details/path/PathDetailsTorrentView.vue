@@ -13,10 +13,11 @@
                    v-on:change="selectWanted($event, path)"/>
             <b-icon-folder-fill v-if="path.folder" class="text-warning mr-1"/>
             <b-icon-file-earmark-fill v-else class="text-success mr-1"/>
-            <label class="mb-1 label-file" :for="getId('checkbox', path)" :title="path.name" v-on:click.prevent="onClickCollapse(path)">{{ path.name }}</label>
+            <label class="mb-1 label-file" :for="getId('checkbox', path)" :title="path.name" v-on:click.prevent="onClickCollapse(path)"> {{ path.name }}</label>
           </div>
         </div>
         <div class="ml-auto">
+          <span v-if="path.bytesCompleted" class="percent-files" :class="{ 'percent-100': path.bytesCompleted === path.length }">{{ getPercentComplete(path) }}%</span>
           <label class="container">
             <input type="checkbox"
                    :title="$t('message.details.files.priority.low')"
@@ -169,12 +170,26 @@ export default {
       return input
           .concat('-files-')
           .concat(path.id ? path.id: path.name);
+    },
+
+    getPercentComplete(path) {
+      return Math.floor((100 * path.bytesCompleted) / path.length);
     }
   }
 }
 </script>
 
 <style scoped>
+.percent-files {
+  color: #495057;
+  font-size: xx-small;
+  margin-right: 10px;
+}
+
+.percent-100 {
+  color: #28a745;
+}
+
 .row-file {
   display: contents;
 }
