@@ -28,6 +28,8 @@ describe("TrackersDetailsTorrentView", () => {
 
         console.log(result);
         expect(result).toStrictEqual({
+            bytesCompleted: NaN,
+            length: NaN,
             name: "test",
             id: 666,
             folder: true,
@@ -62,27 +64,33 @@ describe("TrackersDetailsTorrentView", () => {
         const result = wrapper.vm.getPath(jT);
 
         expect(result).toStrictEqual({
+            bytesCompleted: NaN,
+            length: NaN,
             name: "test",
             id: 666,
             folder: true,
             wanted: true,
             priority: 0,
             children: [{
+                    bytesCompleted: 306,
+                    length: 0,
                     folder: true,
                     wanted: true,
                     priority: 0,
                     children: [
                         {id: 0, bytesCompleted: 101, name: "files01.f", priority: 0, wanted: true, length: 0},
                         {id: 1, bytesCompleted: 102, name: "files02.f", priority: 0, wanted: true, length: 0},
-                        {folder: true, wanted: true, priority: 0,
+                        {folder: true, wanted: true, priority: 0, bytesCompleted: 103, length: 0,
                             children: [{id: 2, bytesCompleted: 103, name: "files02.f", priority: 0, wanted: true, length: 0}],
                             name: "folder03"}],
                     name: "folder01"},{
+                    bytesCompleted: 104,
+                    length: 0,
                     folder: true,
                     wanted: true,
                     priority: 0,
                     children: [
-                        {folder: true, wanted: true, priority: 0,
+                        {folder: true, wanted: true, priority: 0, bytesCompleted: 104, length: 0,
                             children: [{id: 3, bytesCompleted: 104, name: "files02.f", priority: 0, wanted: true, length: 0}],
                             name: "folder01"}],
                     name: "folder02"}
@@ -97,7 +105,7 @@ describe("TrackersDetailsTorrentView", () => {
             id: 666,
             files: [
                 {   name: "folder01/folder01/folder01/folder01/folder01/folder01/folder01/folder01/folder01/folder01/folder01/files01.f",
-                    bytesCompleted: 101, length: 0}
+                    bytesCompleted: 101, length: 1010}
             ],
             fileStats: [
                 {wanted: true, bytesCompleted: 101, priority: 0}
@@ -110,19 +118,23 @@ describe("TrackersDetailsTorrentView", () => {
         expect(result).toStrictEqual({
             name: "test",
             id: 666,
-            folder: true, wanted: true, priority: 0,
-            children: [{folder: true, wanted: true, priority: 0,
-                children: [{folder: true, wanted: true, priority: 0,
-                    children: [{folder: true, wanted: true, priority: 0,
-                        children: [ {folder: true, wanted: true, priority: 0,
-                            children: [{folder: true, wanted: true, priority: 0,
-                                children: [ {folder: true, wanted: true, priority: 0,
-                                    children: [{folder: true, wanted: true, priority: 0,
-                                        children: [{folder: true, wanted: true, priority: 0,
-                                            children: [{folder: true, wanted: true, priority: 0,
-                                                children: [{folder: true, wanted: true, priority: 0,
-                                                    children: [{folder: true, wanted: true, priority: 0,
-                                                        children: [{id: 0, bytesCompleted: 101, name: "files01.f", priority: 0, wanted: true, length: 0}],
+            bytesCompleted: NaN,
+            length: NaN,
+            folder: true,
+            wanted: true,
+            priority: 0,
+            children: [{folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                children: [{folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                    children: [{folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                        children: [ {folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                            children: [{folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                                children: [ {folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                                    children: [{folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                                        children: [{folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                                            children: [{folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                                                children: [{folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                                                    children: [{folder: true, wanted: true, priority: 0, bytesCompleted: 101, length: 1010,
+                                                        children: [{id: 0, bytesCompleted: 101, name: "files01.f", priority: 0, wanted: true, length: 1010}],
                                                             name: "folder01"}],
                                                     name: "folder01"}],
                                                 name: "folder01"}],
@@ -142,10 +154,10 @@ describe("TrackersDetailsTorrentView", () => {
             name: "test",
             id: 666,
             files: [
-                {name: "folder01/files01.f" ,bytesCompleted: 101, length: 0},
-                {name: "folder01/files02.f" ,bytesCompleted: 102, length: 0},
-                {name: "folder01/folder03/files02.f" ,bytesCompleted: 103, length: 0},
-                {name: "folder02/folder01/files02.f" ,bytesCompleted: 104, length: 0}
+                {name: "folder01/files01.f" ,bytesCompleted: 101, length: 1101},
+                {name: "folder01/files02.f" ,bytesCompleted: 102, length: 1102},
+                {name: "folder01/folder03/files02.f" ,bytesCompleted: 103, length: 1103},
+                {name: "folder02/folder01/files02.f" ,bytesCompleted: 104, length: 1104}
             ],
             fileStats: [
                 {wanted: true ,bytesCompleted: 101, priority: 0},
@@ -164,19 +176,21 @@ describe("TrackersDetailsTorrentView", () => {
             folder: true,
             wanted: true,
             priority: 0,
+            bytesCompleted: NaN,
+            length: NaN,
             children: [{
-                folder: true, wanted: true, priority: 0,
+                folder: true, wanted: true, priority: 0, bytesCompleted: 306, length: 3306,
                 children: [
-                    {id: 0, bytesCompleted: 101, name: "files01.f", priority: 0, wanted: true, length: 0},
-                    {id: 1, bytesCompleted: 102, name: "files02.f", priority: 0, wanted: false, length: 0},
-                    {folder: true, wanted: true, priority: 0,
-                        children: [{id: 2, bytesCompleted: 103, name: "files02.f", priority: 0, wanted: true, length: 0}],
+                    {id: 0, bytesCompleted: 101, name: "files01.f", priority: 0, wanted: true, length: 1101},
+                    {id: 1, bytesCompleted: 102, name: "files02.f", priority: 0, wanted: false, length: 1102},
+                    {folder: true, wanted: true, priority: 0, bytesCompleted: 103, length: 1103,
+                        children: [{id: 2, bytesCompleted: 103, name: "files02.f", priority: 0, wanted: true, length: 1103}],
                         name: "folder03"}],
                 name: "folder01"},{
-                folder: true, wanted: false, priority: 0,
+                folder: true, wanted: false, priority: 0, bytesCompleted: 104, length: 1104,
                 children: [
-                    {folder: true, wanted: false, priority: 0,
-                        children: [{id: 3, bytesCompleted: 104, name: "files02.f", priority: 0, wanted: false, length: 0}],
+                    {folder: true, wanted: false, priority: 0, bytesCompleted: 104, length: 1104,
+                        children: [{id: 3, bytesCompleted: 104, name: "files02.f", priority: 0, wanted: false, length: 1104}],
                         name: "folder01"}],
                 name: "folder02"}
             ]
@@ -214,16 +228,18 @@ describe("TrackersDetailsTorrentView", () => {
             folder: true,
             wanted: true,
             priority: null,
+            bytesCompleted: NaN,
+            length: NaN,
             children: [{
-                folder: true, wanted: true, priority: null,
+                folder: true, wanted: true, priority: null, bytesCompleted: 306, length: 0,
                 children: [
                     {id: 0, bytesCompleted: 101, name: "files01.f", priority: 0, wanted: true, length: 0},
                     {id: 1, bytesCompleted: 102, name: "files02.f", priority: 0, wanted: true, length: 0},
-                    {folder: true, wanted: true, priority: 1,
+                    {folder: true, wanted: true, priority: 1, bytesCompleted: 103, length: 0,
                         children: [{id: 2, bytesCompleted: 103, name: "files02.f", priority: 1, wanted: true, length: 0}],
                         name: "folder03"}],
                 name: "folder01"},{
-                folder: true, wanted: true, priority: -1,
+                folder: true, wanted: true, priority: -1, bytesCompleted: 209, length: 0,
                 children: [
                     {id: 3, bytesCompleted: 104, name: "files02.f", priority: -1, wanted: true, length: 0},
                     {id: 4, bytesCompleted: 105, name: "files03.f", priority: -1, wanted: true, length: 0}],
