@@ -114,6 +114,7 @@ export default {
   },
   mounted() {
     bus.$on(events.OPEN_CONTEXT_MENU, this.openContextMenu);
+    bus.$on(events.DELETE_SELECTED_TORRENT, this.remove);
     this.$root.$el.addEventListener('mouseup', this.close);
   },
   methods: {
