@@ -13,7 +13,7 @@
       <b-form-group id="destination" :label="$t('message.addModal.destination', [this.getSize()])" label-for="select-destination">
         <b-form-input size="sm" id="select-destination" v-model="destination" :placeholder="this.downloadDir"/>
       </b-form-group>
-      <b-form-checkbox id="checkbox-start" v-model="start" name="checkbox-start" value="true" unchecked-value="false">{{$t('message.addModal.start')}}</b-form-checkbox>
+      <b-form-checkbox id="checkbox-start" v-model="start" name="checkbox-start">{{$t('message.addModal.start')}}</b-form-checkbox>
     </b-form>
     <template v-slot:modal-footer="{ submit, cancel }">
       <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.addModal.cancel')"/>
@@ -47,7 +47,7 @@ export default {
       filesTorrent: [],
       url: null,
       destination: null,
-      start: "true"
+      start: true
     };
   },
   computed: {
@@ -119,7 +119,7 @@ export default {
       this.start = true;
     },
     add(path, url, name) {
-      this.api_torrent.addTorrent(this.getFolder(), path, url, this.start === "true")
+      this.api_torrent.addTorrent(this.getFolder(), path, url, this.start)
           .then((response) => this.addSuccess(response, name))
           .catch(this.fail);
     },

@@ -53,6 +53,7 @@ export default {
         .catch(this.error);
 
     window.addEventListener('keydown', this.selectAll);
+    window.addEventListener('keydown', this.deleteSelected);
   },
   beforeDestroy() {
     bus.$off(events.NOTIFICATION_SUCCESS);
@@ -60,6 +61,9 @@ export default {
     bus.$off(events.REFRESH_LIST_TORRENT);
   },
   methods: {
+    deleteSelected(event) {
+      if (event.key === 'Delete') bus.$emit(events.DELETE_SELECTED_TORRENT, false);
+    },
     selectAll(event) {
       if (event.ctrlKey && event.key === 'a') bus.$emit(events.SELECT_ALL_TORRENT);
     },

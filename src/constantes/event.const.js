@@ -45,6 +45,11 @@ const event = {
      * @param torrents => Liste des torrents a slectionner
      */
     SELECTED: 'selected',
+    /**
+     * Supprime les torrents selectionnés
+     * @param trash => si true, supprime egalement les fichiers
+     */
+    DELETE_SELECTED_TORRENT: 'deleteSelectedTorrent',
 
     REFRESH_FILES: 'refresh_files'
 }
