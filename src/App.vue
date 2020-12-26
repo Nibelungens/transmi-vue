@@ -6,6 +6,7 @@
     </main>
     <footer-transmission id="footer" ref="footer"></footer-transmission>
     <add-torrent-modal/>
+    <remove-torrent-modal/>
   </div>
 </template>
 
@@ -13,6 +14,7 @@
 import HeaderTransmission from '@/components/ui/HeaderTransmission';
 import FooterTransmission from '@/components/ui/FooterTransmission';
 import Notification from "@/store/module/class/notification.class";
+import RemoveTorrentModal from "@/components/RemoveTorrentModal";
 import ListTorrentsView from '@/components/ListTorrentsView';
 import AddTorrentModal from '@/components/AddTorrentModal';
 import keyStore from '@/constantes/key.store.const';
@@ -31,6 +33,7 @@ export default {
       api
   ],
   components: {
+    RemoveTorrentModal,
     FooterTransmission,
     HeaderTransmission,
     ListTorrentsView,
@@ -62,7 +65,7 @@ export default {
   },
   methods: {
     deleteSelected(event) {
-      if (event.key === 'Delete') bus.$emit(events.DELETE_SELECTED_TORRENT, false);
+      if (event.key === 'Delete') bus.$emit(events.REMOVE_MODAL_ADD_TORRENT, false);
     },
     selectAll(event) {
       if (event.ctrlKey && event.key === 'a') bus.$emit(events.SELECT_ALL_TORRENT);

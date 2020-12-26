@@ -27,7 +27,12 @@
       "openDetails": "Toggle Inspector",
       "removeModal": {
         "title": "Remove {0}? | Remove {1} transferts?",
-        "description": "Once removed, continuing the transfer will require the torrent file. Are you sure you want to remove it?",
+        "description": {
+          "normal": "Remove Torrent?",
+          "trash": "Remove Torrent and all downloaded files?",
+          "main": "Once removed, continuing the transfer will require the torrent file.",
+          "sure": "Are you sure you want to remove it?"
+        },
         "cancel": "Cancel",
         "remove": "Remove"
       }

@@ -12,6 +12,11 @@ const event = {
      * Ouvre la fenetre d'ajout de torrents
      * @param none
      */
+    REMOVE_MODAL_ADD_TORRENT: 'remove_modal_add_torrent',
+    /**
+     * Ouvre la fenetre d'ajout de torrents
+     * @param none
+     */
     OPEN_MODAL_ADD_TORRENT: 'open_modal_add_torrent',
     /**
      * Ouvre/Ferme le Menu 'Settings'

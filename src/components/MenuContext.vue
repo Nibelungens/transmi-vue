@@ -185,9 +185,7 @@ export default {
           .catch(this.error);
     },
     remove(trash) {
-      this.api_torrent.removeTorrent(this.selectedTorrents, trash)
-          .then(this.success)
-          .catch(this.error);
+      bus.$emit(events.REMOVE_MODAL_ADD_TORRENT, trash);
     },
     toTop() {
       this.api_queue.moveToTop(this.selectedTorrents)
