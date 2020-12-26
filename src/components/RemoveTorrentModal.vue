@@ -12,7 +12,7 @@
 
     <template v-slot:modal-footer="{ submit, cancel }">
       <b-button size="sm" variant="success" v-on:click="cancel()" v-text="$t('message.header.removeModal.cancel')"/>
-      <b-button size="sm" variant="danger" v-on:click="removeSelected" v-text="$t('message.header.removeModal.remove')"/>
+      <b-button size="sm" variant="danger" v-on:click="removeSelected" v-text="$t('message.header.removeModal.remove')" autofocus/>
     </template>
   </b-modal>
 </template>
