@@ -8,7 +8,7 @@
       <div class="d-flex flex-row">
         <img src="@/assets/logo-96.png" alt="logo" class="d-inline-flex"/>
         <b-form class="flex-column w-75 text-left align-middle" v-on:submit="submitLocation">
-          <label class="ml-2 pt-2" for="location-input">{{ $t('message.contextMenu.locationModal.label') }}:</label>
+          <label class="ml-2 pt-2">{{ $t('message.contextMenu.locationModal.label') }}:</label>
           <b-form-input id="location-input" size="sm" class="ml-2" type="text" :placeholder="placeHolderLocation" v-model="inputDownloadDir"/>
         </b-form>
       </div>
@@ -27,7 +27,7 @@
       <div class="d-flex flex-row">
         <img src="@/assets/logo-96.png" alt="logo" class="d-inline-flex"/>
         <b-form class="flex-column w-75 text-left align-middle" v-on:submit="submitRename">
-          <label class="ml-2 pt-2" for="location-input">{{ $t('message.contextMenu.renameModal.label') }}:</label>
+          <label class="ml-2 pt-2">{{ $t('message.contextMenu.renameModal.label') }}:</label>
           <b-form-input id="location-input" size="sm" class="ml-2" type="text" v-model="newName"/>
         </b-form>
       </div>
@@ -185,9 +185,7 @@ export default {
           .catch(this.error);
     },
     remove(trash) {
-      this.api_torrent.removeTorrent(this.selectedTorrents, trash)
-          .then(this.success)
-          .catch(this.error);
+      bus.$emit(events.REMOVE_MODAL_ADD_TORRENT, trash);
     },
     toTop() {
       this.api_queue.moveToTop(this.selectedTorrents)
