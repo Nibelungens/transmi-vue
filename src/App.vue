@@ -11,12 +11,12 @@
 </template>
 
 <script>
+import RemoveTorrentModal from "@/components/modal/RemoveTorrentModal";
 import HeaderTransmission from '@/components/ui/HeaderTransmission';
 import FooterTransmission from '@/components/ui/FooterTransmission';
 import Notification from "@/store/module/class/notification.class";
-import RemoveTorrentModal from "@/components/RemoveTorrentModal";
+import AddTorrentModal from '@/components/modal/AddTorrentModal';
 import ListTorrentsView from '@/components/ListTorrentsView';
-import AddTorrentModal from '@/components/AddTorrentModal';
 import keyStore from '@/constantes/key.store.const';
 import api from "@/services/api.transmission.mixin";
 import interval from '@/mixins/interval.mixin';
