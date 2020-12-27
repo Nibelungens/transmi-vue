@@ -1,5 +1,5 @@
 <template>
-  <b-modal id="remove-torrent-modal" button-size="sm" dialog-class="model-remove user-select-none" title-class="text-truncate">
+  <b-modal id="remove-torrent-modal" v-on:shown="autofocus" button-size="sm" dialog-class="model-remove user-select-none" title-class="text-truncate">
     <template v-slot:modal-title>
       <b-icon class="mr-3" icon="trash-fill"/>{{ $tc('message.header.removeModal.title', selectedTorrent.length, [selectedTorrent[0].name, selectedTorrent.length]) }}
     </template>
@@ -12,7 +12,7 @@
 
     <template v-slot:modal-footer="{ submit, cancel }">
       <b-button size="sm" variant="success" v-on:click="cancel()" v-text="$t('message.header.removeModal.cancel')"/>
-      <b-button size="sm" variant="danger" v-on:click="removeSelected" v-text="$t('message.header.removeModal.remove')" autofocus/>
+      <b-button ref="remove-submit" size="sm" variant="danger" v-on:click="removeSelected" v-text="$t('message.header.removeModal.remove')"/>
     </template>
   </b-modal>
 </template>
@@ -48,9 +48,14 @@ export default {
     bus.$on(events.REMOVE_MODAL_ADD_TORRENT, this.showModal);
   },
   methods: {
+    autofocus() {
+      this.$refs['remove-submit'].focus();
+    },
     showModal(trash) {
-      this.trash = trash;
-      this.$bvModal.show(REMOVE_TORRENT_MODAL);
+      if (this.selectedTorrent && this.selectedTorrent.length > 0) {
+        this.trash = trash;
+        this.$bvModal.show(REMOVE_TORRENT_MODAL);
+      }
     },
     removeSelected() {
       this.api_torrent.removeTorrent(this.selectedTorrent, this.trash)
