@@ -25,11 +25,9 @@ jobs:
 
       - name: Cache dist
         uses: actions/cache@v2
-        env:
-          cache-name: cache-dist
         with:
           path: ./dist
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          key: ${{ runner.os }}-build-${{ hashFiles('./package.json') }}
 
       - name: npm install
         run: npm install --progress=false
@@ -51,11 +49,9 @@ jobs:
 
       - name: Cache dist
         uses: actions/cache@v2
-        env:
-          cache-name: cache-dist
         with:
           path: ./dist
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          key: ${{ runner.os }}-build-${{ hashFiles('./package.json') }}
 
       - name: Get image name
         id: name
