@@ -32,6 +32,15 @@ const result = {
 
         fail(error) {
             bus.$emit(events.NOTIFICATION_FAIL, error);
+        },
+
+        successMessage(message, params) {
+            bus.$emit(events.NOTIFICATION_SUCCESS, this.$t(message, params));
+            bus.$emit(events.REFRESH_LIST_TORRENT);
+        },
+
+        failMessage(message, params) {
+            bus.$emit(events.NOTIFICATION_FAIL, this.$t(message, params));
         }
     }
 }

@@ -164,7 +164,15 @@
           "high": "High",
           "norm": "Normal",
           "low": "Low"
-        }
+        },
+        "status": {
+          "wanted": "Wanted",
+          "unwanted": "UnWanted"
+        },
+        "prioritySuccess": "Set priority of '{0}' to {1}",
+        "priorityFail": "Failed to set priority of '{0}' to {1}",
+        "wantedSuccess": "Set '{0}' to {1}",
+        "wantedFail": "Failed to set '{0}' to {1}"
       }
     },
 

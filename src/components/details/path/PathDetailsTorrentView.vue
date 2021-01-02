@@ -99,7 +99,7 @@ export default {
     },
 
     getIdCheckedByFolder(path) {
-      let listId  = [];
+      let listId = [];
 
       if (path.folder) {
         for (const child of path.children) {
@@ -132,27 +132,39 @@ export default {
       }
 
       this.api_torrent.setPriorityTorrent(this.torrent_id, this.getIdCheckedByFolder(path), value)
-          .then(response => {
-            this.success(response);
+          .then(() => {
+            this.successMessage('message.details.files.prioritySuccess', [path.name, this.transcodePriority(value)]);
             this.$root.$emit(events.REFRESH_FILES);
-          }).catch(this.error);
+          }).catch(() => this.failMessage('message.details.files.priorityFail', [path.name, this.transcodePriority(value)]));
+    },
+
+    transcodePriority(code) {
+      switch (code) {
+        case priority.LOW: return this.$t('message.details.files.priority.low')
+        case priority.HIGH: return this.$t('message.details.files.priority.high')
+        case priority.NORM: return this.$t('message.details.files.priority.norm')
+        default: return this.$t('message.details.files.priority.norm')
+      }
     },
 
     selectWanted(event, path) {
+      let status
       let checked = event.target.checked;
 
       if (checked) {
+        status = this.$t('message.details.files.status.wanted');
         this.api_torrent.setWantedTorrent(this.torrent_id, this.getIdCheckedByFolder(path))
-            .then(response => {
-              this.success(response);
+            .then(() => {
+              this.successMessage('message.details.files.wantedSuccess', [path.name, status]);
               this.$root.$emit(events.REFRESH_FILES);
-            }).catch(this.error);
+            }).catch(() => this.error('message.details.files.wantedFail', [path.name, status]));
       } else {
+        status = this.$t('message.details.files.status.unwanted');
         this.api_torrent.setUnwantedTorrent(this.torrent_id, this.getIdCheckedByFolder(path))
-            .then(response => {
-              this.success(response);
+            .then(() => {
+              this.successMessage('message.details.files.wantedSuccess', [path.name, status]);
               this.$root.$emit(events.REFRESH_FILES);
-            }).catch(this.error);
+            }).catch(() => this.error('message.details.files.wantedFail', [path.name, status]));
       }
     },
 
