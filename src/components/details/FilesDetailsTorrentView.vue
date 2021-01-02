@@ -86,7 +86,7 @@ export default {
         });
 
         pathPromise
-            .then(response => this.paths = response);
+            .then(path => this.paths = path);
       }
     },
 

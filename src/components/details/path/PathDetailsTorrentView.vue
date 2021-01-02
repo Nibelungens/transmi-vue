@@ -63,7 +63,7 @@
 <script>
 import priority from "@/constantes/priority.const";
 import api from "@/services/api.transmission.mixin";
-import event from "@/constantes/event.const";
+import events from "@/constantes/event.const";
 import result from "@/mixins/result.mixin";
 
 export default {
@@ -134,7 +134,7 @@ export default {
       this.api_torrent.setPriorityTorrent(this.torrent_id, this.getIdCheckedByFolder(path), value)
           .then(response => {
             this.success(response);
-            this.$root.$emit(event.REFRESH_FILES);
+            this.$root.$emit(events.REFRESH_FILES);
           }).catch(this.error);
     },
 
@@ -145,13 +145,13 @@ export default {
         this.api_torrent.setWantedTorrent(this.torrent_id, this.getIdCheckedByFolder(path))
             .then(response => {
               this.success(response);
-              this.$root.$emit(event.REFRESH_FILES);
+              this.$root.$emit(events.REFRESH_FILES);
             }).catch(this.error);
       } else {
         this.api_torrent.setUnwantedTorrent(this.torrent_id, this.getIdCheckedByFolder(path))
             .then(response => {
               this.success(response);
-              this.$root.$emit(event.REFRESH_FILES);
+              this.$root.$emit(events.REFRESH_FILES);
             }).catch(this.error);
       }
     },
