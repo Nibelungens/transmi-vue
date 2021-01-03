@@ -123,6 +123,7 @@ export default {
       this.inputDownloadDir = '';
     },
     submitRename() {
+      //TODO details messages
       this.api_torrent.setRename(this.selectedTorrents[0], this.newName)
           .then((response) => {
             this.success(response);

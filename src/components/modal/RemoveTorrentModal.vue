@@ -58,6 +58,7 @@ export default {
       }
     },
     removeSelected() {
+      //TODO details messages
       this.api_torrent.removeTorrent(this.selectedTorrent, this.trash)
           .then(response => {
             this.success(response)

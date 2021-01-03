@@ -102,6 +102,7 @@ export default {
         } else {
           this.$bvModal.hide(ADD_TORRENT_MODAL);
           bus.$emit(events.REFRESH_LIST_TORRENT);
+          //TODO details messages
           if (name !== null) {
             bus.$emit(events.NOTIFICATION_SUCCESS, this.$t('message.addModal.addOne', [name]));
           } else {
