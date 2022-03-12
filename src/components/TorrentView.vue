@@ -7,6 +7,8 @@
          v-on:click.exact="selectTorrentRow"
          v-on:dblclick="openDetails">
       <div class="d-flex">
+        <div v-if="getAvaibility()" class="mx-1"><b-icon icon="circle-fill" font-scale="0.75" variant="success" shift-v="5"></b-icon></div>
+        <div v-else class="mx-1"><b-icon icon="circle-fill" animation="throb" font-scale="0.75" variant="danger" shift-v="5"></b-icon></div>
         <div class="title-row font-weight-bold mr-auto">{{ (torrent != null)? torrent.name: '' }}</div>
         <span class="badge badge-primary queue"><span v-b-tooltip.hover :title="$t('message.torrent.queued')"><b-icon-layers-half/> {{ torrent.queuePosition+1 }}</span></span>
       </div>
@@ -228,6 +230,14 @@ export default {
       this.api_torrent.stopTorrents(this.torrent)
           .then(this.success)
           .catch(this.error);
+    },
+    getAvaibility() {
+      let size = 0;
+
+      size += this.torrent.sizeWhenDone;
+      size -= this.torrent.haveValid + this.torrent.haveUnchecked + this.torrent.desiredAvailable;
+
+      return size === 0
     }
   }
 }
