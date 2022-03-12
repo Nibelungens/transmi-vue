@@ -24,6 +24,9 @@ const ALL = [
         "name",
         "eta" ,
         "error",
+        "haveValid",
+        "haveUnchecked",
+        "desiredAvailable",
         "id"];
 
 const INFO = [
