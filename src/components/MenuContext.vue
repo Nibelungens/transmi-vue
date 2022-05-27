@@ -13,9 +13,9 @@
         </b-form>
       </div>
 
-      <template v-slot:modal-footer="{ submit, cancel }">
-        <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.contextMenu.locationModal.cancel')"/>
-        <b-button size="sm" variant="success" v-on:click="submitLocation" v-text="$t('message.contextMenu.locationModal.submit')"/>
+      <template v-slot:modal-footer="{ cancel }">
+        <b-button size="sm" variant="danger" v-on:click="cancel()">{{ $t('message.contextMenu.locationModal.cancel') }}</b-button>
+        <b-button size="sm" variant="success" v-on:click="submitLocation">{{ $t('message.contextMenu.locationModal.submit') }}</b-button>
       </template>
     </b-modal>
 
@@ -32,9 +32,9 @@
         </b-form>
       </div>
 
-      <template v-slot:modal-footer="{ submit, cancel }">
-        <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.contextMenu.renameModal.cancel')"/>
-        <b-button size="sm" variant="success" v-on:click="submitRename" v-text="$t('message.contextMenu.renameModal.submit')"/>
+      <template v-slot:modal-footer="{ cancel }">
+        <b-button size="sm" variant="danger" v-on:click="cancel()">{{ $t('message.contextMenu.renameModal.cancel') }}</b-button>
+        <b-button size="sm" variant="success" v-on:click="submitRename">{{ $t('message.contextMenu.renameModal.submit') }}</b-button>
       </template>
     </b-modal>
 

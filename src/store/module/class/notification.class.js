@@ -3,10 +3,10 @@ export default
  * Notification Class
  */
 class Notification {
-    static LVL_ERROR = "error";
-    static LVL_WARNING = "warning";
-    static LVL_SUCCESS = "success";
-    static LVL_INFO = "info";
+    static get LVL_ERROR() { return "error" }
+    static get LVL_WARNING() { return "warning" }
+    static get LVL_SUCCESS() { return "success" }
+    static get LVL_INFO() { return "info" }
 
     /**
      * Create Notification

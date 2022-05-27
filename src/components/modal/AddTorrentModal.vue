@@ -15,9 +15,9 @@
       </b-form-group>
       <b-form-checkbox id="checkbox-start" v-model="start" name="checkbox-start">{{$t('message.addModal.start')}}</b-form-checkbox>
     </b-form>
-    <template v-slot:modal-footer="{ submit, cancel }">
-      <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.addModal.cancel')"/>
-      <b-button size="sm" variant="success" v-on:click="onSubmit" v-text="$t('message.addModal.submit')"/>
+    <template v-slot:modal-footer="{ cancel }">
+      <b-button size="sm" variant="danger" v-on:click="cancel()">{{ $t('message.addModal.cancel') }}</b-button>
+      <b-button size="sm" variant="success" v-on:click="onSubmit">{{ $t('message.addModal.submit') }}</b-button>
     </template>
   </b-modal>
 </template>

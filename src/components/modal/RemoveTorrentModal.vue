@@ -10,9 +10,9 @@
       <div class="text-center align-middle">{{ $t('message.header.removeModal.description.sure') }}</div>
     </div>
 
-    <template v-slot:modal-footer="{ submit, cancel }">
-      <b-button size="sm" variant="success" v-on:click="cancel()" v-text="$t('message.header.removeModal.cancel')"/>
-      <b-button ref="remove-submit" size="sm" variant="danger" v-on:click="removeSelected" v-text="$t('message.header.removeModal.remove')"/>
+    <template v-slot:modal-footer="{ cancel }">
+      <b-button size="sm" variant="success" v-on:click="cancel()">{{ $t('message.header.removeModal.cancel') }}</b-button>
+      <b-button ref="remove-submit" size="sm" variant="danger" v-on:click="removeSelected">{{ $t('message.header.removeModal.remove') }}</b-button>
     </template>
   </b-modal>
 </template>
