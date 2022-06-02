@@ -1,0 +1,29 @@
+export default interface TorrentInt {
+    id: number
+    metadataPercentComplete: number
+    peersSendingToUs: number
+    recheckProgress: number
+    peersConnected: number
+    seedRatioLimit: number
+    leftUntilDone: number
+    queuePosition: number
+    sizeWhenDone: number
+    rateDownload: number
+    uploadedEver: number
+    activityDate: number
+    dateCreated: number
+    percentDone: number
+    downloadDir: string
+    errorString: string
+    uploadRatio: number
+    rateUpload: number
+    isFinished: boolean
+    totalSize: number
+    status: number
+    name: string
+    eta: number
+    error: number
+    haveValid: number
+    haveUnchecked: number
+    desiredAvailable: number
+}
