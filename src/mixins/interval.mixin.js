@@ -11,7 +11,15 @@ const Interval = {
         this.setInterval()
     },
     created() {
-        this.$store.watch(() => this.$store.getters[keyStore.GET_TIME_REFRESH], this.setInterval)
+        this.unwatchRefreshInterval = this.$store.watch(() => this.$store.getters[keyStore.GET_TIME_REFRESH], this.setInterval)
+    },
+    beforeUnmount() {
+        if (this.interval != null) {
+            clearInterval(this.interval)
+        }
+        if (this.unwatchRefreshInterval) {
+            this.unwatchRefreshInterval()
+        }
     },
     computed: {
         ...mapGetters({timeRefresh: keyStore.GET_TIME_REFRESH})

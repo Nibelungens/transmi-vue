@@ -25,7 +25,7 @@
           </div>
         </div>
       </div>
-        <b-collapse :id="getId(torrent)" :visible="!collapse_all" v-on:hide="setVisible(torrent)" v-on:show="setVisible(torrent)">
+        <b-collapse :id="getId(torrent)" :visible="isVisible(torrent)" v-on:hide="setVisible(torrent, false)" v-on:show="setVisible(torrent, true)">
         <table class="table table-striped table-sm border" v-if="peersEmpty(torrent)" :aria-describedby="$t('message.details.peers.tableDescriptor')">
           <thead>
           <tr>
@@ -43,7 +43,7 @@
             <td><b-icon v-if="peer.isEncrypted" icon="lock-fill"></b-icon></td>
             <td>{{ returnSize(peer.rateToPeer) }}</td>
             <td>{{ returnSize(peer.rateToClient) }}</td>
-            <td>{{ peer.progress * 100 | formatPercent }}%</td>
+            <td>{{ $filters.formatPercent(peer.progress * 100) }}%</td>
             <td>{{ peer.flagStr }}</td>
             <td>{{ peer.address }}</td>
             <td>{{ peer.clientName }}</td>
@@ -98,16 +98,17 @@ export default {
     showPanel: Boolean
   },
   created() {
-    this.$store.watch(() => this.$store.getters[key.GET_SELECTED_TORRENTS], this.refreshPeers);
+    this.unwatchSelectedTorrents = this.$store.watch(() => this.$store.getters[key.GET_SELECTED_TORRENTS], this.refreshPeers);
+  },
+  beforeUnmount() {
+    if (this.unwatchSelectedTorrents) this.unwatchSelectedTorrents();
   },
   methods: {
     collapseAll() {
       this.collapse_all = !this.collapse_all;
-      if (this.torrents != null ) {
-        for (const torrent of this.torrents) {
-          this.$root.$emit('bv::toggle::collapse', this.getId(torrent));
-        }
-      }
+      this.id_close = this.collapse_all && this.torrents
+        ? this.torrents.map(torrent => torrent.id)
+        : [];
     },
     peersEmpty(torrent) {
       return torrent.peers != null && torrent.peers.length > 0;
@@ -118,17 +119,17 @@ export default {
     isVisible(torrent) {
       return !this.id_close.includes(torrent.id);
     },
-    setVisible(torrent) {
+    setVisible(torrent, visible) {
       const index = this.id_close.findIndex((id) => id === torrent.id);
 
-      if(index === -1) {
+      if (!visible && index === -1) {
         this.id_close.push(torrent.id);
-      } else {
+      } else if (visible && index !== -1) {
         this.id_close.splice(index, 1);
       }
     },
     collapse(torrent) {
-      this.$root.$emit('bv::toggle::collapse', this.getId(torrent));
+      this.setVisible(torrent, !this.isVisible(torrent));
     },
     getId(torrent) {
       return 'collapse-peers-' + torrent.id;

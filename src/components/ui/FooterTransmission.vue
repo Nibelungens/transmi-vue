@@ -1,22 +1,22 @@
 <template>
   <div>
     <footer>
-      <b-navbar type="dark" variant="dark">
+      <b-navbar v-b-color-mode="'dark'" variant="dark">
         <div class="input-group input-group-sm mr-1 w-50" >
           <div class="input-group-prepend">
-            <button id="menuSettings" v-b-tooltip.hover :title="$t('message.footer.setting')" class="btn btn-outline-light" v-on:click="menuSettings">
+            <button id="menuSettings" v-b-tooltip.hover="$t('message.footer.setting')" class="btn btn-outline-light" v-on:click="menuSettings">
                 <b-icon icon="gear-fill"></b-icon>
             </button>
-            <button v-b-tooltip.hover :title="$t('message.footer.prefs')" class="btn btn-outline-light" disabled>
+            <button v-b-tooltip.hover="$t('message.footer.prefs')" class="btn btn-outline-light" disabled>
               <b-icon icon="tools"></b-icon>
             </button>
-            <button v-b-tooltip.hover :title="$t('message.footer.limits')" class="btn btn-outline-light" disabled>
+            <button v-b-tooltip.hover="$t('message.footer.limits')" class="btn btn-outline-light" disabled>
               <b-icon icon="graph-down" ></b-icon>
             </button>
-            <button v-b-tooltip.hover :title="$t('message.footer.compact')" class="btn btn-outline-light" disabled>
+            <button v-b-tooltip.hover="$t('message.footer.compact')" class="btn btn-outline-light" disabled>
               <b-icon icon="arrows-collapse"></b-icon>
             </button>
-            <span class="input-group-text">{{ lastNotification.timestamp | dateFormat('HH:mm:ss') }}</span>
+            <span class="input-group-text">{{ $filters.dateFormat(lastNotification.timestamp, 'HH:mm:ss') }}</span>
           </div>
           <input type="text"
                  readonly
@@ -28,7 +28,7 @@
                   'error-notification': this.lastNotification.level === 'error',
                   'success-notification': this.lastNotification.level === 'success' }"/>
           <div class="input-group-append">
-            <button v-b-tooltip.hover :title="$t('message.footer.compact')" class="btn btn-light" disabled>
+            <button v-b-tooltip.hover="$t('message.footer.compact')" class="btn btn-light" disabled>
               <b-icon icon="chat-left-text"></b-icon>
             </button>
           </div>

@@ -4,7 +4,7 @@
       <div class="input-group-prepend" v-on:click="refresh">
         <button class="btn btn-secondary"><b-icon-arrow-repeat/></button >
       </div>
-      <b-form-select id="refresh-select" v-model="selectedTimeRefresh" v-on:change="changeRefresh" :options="timeRefreshOptions" size="sm"></b-form-select>
+      <b-form-select id="refresh-select" v-model="selectedTimeRefresh" v-on:change="changeRefresh(selectedTimeRefresh)" :options="timeRefreshOptions" size="sm"></b-form-select>
     </div>
   </div>
 </template>

@@ -39,6 +39,12 @@ export default {
     ListTorrentsView,
     AddTorrentModal
   },
+  data() {
+    return {
+      unwatchSortColumn: null,
+      unwatchSortReverse: null
+    }
+  },
   mounted () {
     document.title = this.$t('message.appName').toString();
 
@@ -47,8 +53,8 @@ export default {
     bus.$on(events.NOTIFICATION_FAIL, this.notificationFail);
     bus.$on(events.REFRESH_LIST_TORRENT, this.refresh);
 
-    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECT_SORT_COL], this.refresh)
-    this.$store.watch(() => this.$store.getters[keyStore.GET_SELECT_SORT_REVERSE], this.refresh)
+    this.unwatchSortColumn = this.$store.watch(() => this.$store.getters[keyStore.GET_SELECT_SORT_COL], this.refresh)
+    this.unwatchSortReverse = this.$store.watch(() => this.$store.getters[keyStore.GET_SELECT_SORT_REVERSE], this.refresh)
 
     this.refresh();
     this.api_config.getSession()
@@ -58,10 +64,15 @@ export default {
     window.addEventListener('keydown', this.selectAll);
     window.addEventListener('keydown', this.deleteSelected);
   },
-  beforeDestroy() {
-    bus.$off(events.NOTIFICATION_SUCCESS);
-    bus.$off(events.NOTIFICATION_FAIL);
-    bus.$off(events.REFRESH_LIST_TORRENT);
+  beforeUnmount() {
+    bus.$off(events.NOTIFICATION_SUCCESS, this.notificationSuccess);
+    bus.$off(events.NOTIFICATION_WARN, this.notificationWarn);
+    bus.$off(events.NOTIFICATION_FAIL, this.notificationFail);
+    bus.$off(events.REFRESH_LIST_TORRENT, this.refresh);
+    if (this.unwatchSortColumn) this.unwatchSortColumn();
+    if (this.unwatchSortReverse) this.unwatchSortReverse();
+    window.removeEventListener('keydown', this.selectAll);
+    window.removeEventListener('keydown', this.deleteSelected);
   },
   methods: {
     deleteSelected(event) {

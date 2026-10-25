@@ -1,15 +1,14 @@
-import {localVue, store, mocks} from '@/../tests/tools/conponent.config'
-import { shallowMount } from '@vue/test-utils'
+import {store, mocks, shallowMount} from '@/../tests/tools/conponent.config'
 import FilesDetailsTorrentView from "@/components/details/FilesDetailsTorrentView";
 
 describe("TrackersDetailsTorrentView", () => {
     it("init", () => {
-        const wrapper = shallowMount(FilesDetailsTorrentView, {store, localVue, mocks})
+        const wrapper = shallowMount(FilesDetailsTorrentView, {store, mocks})
         expect(wrapper).not.toBeNull();
     });
 
     it("getPath_basic", () => {
-        const wrapper = shallowMount(FilesDetailsTorrentView, {store, localVue, mocks})
+        const wrapper = shallowMount(FilesDetailsTorrentView, {store, mocks})
 
         const jT = {
             name: "test",
@@ -26,7 +25,6 @@ describe("TrackersDetailsTorrentView", () => {
 
         const result = wrapper.vm.getPath(jT);
 
-        console.log(result);
         expect(result).toStrictEqual({
             bytesCompleted: NaN,
             length: NaN,
@@ -42,7 +40,7 @@ describe("TrackersDetailsTorrentView", () => {
     });
 
     it("getPath_folder", () => {
-        const wrapper = shallowMount(FilesDetailsTorrentView, {store, localVue, mocks})
+        const wrapper = shallowMount(FilesDetailsTorrentView, {store, mocks})
 
         const jT = {
             name: "test",
@@ -98,7 +96,7 @@ describe("TrackersDetailsTorrentView", () => {
         });
     });
     it("getPath_many_folder", () => {
-        const wrapper = shallowMount(FilesDetailsTorrentView, {store, localVue, mocks})
+        const wrapper = shallowMount(FilesDetailsTorrentView, {store, mocks})
 
         const jT = {
             name: "test",
@@ -114,7 +112,6 @@ describe("TrackersDetailsTorrentView", () => {
 
         const result = wrapper.vm.getPath(jT);
 
-        console.log(result);
         expect(result).toStrictEqual({
             name: "test",
             id: 666,
@@ -148,7 +145,7 @@ describe("TrackersDetailsTorrentView", () => {
                 name: "folder01"}]});
     });
     it("getPath_wanted", () => {
-        const wrapper = shallowMount(FilesDetailsTorrentView, {store, localVue, mocks})
+        const wrapper = shallowMount(FilesDetailsTorrentView, {store, mocks})
 
         const jT = {
             name: "test",
@@ -169,7 +166,6 @@ describe("TrackersDetailsTorrentView", () => {
 
         const result = wrapper.vm.getPath(jT);
 
-        console.log(result);
         expect(result).toStrictEqual({
             name: "test",
             id: 666,
@@ -198,7 +194,7 @@ describe("TrackersDetailsTorrentView", () => {
     });
 
     it("getPath_priority", () => {
-        const wrapper = shallowMount(FilesDetailsTorrentView, {store, localVue, mocks})
+        const wrapper = shallowMount(FilesDetailsTorrentView, {store, mocks})
 
         const jT = {
             name: "test",
@@ -221,7 +217,6 @@ describe("TrackersDetailsTorrentView", () => {
 
         const result = wrapper.vm.getPath(jT);
 
-        console.log(result);
         expect(result).toStrictEqual({
             name: "test",
             id: 666,

@@ -10,13 +10,13 @@
         <div v-if="getAvaibility()" class="mx-1"><b-icon icon="circle-fill" font-scale="0.75" variant="success" shift-v="5"></b-icon></div>
         <div v-else class="mx-1"><b-icon icon="circle-fill" animation="throb" font-scale="0.75" variant="danger" shift-v="5"></b-icon></div>
         <div class="title-row font-weight-bold mr-auto">{{ (torrent != null)? torrent.name: '' }}</div>
-        <span class="badge badge-primary queue"><span v-b-tooltip.hover :title="$t('message.torrent.queued')"><b-icon-layers-half/> {{ torrent.queuePosition+1 }}</span></span>
+        <span class="badge badge-primary queue"><span v-b-tooltip.hover="$t('message.torrent.queued')"><b-icon-layers-half/> {{ torrent.queuePosition+1 }}</span></span>
       </div>
       <div class="peers-row">
         <div class="d-inline-flex text-danger" v-if="asError">{{ $t('message.torrent.error', [torrent.errorString]) }}</div>
-        <div class="d-inline-flex" v-else>{{ torrent | formatStatus($i18n) }}{{ postStatus() }}</div>
-        <div class="d-inline-flex" v-if="showDownloadRate()"><b-icon-arrow-down/>{{ torrent.rateDownload | formatSize }}/s</div>
-        <div class="d-inline-flex" v-if="showUploadRate()"><b-icon-arrow-up/>{{ torrent.rateUpload | formatSize }}/s</div>
+        <div class="d-inline-flex" v-else>{{ $filters.formatStatus(torrent, $i18n) }}{{ postStatus() }}</div>
+        <div class="d-inline-flex" v-if="showDownloadRate()"><b-icon-arrow-down/>{{ $filters.formatSize(torrent.rateDownload) }}/s</div>
+        <div class="d-inline-flex" v-if="showUploadRate()"><b-icon-arrow-up/>{{ $filters.formatSize(torrent.rateUpload) }}/s</div>
       </div>
       <div class="bar-row-second">
         <b-progress v-if="showSecondBar()" :max="1" :value="getSecondBarValue()" :variant="getSecondBarStyle()" class="w-100"/>
@@ -26,7 +26,7 @@
         <b-icon-play-fill v-on:click="stop()" v-bind:hidden="!isPlay" class="ml-2 mr-1"></b-icon-play-fill>
         <b-icon-pause-fill v-on:click="start()" v-bind:hidden="!isPause" class="ml-2 mr-1"></b-icon-pause-fill>
       </div >
-      <div class="dl-row">{{ torrent | formatRemaining($i18n) }}</div>
+      <div class="dl-row">{{ $filters.formatRemaining(torrent, $i18n) }}</div>
     </div>
   </div>
 </template>
@@ -39,6 +39,7 @@ import status from '@/constantes/status.const';
 import result from '@/mixins/result.mixin';
 import bus from '@/config/bus.event';
 import { mapGetters } from "vuex";
+import { eventPathContainsId } from "@/utils/event.utils";
 
 const STYLE_SECONDARY = 'secondary';
 const STYLE_SUCCESS = 'success';
@@ -103,6 +104,11 @@ export default {
     bus.$on(events.SELECT_ALL_TORRENT, this.selectThis);
     bus.$on(events.SELECTED, this.onSelectMany);
   },
+  beforeUnmount() {
+    bus.$off(events.UNSELECTED_ALL_TORRENT, this.unselectThis);
+    bus.$off(events.SELECT_ALL_TORRENT, this.selectThis);
+    bus.$off(events.SELECTED, this.onSelectMany);
+  },
   methods: {
     getSecondBarValue() {
       return (this.torrent.status === status.STATUS_CHECK_WAIT || this.torrent.status === status.STATUS_CHECK)
@@ -110,7 +116,7 @@ export default {
           : this.torrent.uploadRatio;
     },
     unselectThis(event) {
-      if(event === undefined || !event.path.map(element => element.id).includes('context-menu')) {
+      if (event === undefined || !eventPathContainsId(event, 'context-menu')) {
         this.selected = false;
         this.$store.commit(key.REMOVE_SELECTED, this.torrent);
       }

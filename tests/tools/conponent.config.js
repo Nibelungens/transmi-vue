@@ -1,50 +1,70 @@
-import Notification from "@/store/module/class/notification.class"
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import {createLocalVue} from "@vue/test-utils";
-import Vuex from "vuex";
+import { afterEach } from 'vitest'
+import { shallowMount as mountComponent } from '@vue/test-utils'
+import { createStore } from 'vuex'
+import bootstrapPlugin from '@/components/ui/bootstrap'
+import registerIcons from '@/components/ui/icons'
 
-const localVue = createLocalVue();
-localVue.use(BootstrapVue);
-localVue.use(IconsPlugin);
-localVue.use(Vuex);
+const wrappers = new Set()
+const passthroughFilters = new Proxy({}, {
+  get: () => value => value
+})
 
-localVue.filter('formatTimeInterval', () => 'formatTimeInterval' );
-localVue.filter('formatRemaining', () => 'formatRemaining' );
-localVue.filter('formatPercent', () => 'formatPercent' );
-localVue.filter('formatCreator', () => 'formatCreator' );
-localVue.filter('formatStatus', () => 'formatStatus' );
-localVue.filter('formatSize', () => 'formatSize' );
+const localVue = {}
+const store = createStore({
+  getters: {
+    'Torrents/getSelectedTorrents': () => [],
+    'Torrents/getTorrents': () => [],
+    'Config/getTimeRefresh': () => 1000,
+    'Config/getSelectSortCol': () => 'name',
+    'Config/getSelectSortReverse': () => false,
+    'Config/getDownloadDir': () => '',
+    'Config/getDownloadDirFreeSpace': () => 0,
+    'Config/getDetailsPanel': () => false,
+    'Config/getVersion': () => '',
+    'Notification/getLast': () => ({ timestamp: new Date(), message: '', level: 'info' })
+  },
+  mutations: {
+    'Torrents/ADD_SELECTED': () => null,
+    'Torrents/SELECTED': () => null,
+    'Torrents/REMOVE_SELECTED': () => null,
+    'Torrents/SET_LIST_TORRENT': () => null,
+    'Config/SET_TIME_REFRESH': () => null
+  }
+})
 
-localVue.filter('infosRemainingTime', () => 'infosRemainingTime');
-localVue.filter('infosLastActivity', () => 'infosLastActivity');
-localVue.filter('infosAvailability', () => 'infosAvailability');
-localVue.filter('infosRunningTime', () => 'infosRunningTime');
-localVue.filter('infosSizeDetails', () => 'infosSizeDetails');
-localVue.filter('infosDownload', () => 'infosDownload');
-localVue.filter('infosPrivacy', () => 'infosPrivacy');
-localVue.filter('infosUpload', () => 'infosUpload');
-localVue.filter('infosState', () => 'infosState');
-localVue.filter('infosError', () => 'infosError');
-localVue.filter('infosBasic', () => 'infosBasic');
-localVue.filter('infosHave', () => 'infosHave');
-
-const store = new Vuex.Store({
-    getters: {
-        'Torrents/getSelectedTorrents': () => [],
-        'Torrents/getTorrents': () => [],
-        'Config/getTimeRefresh': () => 1000,
-        'Notification/getLast': () => Notification.start()
-    },
-    mutations: {
-        'Torrents/ADD_SELECTED': () => null,
-        'Torrents/SELECTED': () => null,
-        'Torrents/REMOVE_SELECTED': () => null,
-        'Torrents/SET_LIST_TORRENT': () => null,
-        'Config/SET_TIME_REFRESH': () => null
-    }
-});
 const mocks = {
-    $t: (msg) => msg
+  $t: message => message,
+  $tc: message => message,
+  $i18n: { t: message => message },
+  $filters: passthroughFilters
 }
 
-export { localVue, store, mocks };
+function shallowMount(component, options = {}) {
+  const {
+    store: providedStore = store,
+    mocks: providedMocks = mocks,
+    propsData,
+    global = {},
+    ...mountOptions
+  } = options
+
+  const wrapper = mountComponent(component, {
+    ...mountOptions,
+    props: mountOptions.props || propsData,
+    global: {
+      ...global,
+      plugins: [bootstrapPlugin, registerIcons, providedStore, ...(global.plugins || [])],
+      mocks: { ...mocks, ...providedMocks, ...(global.mocks || {}) }
+    }
+  })
+
+  wrappers.add(wrapper)
+  return wrapper
+}
+
+afterEach(() => {
+  wrappers.forEach(wrapper => wrapper.unmount())
+  wrappers.clear()
+})
+
+export { localVue, store, mocks, shallowMount }

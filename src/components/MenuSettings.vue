@@ -1,18 +1,18 @@
 <template>
   <div>
-    <b-modal id="modal-about" dialog-class="user-select-none" centered hide-footer>
-      <template v-slot:modal-title>
+    <b-modal id="modal-about" v-model="aboutModalVisible" dialog-class="user-select-none" centered hide-footer>
+      <template v-slot:title>
         <b-icon icon="question-circle-fill"></b-icon><span class="ml-3">{{ $t('message.menuSettings.aboutModal.title') }}</span>
       </template>
       <img src="@/assets/logo-128.png" alt="logo" class="mx-auto d-block"/>
-      <div class="font-weight-bold text-center mt-1">{{$t('message.menuSettings.aboutModal.transmission', [this.version])}}</div>
-      <div class="font-weight-bold text-center">{{$t('message.menuSettings.aboutModal.transmissionVue', [this.getClientVersion()])}}</div>
+      <div class="font-weight-bold text-center mt-1">{{$t('message.menuSettings.aboutModal.transmission', [version])}}</div>
+      <div class="font-weight-bold text-center">{{$t('message.menuSettings.aboutModal.transmissionVue', [getClientVersion()])}}</div>
       <div class="font-weight-lighter text-center mt-2">{{$t('message.menuSettings.aboutModal.description')}}</div>
       <div class="font-weight-lighter text-center mb-4">{{$t('message.menuSettings.aboutModal.copyright')}}</div>
     </b-modal>
 
-    <b-modal id="modal-stat" size="sm" dialog-class="user-select-none" centered hide-footer>
-      <template v-slot:modal-title>
+    <b-modal id="modal-stat" v-model="statsModalVisible" size="sm" dialog-class="user-select-none" centered hide-footer>
+      <template v-slot:title>
         <b-icon icon="info-circle-fill"></b-icon><span class="ml-3">{{ $t('message.menuSettings.statsModal.title') }}</span>
       </template>
       <div class="d-flex justify-content-center">
@@ -24,19 +24,19 @@
         <div class="font-weight-bold mb-2 ml-2">{{$t('message.menuSettings.statsModal.current')}}</div>
         <div class="ml-4 stat-row">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.uploaded')}}: </div>
-          <div class="d-inline-flex">{{ this.stats['current-stats'].uploadedBytes | formatSize }}</div>
+          <div class="d-inline-flex">{{ $filters.formatSize(this.stats['current-stats'].uploadedBytes) }}</div>
         </div>
         <div class="ml-4 stat-row">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.downloaded')}}: </div>
-          <div class="d-inline-flex">{{ this.stats['current-stats'].downloadedBytes | formatSize }}</div>
+          <div class="d-inline-flex">{{ $filters.formatSize(this.stats['current-stats'].downloadedBytes) }}</div>
         </div>
         <div class="ml-4 stat-row">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.ratio')}}: </div>
-          <div class="d-inline-flex">{{ this.getRatio(this.stats['current-stats'].downloadedBytes, this.stats['current-stats'].uploadedBytes) }}</div>
+          <div class="d-inline-flex">{{ getRatio(stats['current-stats'].downloadedBytes, stats['current-stats'].uploadedBytes) }}</div>
         </div>
         <div class="ml-4 stat-row">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.runningTime')}}: </div>
-          <div class="d-inline-flex">{{ this.stats['current-stats'].secondsActive | formatTimeInterval }}</div>
+          <div class="d-inline-flex">{{ $filters.formatTimeInterval(this.stats['current-stats'].secondsActive) }}</div>
         </div>
         <div class="font-weight-bold mb-2 ml-2 mt-2">{{$t('message.menuSettings.statsModal.total')}}</div>
         <div class="ml-4 stat-row">
@@ -45,19 +45,19 @@
         </div>
         <div class="ml-4 stat-row">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.uploaded')}}: </div>
-          <div class="d-inline-flex">{{ this.stats['cumulative-stats'].uploadedBytes | formatSize }}</div>
+          <div class="d-inline-flex">{{ $filters.formatSize(this.stats['cumulative-stats'].uploadedBytes) }}</div>
         </div>
         <div class="ml-4 stat-row">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.downloaded')}}: </div>
-          <div class="d-inline-flex">{{ this.stats['cumulative-stats'].downloadedBytes | formatSize }}</div>
+          <div class="d-inline-flex">{{ $filters.formatSize(this.stats['cumulative-stats'].downloadedBytes) }}</div>
         </div>
         <div class="ml-4 stat-row">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.ratio')}}: </div>
-          <div class="d-inline-flex">{{ this.getRatio(this.stats['cumulative-stats'].downloadedBytes, this.stats['cumulative-stats'].uploadedBytes) }}</div>
+          <div class="d-inline-flex">{{ getRatio(stats['cumulative-stats'].downloadedBytes, stats['cumulative-stats'].uploadedBytes) }}</div>
         </div>
         <div class="ml-4 stat-row mb-2">
           <div class="d-inline-flex stat-row-label">{{$t('message.menuSettings.statsModal.runningTime')}}: </div>
-          <div class="d-inline-flex">{{ this.stats['cumulative-stats'].secondsActive | formatTimeInterval }}</div>
+          <div class="d-inline-flex">{{ $filters.formatTimeInterval(this.stats['cumulative-stats'].secondsActive) }}</div>
         </div>
       </div>
     </b-modal>
@@ -173,10 +173,9 @@ import { version } from '@/../package.json';
 import result from '@/mixins/result.mixin';
 import bus from '@/config/bus.event';
 import { mapGetters } from 'vuex';
+import { eventPathContainsId } from '@/utils/event.utils';
 
 const ID_ROOT = 'menuSettingRoot';
-const MODAL_ABOUT = 'modal-about';
-const MODAL_STAT = 'modal-stat';
 
 export default {
   name: "MenuSettings",
@@ -191,6 +190,8 @@ export default {
       extendsDownload: false,
       extendsUpload: false,
       extendsTools: false,
+      aboutModalVisible: false,
+      statsModalVisible: false,
       downloadLimit: null,
       uploadLimit: null,
       loadedStat: false,
@@ -231,7 +232,11 @@ export default {
   },
   mounted() {
     bus.$on(events.SWITCH_MENU_SETTINGS, this.switch);
-    this.$root.$el.addEventListener('mouseup', this.closeAll);
+    document.addEventListener('mouseup', this.closeAll);
+  },
+  beforeUnmount() {
+    bus.$off(events.SWITCH_MENU_SETTINGS, this.switch);
+    document.removeEventListener('mouseup', this.closeAll);
   },
   methods: {
     getRatio(downloaded, uploaded) {
@@ -239,11 +244,11 @@ export default {
     },
     openModalAbout() {
       this.extendsTransferts = this.extendsDownload = this.extendsUpload = this.extendsTools = false;
-      this.$bvModal.show(MODAL_ABOUT);
+      this.aboutModalVisible = true;
     },
     openModalStatistics() {
       this.extendsTransferts = this.extendsDownload = this.extendsUpload = this.extendsTools = false;
-      this.$bvModal.show(MODAL_STAT);
+      this.statsModalVisible = true;
       this.api_config.getSessionStat()
           .then((response => {
               this.stats = response.data.arguments;
@@ -258,7 +263,7 @@ export default {
       return version;
     },
     idNotInPath(event, id) {
-      return !event.path.map(element => element.id).includes(id)
+      return !eventPathContainsId(event, id)
     },
     closeAll(event) {
       if (this.extendsTools &&

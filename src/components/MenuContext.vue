@@ -1,40 +1,40 @@
 <template>
   <div>
-    <b-modal id="location-torrent-modal" dialog-class="model-location user-select-none">
-      <template v-slot:modal-title>
+    <b-modal id="location-torrent-modal" v-model="locationModalVisible" dialog-class="model-location user-select-none">
+      <template v-slot:title>
         <b-icon-box-arrow-in-down-right class="mr-3"/>{{ $t('message.contextMenu.locationModal.title') }}
       </template>
 
       <div class="d-flex flex-row">
         <img src="@/assets/logo-96.png" alt="logo" class="d-inline-flex"/>
-        <b-form class="flex-column w-75 text-left align-middle" v-on:submit="submitLocation">
+        <b-form class="flex-column w-75 text-left align-middle" v-on:submit.prevent="submitLocation">
           <label class="ml-2 pt-2">{{ $t('message.contextMenu.locationModal.label') }}:</label>
           <b-form-input id="location-input" size="sm" class="ml-2" type="text" :placeholder="placeHolderLocation" v-model="inputDownloadDir"/>
         </b-form>
       </div>
 
-      <template v-slot:modal-footer="{ submit, cancel }">
-        <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.contextMenu.locationModal.cancel')"/>
-        <b-button size="sm" variant="success" v-on:click="submitLocation" v-text="$t('message.contextMenu.locationModal.submit')"/>
+      <template v-slot:footer>
+        <b-button size="sm" variant="danger" v-on:click="locationModalVisible = false">{{ $t('message.contextMenu.locationModal.cancel') }}</b-button>
+        <b-button size="sm" variant="success" v-on:click="submitLocation">{{ $t('message.contextMenu.locationModal.submit') }}</b-button>
       </template>
     </b-modal>
 
-    <b-modal id="rename-torrent-modal" dialog-class="model-rename user-select-none">
-      <template v-slot:modal-title>
+    <b-modal id="rename-torrent-modal" v-model="renameModalVisible" dialog-class="model-rename user-select-none">
+      <template v-slot:title>
         <b-icon-fonts class="mr-3"/>{{ $t('message.contextMenu.renameModal.title') }}
       </template>
 
       <div class="d-flex flex-row">
         <img src="@/assets/logo-96.png" alt="logo" class="d-inline-flex"/>
-        <b-form class="flex-column w-75 text-left align-middle" v-on:submit="submitRename">
+        <b-form class="flex-column w-75 text-left align-middle" v-on:submit.prevent="submitRename">
           <label class="ml-2 pt-2">{{ $t('message.contextMenu.renameModal.label') }}:</label>
           <b-form-input id="location-input" size="sm" class="ml-2" type="text" v-model="newName"/>
         </b-form>
       </div>
 
-      <template v-slot:modal-footer="{ submit, cancel }">
-        <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.contextMenu.renameModal.cancel')"/>
-        <b-button size="sm" variant="success" v-on:click="submitRename" v-text="$t('message.contextMenu.renameModal.submit')"/>
+      <template v-slot:footer>
+        <b-button size="sm" variant="danger" v-on:click="renameModalVisible = false">{{ $t('message.contextMenu.renameModal.cancel') }}</b-button>
+        <b-button size="sm" variant="success" v-on:click="submitRename">{{ $t('message.contextMenu.renameModal.submit') }}</b-button>
       </template>
     </b-modal>
 
@@ -54,8 +54,8 @@
           <b-list-group-item href="#" class="m-row" v-on:click="remove(true)">{{ $t('message.contextMenu.trash') }}</b-list-group-item>
           <b-list-group-item class="m-divider"></b-list-group-item>
           <b-list-group-item v-on:click="verify" href="#" class="m-row">{{ $t('message.contextMenu.verify') }}</b-list-group-item>
-          <b-list-group-item v-b-modal.location-torrent-modal href="#" class="m-row">{{ $t('message.contextMenu.location') }}</b-list-group-item>
-          <b-list-group-item v-b-modal.rename-torrent-modal v-bind:disabled="!isRename" href="#" class="m-row">{{ $t('message.contextMenu.rename') }}</b-list-group-item>
+          <b-list-group-item v-on:click.prevent="openLocationModal" href="#" class="m-row">{{ $t('message.contextMenu.location') }}</b-list-group-item>
+          <b-list-group-item v-on:click.prevent="openRenameModal" v-bind:disabled="!isRename" href="#" class="m-row">{{ $t('message.contextMenu.rename') }}</b-list-group-item>
           <b-list-group-item class="m-divider"></b-list-group-item>
           <b-list-group-item v-on:click="selectAll" href="#" class="m-row">{{ $t('message.contextMenu.selectAll') }}</b-list-group-item>
           <b-list-group-item v-on:click="deselectAll"  href="#" class="last">{{ $t('message.contextMenu.deselectAll') }}</b-list-group-item>
@@ -74,8 +74,6 @@ import result from "@/mixins/result.mixin";
 import bus from "@/config/bus.event";
 import { mapGetters } from "vuex";
 
-const LOCATION_MODAL = 'location-torrent-modal';
-const RENAME_MODAL = 'rename-torrent-modal';
 const PX = 'px';
 
 export default {
@@ -89,7 +87,9 @@ export default {
       inputDownloadDir: '',
       newName: '',
       showContext: false,
-      torrent: null
+      torrent: null,
+      locationModalVisible: false,
+      renameModalVisible: false
     }
   },
   computed: {
@@ -115,7 +115,12 @@ export default {
   mounted() {
     bus.$on(events.OPEN_CONTEXT_MENU, this.openContextMenu);
     bus.$on(events.DELETE_SELECTED_TORRENT, this.remove);
-    this.$root.$el.addEventListener('mouseup', this.close);
+    document.addEventListener('mouseup', this.close);
+  },
+  beforeUnmount() {
+    bus.$off(events.OPEN_CONTEXT_MENU, this.openContextMenu);
+    bus.$off(events.DELETE_SELECTED_TORRENT, this.remove);
+    document.removeEventListener('mouseup', this.close);
   },
   methods: {
     close() {
@@ -126,7 +131,7 @@ export default {
       this.api_torrent.setRename(this.selectedTorrents[0], this.newName)
           .then((response) => {
             this.success(response);
-            this.$bvModal.hide(RENAME_MODAL);
+            this.renameModalVisible = false;
           })
           .catch(this.fail);
     },
@@ -138,7 +143,7 @@ export default {
      this.api_config.setLocation(this.selectedTorrents, down)
       .then((response) => {
         this.success(response);
-        this.$bvModal.hide(LOCATION_MODAL);
+        this.locationModalVisible = false;
       })
       .catch(this.fail);
     },
@@ -154,8 +159,9 @@ export default {
       this.showContext = true;
       let y = event.clientY;
       let x = event.clientX;
-      const maxY = (this.$root.$children[0].$refs.content.clientHeight - 370);
-      const maxX = (this.$root.$children[0].$refs.content.clientWidth - 240);
+      const content = document.getElementById('content');
+      const maxY = (content.clientHeight - 370);
+      const maxX = (content.clientWidth - 240);
       y = (y >= maxY) ? maxY: y;
       x = (x >= maxX) ? maxX: x;
 
@@ -212,17 +218,23 @@ export default {
     },
     deselectAll() {
       bus.$emit(events.UNSELECTED_ALL_TORRENT);
+    },
+    openLocationModal() {
+      this.locationModalVisible = true;
+    },
+    openRenameModal() {
+      this.renameModalVisible = true;
     }
   }
 }
 </script>
 
 <style scoped>
-div >>> .model-rename {
+:deep(.model-rename) {
   margin-top: 5%;
 }
 
-div >>> .model-location {
+:deep(.model-location) {
   margin-top: 5%;
 }
 

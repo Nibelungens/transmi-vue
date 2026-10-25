@@ -1,5 +1,4 @@
-import {localVue, store, mocks} from '@/../tests/tools/conponent.config'
-import { shallowMount } from '@vue/test-utils'
+import {store, mocks, shallowMount} from '@/../tests/tools/conponent.config'
 import MenuContext from "@/components/MenuContext";
 
 describe("MenuContext", () => {
@@ -10,7 +9,7 @@ describe("MenuContext", () => {
     };
 
     it("init", () => {
-        const wrapper = shallowMount(MenuContext, {propsData: {torrent: torrent_init}, store, localVue, mocks})
+        const wrapper = shallowMount(MenuContext, {props: {torrent: torrent_init}, store, mocks})
         expect(wrapper).not.toBeNull();
     });
 });

@@ -3,9 +3,9 @@
     <div id="list-torrent" v-for="torrent in torrents" v-bind:key="torrent.id">
       <torrent-view v-bind:torrent="torrent"></torrent-view>
     </div>
-    <b-sidebar id="details-torrent" right v-bind:visible="isPanelShow" sidebar-class="style-panel" class="force-index" v-on:hidden="closePanel">
+    <b-offcanvas id="details-torrent" v-model="isPanelShow" placement="end" no-header aria-label="Torrent details" class="style-panel force-index" v-on:hidden="closePanel">
       <details-torrent-view v-bind:showPanel="isPanelShow"></details-torrent-view>
-    </b-sidebar>
+    </b-offcanvas>
     <menu-context></menu-context>
   </div>
 </template>
@@ -17,6 +17,7 @@ import MenuContext from "@/components/MenuContext";
 import events from "@/constantes/event.const";
 import key from "@/constantes/key.store.const";
 import bus from "@/config/bus.event";
+import { eventPathContainsId } from "@/utils/event.utils";
 import { mapGetters } from "vuex";
 
 export default {
@@ -38,20 +39,19 @@ export default {
   },
   mounted() {
     bus.$on(events.SWITCH_INSPECTOR_PANEL, this.switchPanel);
-    this.$root.$el.addEventListener('mouseup', this.deselectAll);
+    document.addEventListener('mouseup', this.deselectAll);
+  },
+  beforeUnmount() {
+    bus.$off(events.SWITCH_INSPECTOR_PANEL, this.switchPanel);
+    document.removeEventListener('mouseup', this.deselectAll);
   },
   methods: {
     closePanel() {
       this.$store.commit(key.SET_DETAILS_PANEL, false);
     },
     deselectAll(event) {
-      if (!event.path.map(element => element.id).includes('list-torrent') &&
-          !event.path.map(element => element.id).includes('btn-panel-details') &&
-          !event.path.map(element => element.id).includes('header-trash') &&
-          !event.path.map(element => element.id).includes('header-start') &&
-          !event.path.map(element => element.id).includes('header-pause') &&
-          !event.path.map(element => element.id).includes('interval-select') &&
-          !event.path.map(element => element.id).includes('details-panel')) {
+      if (!['list-torrent', 'btn-panel-details', 'header-trash', 'header-start', 'header-pause', 'interval-select', 'details-panel']
+          .some(id => eventPathContainsId(event, id))) {
         bus.$emit(events.UNSELECTED_ALL_TORRENT, event);
       }
     },
@@ -68,7 +68,7 @@ export default {
 .force-index {
   z-index: 1 !important;
 }
-div >>> .style-panel {
+:deep(.style-panel) {
   width: 30%;
   bottom: 47px;
   top: 47px;
