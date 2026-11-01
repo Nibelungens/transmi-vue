@@ -22,16 +22,16 @@
           </div>
         </div>
       </div>
-      <b-collapse :id="getId(torrent)" :visible="!collapse_all" v-on:hide="setVisible(torrent)" v-on:show="setVisible(torrent)">
+      <b-collapse :id="getId(torrent)" :visible="isVisible(torrent)" v-on:hide="setVisible(torrent, false)" v-on:show="setVisible(torrent, true)">
         <ul class="px-0 mx-0">
           <li v-for="tracker in torrent.trackerStats" :key="tracker.id" class="d-flex flex-column py-1 px-2" v-bind:class="{'alt': tracker.id % 2 !== 0}">
             <b-badge class="w-25 py-1" variant="primary">Tier {{ tracker.id+1 }}</b-badge>
             <div class="host pb-1">{{ tracker.host }}</div>
             <div class="d-flex">
               <div class="mr-auto d-flex flex-column w-75">
-                <div class="text-truncate" :title="tracker | trackersLastAnnounce($i18n)">{{ tracker | trackersLastAnnounce($i18n) }}</div>
-                <div class="text-truncate" :title="tracker | trackersState($i18n)">{{ tracker | trackersState($i18n) }}</div>
-                <div class="text-truncate" :title="tracker | trackersLastScraps($i18n)">{{ tracker | trackersLastScraps($i18n) }}</div>
+                <div class="text-truncate" :title="$filters.trackersLastAnnounce(tracker, $i18n)">{{ $filters.trackersLastAnnounce(tracker, $i18n) }}</div>
+                <div class="text-truncate" :title="$filters.trackersState(tracker, $i18n)">{{ $filters.trackersState(tracker, $i18n) }}</div>
+                <div class="text-truncate" :title="$filters.trackersLastScraps(tracker, $i18n)">{{ $filters.trackersLastScraps(tracker, $i18n) }}</div>
               </div>
               <div class="ml-auto d-flex flex-column w-25 pl-2">
                 <div class="ml-4">
@@ -84,16 +84,17 @@ export default {
     showPanel: Boolean
   },
   created() {
-    this.$store.watch(() => this.$store.getters[key.GET_SELECTED_TORRENTS], this.refreshTrackers);
+    this.unwatchSelectedTorrents = this.$store.watch(() => this.$store.getters[key.GET_SELECTED_TORRENTS], this.refreshTrackers);
+  },
+  beforeUnmount() {
+    if (this.unwatchSelectedTorrents) this.unwatchSelectedTorrents();
   },
   methods: {
     collapseAll() {
       this.collapse_all = !this.collapse_all;
-      if (this.torrents != null ) {
-        for (const torrent of this.torrents) {
-          this.$root.$emit('bv::toggle::collapse', this.getId(torrent));
-        }
-      }
+      this.id_close = this.collapse_all && this.torrents
+        ? this.torrents.map(torrent => torrent.id)
+        : [];
     },
     trackerEmpty(torrent) {
       return torrent.trackerStats != null && torrent.trackerStats.length > 0;
@@ -101,17 +102,17 @@ export default {
     isVisible(torrent) {
       return !this.id_close.includes(torrent.id);
     },
-    setVisible(torrent) {
+    setVisible(torrent, visible) {
       const index = this.id_close.findIndex((id) => id === torrent.id);
 
-      if(index === -1) {
+      if (!visible && index === -1) {
         this.id_close.push(torrent.id);
-      } else {
+      } else if (visible && index !== -1) {
         this.id_close.splice(index, 1);
       }
     },
     collapse(torrent) {
-      this.$root.$emit('bv::toggle::collapse', this.getId(torrent));
+      this.setVisible(torrent, !this.isVisible(torrent));
     },
     getId(torrent) {
       return 'collapse-tracker-' + torrent.id;

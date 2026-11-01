@@ -1,31 +1,31 @@
 <template>
   <div>
     <header>
-      <b-navbar type="dark" variant="dark">
+      <b-navbar v-b-color-mode="'dark'" variant="dark">
         <b-button-toolbar>
           <img src="@/assets/logo-31.png" alt="logo"/><h5 class="ml-2 mr-4 pb-0 mb-0 pt-1 font-weight-bold text-light">{{ $t('message.appName') }}</h5>
           <b-button-group size="sm" class="mr-1" >
-            <b-button v-b-tooltip.hover :title="$t('message.header.open')" variant="light" v-on:click="openModal">
+            <b-button v-b-tooltip.hover="$t('message.header.open')" variant="light" v-on:click="openModal">
               <b-icon class="mr-1" icon="file-earmark-arrow-up-fill"></b-icon>{{ $t('message.header.open') }}
             </b-button>
-            <b-button id="header-trash" v-b-tooltip.hover v-bind:disabled="!asSelected" v-on:click="removeModal" :title="$t('message.header.remove')" variant="danger">
+            <b-button id="header-trash" v-b-tooltip.hover="$t('message.header.remove')" v-bind:disabled="!asSelected" v-on:click="removeModal" variant="danger">
               <b-icon icon="trash-fill"></b-icon>
             </b-button>
-            <b-button id="header-start" v-b-tooltip.hover v-bind:disabled="!asSelected" v-on:click="startSelected" :title="$t('message.header.start')"  variant="primary">
+            <b-button id="header-start" v-b-tooltip.hover="$t('message.header.start')" v-bind:disabled="!asSelected" v-on:click="startSelected" variant="primary">
               <b-icon icon="arrow-clockwise"></b-icon>
             </b-button>
-            <b-button id="header-pause" v-b-tooltip.hover v-bind:disabled="!asSelected" v-on:click="stopSelected" :title="$t('message.header.stop')"  variant="primary">
+            <b-button id="header-pause" v-b-tooltip.hover="$t('message.header.stop')" v-bind:disabled="!asSelected" v-on:click="stopSelected" variant="primary">
               <b-icon icon="pause-fill"></b-icon>
             </b-button>
-            <b-button v-b-tooltip.hover v-on:click="startAll" :title="$t('message.header.startAll')"  variant="primary">
+            <b-button v-b-tooltip.hover="$t('message.header.startAll')" v-on:click="startAll" variant="primary">
               <b-icon class="text-dark" icon="arrow-clockwise"></b-icon>
             </b-button>
-            <b-button v-b-tooltip.hover v-on:click="stopAll" :title="$t('message.header.stopAll')"  variant="primary">
+            <b-button v-b-tooltip.hover="$t('message.header.stopAll')" v-on:click="stopAll" variant="primary">
               <b-icon class="text-dark" icon="pause-fill"></b-icon>
             </b-button>
           </b-button-group>
         </b-button-toolbar>
-          <b-button id="btn-panel-details" class="ml-auto" v-on:click="openDetails" size="sm" v-b-tooltip.hover :title="$t('message.header.openDetails')"  variant="outline-light">
+          <b-button id="btn-panel-details" class="ml-auto" v-on:click="openDetails" size="sm" v-b-tooltip.hover="$t('message.header.openDetails')" variant="outline-light">
             <b-icon class="mx-5" icon="arrow-bar-left" v-show="!detailPanel"></b-icon>
             <b-icon class="mx-5" icon="arrow-bar-right" v-show="detailPanel"></b-icon>
           </b-button>
@@ -96,7 +96,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div >>> .model-remove {
+:deep(.model-remove) {
   margin-top: 5%;
 }
 </style>

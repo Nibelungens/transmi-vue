@@ -53,7 +53,7 @@
           </label>
         </div>
       </div>
-      <b-collapse :id="getId('collapse', path)" :refs="getId('collapse', path)" :visible="!collapse_all">
+      <b-collapse :id="getId('collapse', path)" :visible="isPathVisible(path)">
         <path-details-torrent-view ref="folder-files" :paths="path" :torrent_id="torrent_id" v-if="path.folder" :collapse_all="collapse_all" class="pl-3"/>
       </b-collapse>
     </li>
@@ -65,6 +65,7 @@ import priority from "@/constantes/priority.const";
 import api from "@/services/api.transmission.mixin";
 import events from "@/constantes/event.const";
 import result from "@/mixins/result.mixin";
+import bus from "@/config/bus.event";
 
 export default {
   name: "PathDetailsTorrentView",
@@ -73,6 +74,16 @@ export default {
     paths: {},
     torrent_id: Number,
     collapse_all: Boolean
+  },
+  data() {
+    return {
+      collapsedPaths: []
+    }
+  },
+  watch: {
+    collapse_all() {
+      this.collapsedPaths = []
+    }
   },
   methods: {
     priority() {
@@ -134,7 +145,7 @@ export default {
       this.api_torrent.setPriorityTorrent(this.torrent_id, this.getIdCheckedByFolder(path), value)
           .then(response => {
             this.success(response);
-            this.$root.$emit(events.REFRESH_FILES);
+            bus.$emit(events.REFRESH_FILES);
           }).catch(this.error);
     },
 
@@ -145,21 +156,31 @@ export default {
         this.api_torrent.setWantedTorrent(this.torrent_id, this.getIdCheckedByFolder(path))
             .then(response => {
               this.success(response);
-              this.$root.$emit(events.REFRESH_FILES);
+              bus.$emit(events.REFRESH_FILES);
             }).catch(this.error);
       } else {
         this.api_torrent.setUnwantedTorrent(this.torrent_id, this.getIdCheckedByFolder(path))
             .then(response => {
               this.success(response);
-              this.$root.$emit(events.REFRESH_FILES);
+              bus.$emit(events.REFRESH_FILES);
             }).catch(this.error);
       }
     },
 
     onClickCollapse(path) {
       if (path.folder) {
-        this.$root.$emit('bv::toggle::collapse', this.getId('collapse', path));
+        const id = this.getId('collapse', path);
+        const index = this.collapsedPaths.indexOf(id)
+        if (index === -1) {
+          this.collapsedPaths.push(id)
+        } else {
+          this.collapsedPaths.splice(index, 1)
+        }
       }
+    },
+
+    isPathVisible(path) {
+      return !this.collapse_all && !this.collapsedPaths.includes(this.getId('collapse', path))
     },
 
     disableCheck(path) {

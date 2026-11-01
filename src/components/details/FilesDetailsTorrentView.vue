@@ -29,6 +29,7 @@ import result from "@/mixins/result.mixin";
 import pathUtils from "@/utils/path.utils";
 import common from "@/utils/common.utils";
 import { mapGetters } from "vuex";
+import bus from "@/config/bus.event";
 
 export default {
   name: "FilesDetailsTorrentView",
@@ -61,8 +62,12 @@ export default {
     }
   },
   created() {
-    this.$store.watch(() => this.$store.getters[key.GET_SELECTED_TORRENTS], () => this.refreshFiles(true));
-    this.$root.$on(event.REFRESH_FILES, () => this.refreshFiles(false));
+    this.unwatchSelectedTorrents = this.$store.watch(() => this.$store.getters[key.GET_SELECTED_TORRENTS], () => this.refreshFiles(true));
+    bus.$on(event.REFRESH_FILES, this.refreshFilesFromEvent);
+  },
+  beforeUnmount() {
+    if (this.unwatchSelectedTorrents) this.unwatchSelectedTorrents();
+    bus.$off(event.REFRESH_FILES, this.refreshFilesFromEvent);
   },
   methods: {
     collapseAll() {
@@ -76,6 +81,10 @@ export default {
             .then(this.detailSuccessFile)
             .catch(this.fail);
       }
+    },
+
+    refreshFilesFromEvent() {
+      this.refreshFiles(false);
     },
 
     detailSuccessFile(response) {

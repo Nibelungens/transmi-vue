@@ -1,5 +1,4 @@
-import {localVue, store, mocks} from '@/../tests/tools/conponent.config'
-import { shallowMount } from '@vue/test-utils'
+import {store, mocks, shallowMount} from '@/../tests/tools/conponent.config'
 import TorrentView from "@/components/TorrentView";
 
 describe("TorrentView", () => {
@@ -27,8 +26,8 @@ describe("TorrentView", () => {
 
     it("init", () => {
         const wrapper = shallowMount(TorrentView, {
-            propsData: {torrent: torrent_init},
-            store, localVue, mocks})
+            props: {torrent: torrent_init},
+            store, mocks})
         expect(wrapper).not.toBeNull();
     });
 });

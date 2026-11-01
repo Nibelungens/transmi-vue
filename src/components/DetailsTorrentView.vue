@@ -81,7 +81,7 @@ export default {
   margin-left: 10px;
 }
 
-div >>> .nav-link {
+:deep(.nav-link) {
   color: lightslategrey;
   display: block;
   padding: 0.5rem 1rem;

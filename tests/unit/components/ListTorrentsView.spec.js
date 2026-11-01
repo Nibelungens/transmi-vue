@@ -1,10 +1,9 @@
-import {localVue, store, mocks} from '@/../tests/tools/conponent.config'
-import { shallowMount } from '@vue/test-utils'
+import {store, mocks, shallowMount} from '@/../tests/tools/conponent.config'
 import ListTorrentsView from "@/components/ListTorrentsView";
 
 describe("ListTorrentsView", () => {
     it("init", () => {
-        const wrapper = shallowMount(ListTorrentsView, {store, localVue, mocks})
+        const wrapper = shallowMount(ListTorrentsView, {store, mocks})
         expect(wrapper).not.toBeNull();
     });
 });

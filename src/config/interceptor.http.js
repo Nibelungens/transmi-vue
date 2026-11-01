@@ -6,7 +6,7 @@ const CODE_ERROR_TOKEN = 409;
 const interceptor = {
     init(store) {
         Axios.interceptors.request.use(config => {
-            config.headers = {'x-transmission-session-id': store.getters['Token/getToken']};
+            config.headers.set(SESSION_TOKEN, store.getters['Token/getToken']);
             return config;
         })
 

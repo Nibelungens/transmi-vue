@@ -1,23 +1,23 @@
 <template>
-  <b-modal id="add-torrent-modal" button-size="sm" dialog-class="model-add user-select-none">
-    <template v-slot:modal-title>
+  <b-modal id="add-torrent-modal" v-model="modalVisible" button-size="sm" dialog-class="model-add user-select-none">
+    <template v-slot:title>
       <b-icon class="mr-3" icon="file-earmark-arrow-up-fill"></b-icon>{{ $t('message.addModal.title') }}
     </template>
-    <b-form v-on:submit="onSubmit">
+    <b-form v-on:submit.prevent="onSubmit">
       <b-form-group id="file" :label="$t('message.addModal.title')" label-for="select-file">
         <b-form-file :file-name-formatter="formatNames" accept=".torrent" size="sm" id="select-file" v-model="filesTorrent" :placeholder="$t('message.addModal.noSelect')" drop-placeholder="Drop file here..." multiple/>
       </b-form-group>
       <b-form-group id="url" :label="$t('message.addModal.url')" label-for="select-url">
         <b-form-input size="sm" id="select-url" v-model="url" placeholder=""/>
       </b-form-group>
-      <b-form-group id="destination" :label="$t('message.addModal.destination', [this.getSize()])" label-for="select-destination">
-        <b-form-input size="sm" id="select-destination" v-model="destination" :placeholder="this.downloadDir"/>
+      <b-form-group id="destination" :label="$t('message.addModal.destination', [getSize()])" label-for="select-destination">
+        <b-form-input size="sm" id="select-destination" v-model="destination" :placeholder="downloadDir"/>
       </b-form-group>
       <b-form-checkbox id="checkbox-start" v-model="start" name="checkbox-start">{{$t('message.addModal.start')}}</b-form-checkbox>
     </b-form>
-    <template v-slot:modal-footer="{ submit, cancel }">
-      <b-button size="sm" variant="danger" v-on:click="cancel()" v-text="$t('message.addModal.cancel')"/>
-      <b-button size="sm" variant="success" v-on:click="onSubmit" v-text="$t('message.addModal.submit')"/>
+    <template v-slot:footer>
+      <b-button size="sm" variant="danger" v-on:click="modalVisible = false">{{ $t('message.addModal.cancel') }}</b-button>
+      <b-button size="sm" variant="success" v-on:click="onSubmit">{{ $t('message.addModal.submit') }}</b-button>
     </template>
   </b-modal>
 </template>
@@ -31,8 +31,6 @@ import result from "@/mixins/result.mixin";
 import bus from "@/config/bus.event";
 import { mapGetters } from "vuex";
 
-const ADD_TORRENT_MODAL = 'add-torrent-modal'
-
 export default {
   name: "AddTorrentModal",
   mixins: [
@@ -42,12 +40,16 @@ export default {
   mounted() {
     bus.$on(events.OPEN_MODAL_ADD_TORRENT, this.showModal);
   },
+  beforeUnmount() {
+    bus.$off(events.OPEN_MODAL_ADD_TORRENT, this.showModal);
+  },
   data: function() {
     return {
       filesTorrent: [],
       url: null,
       destination: null,
-      start: true
+      start: true,
+      modalVisible: false
     };
   },
   computed: {
@@ -81,7 +83,7 @@ export default {
       this.api_config.getFreeSpace(this.downloadDir)
           .then((response) => this.$store.commit(keyStore.SET_DOWNLOAD_DIR_FREE_SPACE, response.data.arguments['size-bytes']))
           .catch(this.error)
-      this.$bvModal.show(ADD_TORRENT_MODAL);
+      this.modalVisible = true;
     },
     toBase64(file){
       const fileReader = new FileReader();
@@ -93,14 +95,14 @@ export default {
       this.reset();
       if (response.data.result === 'success') {
         if (response.data.arguments['torrent-duplicate'] != null && response.data.arguments['torrent-duplicate'].id > 0) {
-          this.$bvModal.hide(ADD_TORRENT_MODAL);
+          this.modalVisible = false;
           if (name !== null) {
             bus.$emit(events.NOTIFICATION_WARN, this.$t('message.addModal.already', [name]));
           } else {
             bus.$emit(events.NOTIFICATION_WARN, this.$t('message.addModal.alreadyNoParams'));
           }
         } else {
-          this.$bvModal.hide(ADD_TORRENT_MODAL);
+          this.modalVisible = false;
           bus.$emit(events.REFRESH_LIST_TORRENT);
           if (name !== null) {
             bus.$emit(events.NOTIFICATION_SUCCESS, this.$t('message.addModal.addOne', [name]));
@@ -138,7 +140,7 @@ export default {
 </script>
 
 <style scoped>
-div >>> .model-add {
+:deep(.model-add) {
   margin-top: 5%;
 }
 </style>
